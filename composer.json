@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "AdvancedControls\\AddonServiceProvider"
+                "AdvancedControls\\AdvancedControlsServiceProvider"
             ],
             "aliases": {
                 "AdvControls": "advanced-controls\\facades\\AdvancedControls"
