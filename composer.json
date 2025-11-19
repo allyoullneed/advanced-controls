@@ -22,7 +22,7 @@
                 "AdvancedControls\\AdvancedControlsServiceProvider"
             ],
             "aliases": {
-                "AdvControls": "advanced-controls\\facades\\AdvancedControls"
+                "AdvancedControls": "AdvancedControls\\facades\\AdvancedControls"
             }
         }
     },
