@@ -1,8 +1,8 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
+
 use AdvancedControls\Components\ThemeToggle;
 
 class AddonServiceProvider extends ServiceProvider
