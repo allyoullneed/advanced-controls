@@ -13,7 +13,7 @@
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "Allyoullneed\\AdvancedControls\\": "src/"
+            "AdvancedControls\\": "src/"
         }
     },
     "extra": {
