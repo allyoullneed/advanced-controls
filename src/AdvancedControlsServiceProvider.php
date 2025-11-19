@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 use AdvancedControls\Components\ThemeToggle;
 
-class AddonServiceProvider extends ServiceProvider
+class AdvancedControlsServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -36,10 +36,10 @@ class AddonServiceProvider extends ServiceProvider
         // // because they are used inside some Mary's components itself.
         // Blade::component('mary-button', Button::class);
 
-        $prefix = config('prefix');
+        // $prefix = config('prefix');
 
-        // Blade
-        Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
+        // // Blade
+        // Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
     }
 
     public function registerBladeDirectives(): void
