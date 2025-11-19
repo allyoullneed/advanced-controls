@@ -16,5 +16,15 @@
             "Allyoullneed\\AdvancedControls\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AdvControls\\AddonServiceProvider"
+            ],
+            "aliases": {
+                "AdvControls": "advanced-controls\\facades\\AdvancedControls"
+            }
+        }
+    },
     "minimum-stability": "beta"
 }
