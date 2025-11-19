@@ -1,5 +1,5 @@
 {
-    "name": "allyouneed/advanced-controls",
+    "name": "allyoullneed/advanced-controls",
     "description": "UI components for Statamic, powered by Livewire 4",
     "type": "library",
     "require": {
@@ -13,7 +13,7 @@
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "Allyouneed\\AdvancedControls\\": "src/"
+            "Allyoullneed\\AdvancedControls\\": "src/"
         }
     },
     "minimum-stability": "beta"
