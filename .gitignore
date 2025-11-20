@@ -24,7 +24,9 @@ Homestead.json
 
 /public/build
 /storage/pail
+.editorconfig
 .env.backup
 .env.production
 .phpactor.json
 auth.json
+composer.lock
