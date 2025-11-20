@@ -93,7 +93,7 @@ class AdvancedControlsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/advancedcontrols.php', 'advancedcontrols');
 
         // Register the service the package provides.
-        $this->app->singleton('advancedcontrols', function ($app) {
+        $this->app->singleton('AdvancedControls', function ($app) {
             return new AdvancedControls();
         });
     }
