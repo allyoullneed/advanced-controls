@@ -22,7 +22,7 @@
                 "AllYouNeed\\AdvancedControls\\AdvancedControlsServiceProvider"
             ],
             "aliases": {
-                "AdvancedControls": "AllYouNeed\\AdvancedControls\\facades\\AdvancedControls"
+                "AdvancedControls": "AllYouNeed\\AdvancedControls\\Facades\\AdvancedControls"
             }
         }
     },
