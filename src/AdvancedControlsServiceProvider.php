@@ -4,7 +4,11 @@ namespace AllYouNeed\AdvancedControls;
  
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use AllYouNeed\AdvancedControls\Components\ThemeToggle;
+
+
+use AllYouNeed\AdvancedControls\View\Components\Icon;
+use AllYouNeed\AdvancedControls\View\Components\Tabs;
+use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
  
 final class AdvancedControlsServiceProvider extends ServiceProvider
 {
@@ -34,6 +38,8 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         $prefix = config('prefix');
 
         // Blade
+        Blade::component($prefix . 'icon', Icon::class);
+        //Blade::component($prefix . 'tabs', Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
     }
 }

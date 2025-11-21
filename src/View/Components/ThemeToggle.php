@@ -1,17 +1,17 @@
 <?php
 
+namespace AllYouNeed\AdvancedControls\View\Components;
+
+
 use Illuminate\View\Component;
 
 class ThemeToggle extends Component
 {
-    public ?string $name;
-
-    public function __construct(?string $name = null)
+    public function __construct()
     {
-        $this->name = $name;
     }
 
-    public function render()
+    public function render(): View|Closure|string
     {
         return <<<'HTML'
             <div>
@@ -30,8 +30,8 @@ class ThemeToggle extends Component
                     {{ $attributes->class("swap swap-rotate") }}
                 >
                     <input id="theme-toggle" type="checkbox" class="theme-controller opacity-0" @click="toggle()" :value="theme" />
-                    <x-mary-icon x-ref="sun" name="o-sun" class="dark:hidden" />
-                    <x-mary-icon x-ref="moon" name="o-moon" class="hidden dark:inline"  />
+                    <x-icon x-ref="sun" name="o-sun" class="dark:hidden" />
+                    <x-icon x-ref="moon" name="o-moon" class="hidden dark:inline"  />
                 </label>
                 <script>
                     window.addEventListener('storage', (event) => {
