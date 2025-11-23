@@ -4,6 +4,7 @@ namespace AllYouNeed\AdvancedControls;
  
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 use AllYouNeed\AdvancedControls\View\Components\Button;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
@@ -37,5 +38,10 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'button', Button::class);
         //Blade::component($prefix . 'tabs', Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
+
+        // Livewire
+        Livewire::addLocation(
+             viewPath: resource_path('views/admin/components')
+        );
     }
 }
