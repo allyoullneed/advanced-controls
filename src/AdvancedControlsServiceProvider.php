@@ -38,7 +38,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         $prefix = config('prefix');
 
         // Blade
-        Blade::component($prefix . 'icon', Icon::class);
+        Blade::component($prefix . 'button', Button::class);
         //Blade::component($prefix . 'tabs', Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
     }

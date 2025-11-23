@@ -2,7 +2,7 @@
 
 use Livewire\Component;
 
-new class extends Component
+class Button extends Component
 {
     //
 };
