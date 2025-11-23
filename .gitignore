@@ -30,3 +30,4 @@ Homestead.json
 .phpactor.json
 auth.json
 composer.lock
+src/View/Components/⚡component.blade.php
