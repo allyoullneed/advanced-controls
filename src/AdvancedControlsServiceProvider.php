@@ -5,8 +5,7 @@ namespace AllYouNeed\AdvancedControls;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-
-use AllYouNeed\AdvancedControls\View\Components\Icon;
+use AllYouNeed\AdvancedControls\View\Components\Button;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
 use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
  
@@ -27,9 +26,6 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
     }
     public function registerComponents()
     {
-        // // Just rename <x-icon> provided by BladeUI Icons to <x-svg> to not collide with ours
-        // Blade::component('BladeUI\Icons\Components\Icon', 'svg');
-
         // // No matter if components has custom prefix or not,
         // // we also register below alias to avoid naming collision,
         // // because they are used inside some Mary's components itself.

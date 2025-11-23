@@ -2,7 +2,6 @@
 
 namespace AllYouNeed\AdvancedControls\View\Components;
 
-
 use Illuminate\View\Component;
 
 class ThemeToggle extends Component
