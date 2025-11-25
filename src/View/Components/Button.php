@@ -5,7 +5,7 @@ namespace AllYouNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 
-new class extends Component
+class Button extends Component
 {
     public ?string $icon = null;
     public function __construct(
@@ -16,20 +16,20 @@ new class extends Component
 
     public function render(): View|Closure|string
     {
-        return <<<'BLADE'
+        return <<<'HTML'
         <button
-            {{ $attributes->merge(['class' => 'theme-toggle aspect-square']) }}
+            {{ $attributes->merge(['class' => 'btn']) }}
         >
             <span class="loading loading-spinner"></span>
             
             @if($icon)
                 <span class="block" @if($spinner) wire:loading.class="hidden" wire:target="{{ $spinnerTarget() }}" @endif>
-                    <x-svg :name="$icon" />
+                    <x-icon :name="$icon" />
                 </span>
             @endif
 
             {{ $slot }}
         </button>
-        BLADE;
+        HTML;
     }
 }
