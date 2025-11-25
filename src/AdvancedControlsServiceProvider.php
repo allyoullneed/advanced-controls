@@ -37,9 +37,5 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         //Blade::component($prefix . 'tabs', Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
 
-        // Livewire
-        Livewire::addLocation(
-             viewPath: resource_path('views/admin/components')
-        );
     }
 }
