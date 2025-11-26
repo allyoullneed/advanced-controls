@@ -24,7 +24,8 @@ class ThemeToggle extends Component
                 x-data="{
                     theme: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches ? '{{ $darkTheme }}' : '{{ $lightTheme }}').as('theme'),
                     init() {
-                        document.documentElement.classList.add(this.theme)
+                        document.documentElement.classList.add(this.theme);
+                        document.documentElement.setAttribute('data-theme, this.theme);
                         setTimeout(() => { $el.classList.add('theme-toggle-animated'); }, 500);
                         window.addEventListener('storage', (event) => {
                             if (event.key === 'theme') {
@@ -39,7 +40,8 @@ class ThemeToggle extends Component
                         var oldTheme = this.theme;
                         this.theme = this.theme === '{{ $lightTheme }}' ? '{{ $darkTheme }}' : '{{ $lightTheme }}';
                         document.documentElement.classList.replace(oldTheme, this.theme);
-                        localStorage.setItem('theme', this.theme);
+                        document.documentElement.setAttribute('data-theme, this.theme);
+                        localStorage.setItem('data-theme', this.theme);
                     }
                 }"
                 @click="toggle()"
