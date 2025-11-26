@@ -5,7 +5,7 @@ namespace AllYouNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 
-new class extends Component
+class ThemeToggle extends Component
 {
     public string $type       = 'classic';
     public string $lightTheme = 'light';
