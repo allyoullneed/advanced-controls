@@ -5,7 +5,7 @@ namespace AllYouNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 
-class Button extends Component
+class Link extends Component
 {
     public string $href;
     public ?string $label = null;
@@ -21,7 +21,7 @@ class Button extends Component
     {
         return <<<'HTML'
         <a href="{{ $href }}" class="link">
-            @if {{ $label }}
+            @if ($label)
                 {{ $label }}
             @else
                 {{ $slot }}
