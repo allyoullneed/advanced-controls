@@ -22,9 +22,9 @@ class Link extends Component
         return <<<'HTML'
         <a href="{{ $href }}" class="link">
             @if ($label)
-                {{ $label }}
+                Coinx {{ $label }}
             @else
-                {{ $slot }}
+                Coinx {{ $slot }}
             @endif
         </a>
         HTML;
