@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
 use AllYouNeed\AdvancedControls\View\Components\Button;
+use AllYouNeed\AdvancedControls\View\Components\Link;
 use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
  
 final class AdvancedControlsServiceProvider extends ServiceProvider
@@ -30,7 +31,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
 
         // Blade
         Blade::component($prefix . 'button', Button::class);
-        //Blade::component($prefix . 'tabs', Tabs::class);
+        Blade::component($prefix . 'link', Link::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
 
     }

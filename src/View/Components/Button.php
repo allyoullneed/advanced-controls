@@ -20,7 +20,7 @@ class Button extends Component
         <button
             {{ $attributes->merge(['class' => 'btn']) }}
         >
-            <span class="loading loading-spinner"></span>
+            <span class="in-data-loading:loading in-data-loading:loading-spinner"></span>
             
             @if($icon)
                 <span class="block" @if($spinner) wire:loading.class="hidden" wire:target="{{ $spinnerTarget() }}" @endif>
