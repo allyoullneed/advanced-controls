@@ -7,13 +7,23 @@ use Illuminate\View\Component;
 
 class Link extends Component
 {
-    public string $href = '#';
+    public string $href;
     public ?string $label = null;
+    public function __construct(
+        string $href = "#",
+        ?string $label
+    ) {
+        $this->href = $href;
+        $this->label = $label;
+    }
 
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <a href="{{ $href }}" class="link">
+        <a
+            href="{{ $href }}"
+            {{ $attributes->merge(['class' => 'link']) }}
+        >
             @if ($label)
                 Coinx {{ $label }}
             @else
