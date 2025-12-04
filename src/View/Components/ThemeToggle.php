@@ -41,7 +41,8 @@ class ThemeToggle extends Component
                         this.theme = this.theme === '{{ $lightTheme }}' ? '{{ $darkTheme }}' : '{{ $lightTheme }}';
                         document.documentElement.classList.replace(oldTheme, this.theme);
                         document.documentElement.setAttribute('data-theme', this.theme);
-                        localStorage.setItem('data-theme', this.theme); 
+                        localStorage.setItem('data-theme', this.theme);
+                        reload();
                     }
                 }"
                 @click="toggle()"

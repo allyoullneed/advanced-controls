@@ -10,6 +10,7 @@ use AllYouNeed\AdvancedControls\View\Components\Alert;
 use AllYouNeed\AdvancedControls\View\Components\Button;
 use AllYouNeed\AdvancedControls\View\Components\Collapse;
 use AllYouNeed\AdvancedControls\View\Components\Link;
+use AllYouNeed\AdvancedControls\View\Components\Tab;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
 use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
  
@@ -36,6 +37,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'button'      , Button::class);
         Blade::component($prefix . 'collapse'    , Collapse::class);
         Blade::component($prefix . 'link'        , Link::class);
+        Blade::component($prefix . 'tab'         , Tab::class);
         Blade::component($prefix . 'tabs'        , Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
 

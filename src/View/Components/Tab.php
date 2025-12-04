@@ -2,7 +2,6 @@
 
 namespace AllYouNeed\AdvancedControls\View\Components;
 
-
 use Illuminate\View\Component;
 
 class Tab extends Component
@@ -20,8 +19,9 @@ class Tab extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['id'])
         <label class="tab">
-            <input type="radio" name="my_tabs_2" />
+            <input type="radio" name="{{ $id }}"/>
             @if ($icon)
                 <x-icon :name="$icon" class="size-4 me-2"/>
             @endif
