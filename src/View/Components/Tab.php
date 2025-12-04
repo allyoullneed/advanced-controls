@@ -27,7 +27,11 @@ class Tab extends Component
             @endif
             {{ $label }}
         </label>
-        <div class="tab-content border-base-300 bg-base-100 p-10">
+        <div 
+            {{ $attributes->class([
+                'tab-content p-2 md:p-6'
+            ])->merge() }}
+        >
             {{ $slot }}
         </div>
 
