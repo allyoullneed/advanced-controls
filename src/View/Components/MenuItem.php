@@ -5,7 +5,7 @@ namespace AllYouNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 
-class Tabs extends Component
+class MenuItem extends Component
 {
     public string $id;
     public bool $checked = false;
@@ -22,15 +22,17 @@ class Tabs extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @php
-        @endphp
-        <div class="tabs tabs-border *:p-2 md:*:p-6">
-            {{ $slot }}
-            <script>
-                document.currentScript.parentElement.getElementsByClassName('tab')[0].firstElementChild.setAttribute('checked', true);
-            </script>
-        </div>
-
+        @aware(['anchor'])
+        <li 
+            {{ $attributes->except(['href', 'wire:navigate'])->class([
+                'w-full'
+                ])->merge()
+            }}
+            >
+            <a>
+                {{ $slot }}
+                </a>
+            </li>
         HTML;
     }
 }
