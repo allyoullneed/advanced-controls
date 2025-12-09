@@ -7,16 +7,20 @@ use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
-    public string $id;
-    public bool $checked = false;
+    public ?string $label;
+    public bool $collapsible;
+    public bool $title;
+    
+
 
     public function __construct(
-        ?string $id = null
+        ?string $label = null,
+        ?bool $collapsible = false,
+        ?bool $title = false
     ) {
-        if ($id)
-            $this->id = $id;
-        else
-            $this->id = uniqid();
+        $this->label       = $label;
+        $this->collapsible = $collapsible;
+        $this->title       = $title;
     }
 
     public function render(): View|Closure|string
@@ -24,14 +28,35 @@ class MenuItem extends Component
         return <<<'HTML'
         @aware(['anchor'])
         <li 
-            {{ $attributes->except(['href', 'wire:navigate'])->class([
-                'w-full'
-                ])->merge()
-            }}
+            {{ $attributes->except(['href', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
             >
-            <a>
-                {{ $slot }}
-                </a>
+            @if ($label && !$slot->isEmpty())
+                @if ($collapsible)
+                    <details class="inline-block"
+                        {{ $attributes->only(['open'])}}
+                        >
+                        <summary 
+                            {{ $attributes->class([
+                                'select-none',
+                                'menu-title' => $title
+                                ])->merge()->except(['open', 'title']) }}
+                        >{{ $label }}</summary>
+                        {{ $slot }}
+                        </details>
+                @else
+                    <a
+                        {{ $attributes->class([
+                                'select-none',
+                            'menu-title' => $title
+                        ]) }}
+                    >{{ $label }}</a>
+                    {{ $slot }}
+                @endif
+            @elseif ($label)
+                <a {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
+            @else
+                <a {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $slot }}</a>
+            @endif
             </li>
         HTML;
     }
