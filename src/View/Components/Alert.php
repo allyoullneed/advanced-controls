@@ -81,7 +81,7 @@ class Alert extends Component
             @if (isset($actions))
                 <div 
                     {{ $actions->attributes->class([
-                        'flex gap-2 mb-4 justify-self-end *:btn-sm'
+                        'flex gap-2 mb-4 justify-self-end ayn-child:where(.btn):btn-sm'
                     ])->merge() }}
                 >
                 {{ $actions }}
