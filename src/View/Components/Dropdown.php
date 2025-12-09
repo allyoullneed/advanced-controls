@@ -33,13 +33,15 @@ class Dropdown extends Component
                     'popovertarget' => $anchor ? 'popover-' . $anchor : null
                 ])->except('class') }}
                 {{ $attributes->except('class')->class([
-                    'dropdown',
+                    'dropdown [&>.dropdown-content]:fixed [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
                     'dropdown-hover' => $hover,
+                    'hover:[&>.dropdown-content]:block' => $hover,
                     'contents' => $anchor
                 ]) }}
             >
             <div
                 {{ $trigger->attributes->class([
+                    'focus:pointer-events-none' => !$hover
                 ])->merge([
                     'tabindex' => 0
                 ]) }}
