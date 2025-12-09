@@ -7,6 +7,9 @@ use Illuminate\View\Component;
 
 class Menu extends Component
 {
+
+    public bool $isSubMenu = false;
+
     public function __construct(
         ?string $id = null,
         ?bool $hover = null,
@@ -23,12 +26,13 @@ class Menu extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+            @aware(['isSubMenu'])
             <ul
                 {{ $attributes->class([
-                    'menu w-full text-nowrap whitespace-nowrap'
+                    'menu  [&_ul]:min-w-[calc(100%-.5rem)]'
                 ])->merge() }}
             >
-                {{ $slot }}
+                {{ $isSubMenu }} {{ $slot }}
                 </ul>
         HTML;
     }
