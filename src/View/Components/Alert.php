@@ -7,26 +7,18 @@ use Illuminate\View\Component;
 
 class Alert extends Component
 {
-    public ?string $title       = null;
-    public ?string $description = null;
-    public ?string $type        = null;
-    public ?string $style       = null;
-    public  mixed $icon         = null;
-
     public function __construct(
-        ?string $title,
-        ?string $description,
-        ?string $type  = null,
-        ?string $style = null,
-         mixed $icon  = null
+        public ?string $title       = null,
+        public ?string $description = null,
+        public ?string $color       = null,
+        public ?string $type        = null,
+        public ?string $variant       = null,
+        public  mixed  $icon        = null
     ) {
-        $this->title = $title;
-        $this->description = $description;
         if ($type === 'info' || $type === 'success' || $type === 'warning' || $type === 'error')
             $this->type = $type;
-        if ($style === 'soft' || $style === 'outline' || $style === 'dash')
-            $this->style = $style;
-        $this->icon = $icon;
+        if ($variant === 'soft' || $variant === 'outline' || $variant === 'dash')
+            $this->variant = $variant;
     }
 
     public function render(): View|Closure|string
@@ -36,13 +28,14 @@ class Alert extends Component
             {{ $attributes->class([
                 'alert pb-0',
                 'flex gap-4'             => $icon !== '',
-                'alert-info'             => $type === 'info',
-                'alert-success'          => $type === 'success',
-                'alert-warning'          => $type === 'warning',
-                'alert-error'            => $type === 'error',
-                'alert-soft'             => $style === 'soft',
-                'alert-outline'          => $style === 'outline',
-                'alert-dash alert-outline border-dashed' => $style === 'dash'
+                'alert-primary'          => ($type ?? $color) === 'primary',
+                'alert-info'             => ($type ?? $color) === 'info',
+                'alert-success'          => ($type ?? $color) === 'success',
+                'alert-warning'          => ($type ?? $color) === 'warning',
+                'alert-error'            => ($type ?? $color) === 'error',
+                'alert-soft'             => $variant === 'soft',
+                'alert-outline'          => $variant === 'outline',
+                'alert-dash alert-outline border-dashed' => $variant === 'dash'
                 ])->merge() }}
             role="alert"
         >
@@ -62,7 +55,7 @@ class Alert extends Component
                 <x-icon name="heroicon-o-exclamation-triangle" class="mb-4 shrink-0 size-6"/>
             @elseif ($type === 'error')
                 <x-icon name="heroicon-o-x-circle" class="mb-4 shrink-0 size-6"/>
-            @elseif ($icon === null)
+            @elseif (($type === "" || $type === "info") && $icon === null)
                 <x-icon name="heroicon-o-information-circle" class="mb-4 shrink-0 size-6"/>
             @endif
             <div class="basis-full mb-4 block">
@@ -81,7 +74,7 @@ class Alert extends Component
             @if (isset($actions))
                 <div 
                     {{ $actions->attributes->class([
-                        'flex gap-2 mb-4 justify-self-end ayn-child:where(.btn):btn-sm'
+                        'flex gap-2 mb-4 justify-self-end ayn-child:[:where(.btn)]:btn-sm'
                     ])->merge() }}
                 >
                 {{ $actions }}

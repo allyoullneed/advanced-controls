@@ -7,16 +7,24 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
 use AllYouNeed\AdvancedControls\View\Components\Alert;
+use AllYouNeed\AdvancedControls\View\Components\Badge;
 use AllYouNeed\AdvancedControls\View\Components\Button;
+use AllYouNeed\AdvancedControls\View\Components\Card;
+use AllYouNeed\AdvancedControls\View\Components\Checkbox;
 use AllYouNeed\AdvancedControls\View\Components\Collapse;
 use AllYouNeed\AdvancedControls\View\Components\Dropdown;
+use AllYouNeed\AdvancedControls\View\Components\Indicator;
+use AllYouNeed\AdvancedControls\View\Components\Input;
 use AllYouNeed\AdvancedControls\View\Components\Link;
 use AllYouNeed\AdvancedControls\View\Components\Menu;
 use AllYouNeed\AdvancedControls\View\Components\MenuItem;
+use AllYouNeed\AdvancedControls\View\Components\Radio;
+use AllYouNeed\AdvancedControls\View\Components\Skeleton;
 use AllYouNeed\AdvancedControls\View\Components\Tab;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
 use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
- 
+use AllYouNeed\AdvancedControls\View\Components\Toggle;
+
 final class AdvancedControlsServiceProvider extends ServiceProvider
 {
     public function boot(): void
@@ -37,15 +45,24 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         $prefix = config('prefix');
 
         Blade::component($prefix . 'alert'       , Alert::class);
+        Blade::component($prefix . 'badge'       , Badge::class);
         Blade::component($prefix . 'button'      , Button::class);
+        Blade::component($prefix . 'card'        , Card::class);
+        Blade::component($prefix . 'checkbox'    , Checkbox::class);
         Blade::component($prefix . 'collapse'    , Collapse::class);
         Blade::component($prefix . 'dropdown'    , Dropdown::class);
+        Blade::component($prefix . 'indicator'   , Indicator::class);
+        Blade::component($prefix . 'input'       , Input::class);
         Blade::component($prefix . 'link'        , Link::class);
         Blade::component($prefix . 'menu'        , Menu::class);
         Blade::component($prefix . 'menuItem'    , MenuItem::class);
+        Blade::component($prefix . 'radio'       , Radio::class);
+        Blade::component($prefix . 'skeleton'    , Skeleton::class);
+        Blade::component($prefix . 'switch'      , Toggle::class);
         Blade::component($prefix . 'tab'         , Tab::class);
         Blade::component($prefix . 'tabs'        , Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
+        Blade::component($prefix . 'toggle'      , Toggle::class);
 
     }
 }

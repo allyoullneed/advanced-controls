@@ -26,7 +26,7 @@ class MenuItem extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @aware(['anchor'])
+        @if ($label || !$slot->isEmpty())
         <li 
             {{ $attributes->except(['href', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
             >
@@ -55,9 +55,10 @@ class MenuItem extends Component
             @elseif ($label)
                 <a {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
             @else
-                <a {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $slot }}</a>
+                <a class="Coinx {{ $label }}" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
             @endif
             </li>
+        @endif
         HTML;
     }
 }

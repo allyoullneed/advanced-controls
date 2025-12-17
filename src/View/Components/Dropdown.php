@@ -60,6 +60,7 @@ class Dropdown extends Component
             @endif
             <div
                 {{ $attributes->class([
+                    'z-999',
                     'dropdown' => $anchor !== null,
                     'dropdown-content' => $anchor === null
                 ])->merge([
