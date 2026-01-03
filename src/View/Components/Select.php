@@ -1,0 +1,180 @@
+<?php
+
+namespace AllYouNeed\AdvancedControls\View\Components;
+
+
+use Illuminate\View\Component;
+
+class Select extends Component
+{
+    public string $id = '';
+    public function __construct(
+        public mixed   $title       = null,
+        public mixed   $label       = null,
+        public ?string $placeholder = null,
+        public mixed   $error       = null,
+        public mixed   $helper      = null,
+        public mixed   $icon        = null,
+        public mixed   $trailIcon   = null,
+        public ?string $size        = null,
+        public ?string $color       = null,
+        public bool    $ghost       = false,
+        public bool    $multiple    = false,
+        public ?int    $rows        = null
+    ) {
+    }
+
+    public function render(): View|Closure|string
+    {
+        return <<<'HTML'
+        <div 
+            {{ $attributes->class(['flex flex-col'])->merge() }}
+            x-data="{
+                color: '{{ $color }}',
+                options: [],
+                selectedOptions: [],
+                init() {
+                    const selectElement = $el.querySelector('select');       
+                    selectElement.querySelectorAll('option').forEach((option) => {
+
+                        option.addEventListener('mousedown', 
+                            function (e) {
+                                if (!e.shiftKey) {
+                                e.preventDefault();
+                                option.parentElement.focus();
+                                $data.toggleOption(this.value);
+                                return false;
+                                }
+                        }, false );
+
+                        this.options.push({ text: option.innerText, value: (option.value ?? option.innerText) });
+                        if (option.selected || option.checked)
+                            this.selectedOptions.push(option.value ?? option.innerText);
+                    });
+                    selectElement.setAttribute('x-model', 'selectedOptions');
+                },
+                toggleOption(value) {
+                    @if($multiple)
+                        const index = this.selectedOptions.findIndex((opt) => opt === value);
+                        if (index >= 0)
+                            this.selectedOptions.splice(index, 1);
+                        else
+                            this.selectedOptions.push(value);
+                    @else
+                        if (this.selectedOptions[0] === value)
+                            this.selectedOptions = [];
+                        else
+                            this.selectedOptions = [value];
+                    @endif
+                },
+                removeOption(value) {
+                    this.selectedOptions.splice(this.selectedOptions.findIndex((opt) => opt === value), 1);
+                }
+            }"
+        > 
+        @if ($title)
+        <header class="font-base text-lg">{{ $title }}</header>
+        @endif
+
+        <x-dropdown class="w-full">
+            <x-slot:trigger @class([
+                'select cursor-pointer custom-multiselect select-header w-full',
+                'select-neutral'   => $color === 'neutral',
+                'select-primary'   => $color === 'primary',
+                'select-secondary' => $color === 'secondary',
+                'select-accent'    => $color === 'accent',
+                'select-info'      => $color === 'info',
+                'select-success'   => $color === 'success',
+                'select-warning'   => $color === 'warning',
+                'select-error'     => $color === 'error',
+            ])>
+                <div @class([
+                    'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
+                ])>
+                    @if (gettype($icon) === 'string')
+                        <div class="h-lh aspect-square">
+                            <x-icon :name="$icon"/>
+                        </div>
+                    @endif
+                    @if (gettype($label) === 'string')
+                        <div {{
+                            $attributes->class([
+                            'label-text',
+                            'text-xs' => $size === 'xs',
+                            'text-sm' => $size === 'sm',
+                            'text-lg' => $size === 'lg',
+                            'text-xl' => $size === 'xl',
+                            ])
+                        }}>
+                            {{ $label }}
+                        </div>
+                    @endif
+                    <div class="h-full relative flex items-center">
+                        @if ($placeholder)
+                            <span x-show="selectedOptions.length === 0"
+                            class="absolute text-current/50 select-none">{{ $placeholder }}</span>
+                        @endif
+                        @if ($multiple)
+                            <div x-model="selectedOptions"
+                                @class([
+                                    'row-start-1 flex flex-wrap gap-2 pillbox',
+                                    'col-start-1' => $label === null,
+                                    'col-start-2' => $label !== null,
+                            ])>
+                                <template x-for="option in selectedOptions">
+                                    <x-badge :color="$color" @mousedown.prevent=""  >
+                                        <span x-text="options.find((opt) => opt.value === option).text"></span>
+                                        <x-button :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
+                                    </x-badge>
+                                </template>
+                            </div>
+                        @else
+                            <span x-text="options.find((opt) => opt.value === selectedOptions[0]).text"></span>
+                        @endif
+                    </div>
+                </div>
+            </x-slot:trigger>
+
+            <select @@mousedown.stop @@click.prevent multiple
+                @class([
+                    'h-max w-full mt-1 select options-container [&>option+option]:mt-1',
+                    'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
+                    'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
+                    'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
+                    'select-accent [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-accent),var(--color-accent))] [&_option:checked]:text-accent-content'             => $color === 'accent',
+                    'select-info [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-info),var(--color-info))] [&_option:checked]:text-info-content'                     => $color === 'info',
+                    'select-success [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-success),var(--color-success))] [&_option:checked]:text-success-content'         => $color === 'success',
+                    'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
+                    'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
+                ])
+                @if ($rows)
+                    size="{{ $rows }}"
+                @endif
+            >
+                {{ $slot }}
+            </select>
+            @if (gettype($label) === 'object')
+            <div {{ $label->attributes->class([
+                'label-text flex order-first',                
+                'text-xs' => $size === 'xs',
+                'text-sm' => $size === 'sm',
+                'text-lg' => $size === 'lg',
+                'text-xl' => $size === 'xl',
+                ]) }}>
+                {{ $label }}
+            </div>
+            @endif
+        </x-dropdown>
+
+        @if ($error || $helper)
+        <span {{
+            $attributes->class([
+                'helper-text text-sm text-gray-500 col-span-full',
+                'text-error' => $error,
+            ])->merge()
+        }}>{{ $error ?? $helper }}</span>
+        @endif
+        </div>
+        HTML;
+    }
+}

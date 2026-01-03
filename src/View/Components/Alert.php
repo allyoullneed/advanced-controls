@@ -33,7 +33,7 @@ class Alert extends Component
                 'alert-success'          => ($type ?? $color) === 'success',
                 'alert-warning'          => ($type ?? $color) === 'warning',
                 'alert-error'            => ($type ?? $color) === 'error',
-                'alert-soft'             => $variant === 'soft',
+                'alert-soft'             => $variant === 'soft' || $variant === 'ghost',
                 'alert-outline'          => $variant === 'outline',
                 'alert-dash alert-outline border-dashed' => $variant === 'dash'
                 ])->merge() }}
@@ -60,16 +60,38 @@ class Alert extends Component
             @endif
             <div class="basis-full mb-4 block">
                 @if ($title)
-                    <span class="block font-bold">{{ $title }}</span>
+                    @if (gettype($title) === 'object')
+                        <span {{
+                            $title->attributes->class([
+                                'block font-bold' => $description != null
+                            ])->merge()
+                        }}>{{ $title }}</span>
+                    @else
+                        <span {{
+                            $attributes->class([
+                                'block font-bold' => $description != null
+                            ])
+                        }}>{{ $title }}</span>
+                    @endif
                 @endif
-                    <span 
-                        {{ $attributes->class(['text-xs' => $title != null])->merge() }}
-                    >
-                        @if ($description)
+                    @if (gettype($description) === 'object' && $slot->isNotEmpty())
+                        <span {{ $attributes->class(['text-xs' => $title != null])->merge() }}>
+                            <span {{ $description->attributes->class(['text-xs' => $title != null])->merge() }}>
+                                {{ $description }}
+                            </span>
+                            {{ $slot }}
+                        </span>
+                    @elseif (gettype($description) === 'object')
+                        <span {{ $description->attributes->class(['text-xs' => $title != null])->merge() }}>
                             {{ $description }}
+                        </span>
+                    @elseif ($description || $slot->isNotEmpty())
+                        <span {{ $attributes->class(['text-xs' => $title != null])->merge() }}>
+                            {{ $description }}
+                            {{ $slot }}
+                        </span>
                         @endif
-                        {{ $slot }}
-                    </span>
+
             </div>
             @if (isset($actions))
                 <div 

@@ -22,23 +22,24 @@ class Button extends Component
         <button
             {{ $attributes->class([
                 'btn',
-                'btn-primary'   => $color === 'primary',
-                'btn-secondary' => $color === 'secondary',
-                'btn-accent'    => $color === 'accent',
-                'btn-info'      => $color === 'info',
-                'btn-success'   => $color === 'success',
-                'btn-warning'   => $color === 'warning',
-                'btn-error'     => $color === 'error',
-                'btn-soft'      => $variant === 'soft',
-                'btn-outline'   => $variant === 'outline',
-                'btn-gradient'  => $variant === 'gradient',
-                'btn-ghost btn-text' => $variant === 'ghost' || $variant === 'trait_exists',
+                'btn-neutral'        => $color === 'neutral',
+                'btn-primary'        => $color === 'primary',
+                'btn-secondary'      => $color === 'secondary',
+                'btn-accent'         => $color === 'accent',
+                'btn-info'           => $color === 'info',
+                'btn-success'        => $color === 'success',
+                'btn-warning'        => $color === 'warning',
+                'btn-error'          => $color === 'error',
+                'btn-soft'           => $variant === 'soft',
+                'btn-outline'        => $variant === 'outline',
+                'btn-gradient'       => $variant === 'gradient',
+                'btn-ghost btn-text' => $variant === 'ghost',
                 'btn-dash btn-outline border-dashed' => $variant === 'dash',
-                'btn-xl'        => $size === 'xl',
-                'btn-lg'        => $size === 'lg',
-                'btn-md'        => $size === 'md',
-                'btn-sm'        => $size === 'sm',
-                'btn-xs'        => $size === 'xs'
+                'btn-xl'             => $size === 'xl',
+                'btn-lg'             => $size === 'lg',
+                'btn-md'             => $size === 'md',
+                'btn-sm'             => $size === 'sm',
+                'btn-xs'             => $size === 'xs'
             ])->merge() }}
         >
             <span class="not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner"></span>
@@ -48,7 +49,6 @@ class Button extends Component
                     <x-icon :name="$icon" />
                 </span>
             @endif
-
             {{ $label ?? $slot }}
         </button>
         HTML;

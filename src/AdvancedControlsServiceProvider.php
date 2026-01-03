@@ -7,7 +7,9 @@ use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
 use AllYouNeed\AdvancedControls\View\Components\Alert;
+use AllYouNeed\AdvancedControls\View\Components\Avatar;
 use AllYouNeed\AdvancedControls\View\Components\Badge;
+use AllYouNeed\AdvancedControls\View\Components\Blank;
 use AllYouNeed\AdvancedControls\View\Components\Button;
 use AllYouNeed\AdvancedControls\View\Components\Card;
 use AllYouNeed\AdvancedControls\View\Components\Checkbox;
@@ -18,11 +20,18 @@ use AllYouNeed\AdvancedControls\View\Components\Input;
 use AllYouNeed\AdvancedControls\View\Components\Link;
 use AllYouNeed\AdvancedControls\View\Components\Menu;
 use AllYouNeed\AdvancedControls\View\Components\MenuItem;
+use AllYouNeed\AdvancedControls\View\Components\Modal;
+use AllYouNeed\AdvancedControls\View\Components\Password;
+use AllYouNeed\AdvancedControls\View\Components\Pin;
 use AllYouNeed\AdvancedControls\View\Components\Radio;
+use AllYouNeed\AdvancedControls\View\Components\Rating;
+use AllYouNeed\AdvancedControls\View\Components\RawSelect;
+use AllYouNeed\AdvancedControls\View\Components\Select;
 use AllYouNeed\AdvancedControls\View\Components\Skeleton;
 use AllYouNeed\AdvancedControls\View\Components\Tab;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
 use AllYouNeed\AdvancedControls\View\Components\ThemeToggle;
+use AllYouNeed\AdvancedControls\View\Components\Toast;
 use AllYouNeed\AdvancedControls\View\Components\Toggle;
 
 final class AdvancedControlsServiceProvider extends ServiceProvider
@@ -45,6 +54,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         $prefix = config('prefix');
 
         Blade::component($prefix . 'alert'       , Alert::class);
+        Blade::component($prefix . 'avatar'      , Avatar::class);
         Blade::component($prefix . 'badge'       , Badge::class);
         Blade::component($prefix . 'button'      , Button::class);
         Blade::component($prefix . 'card'        , Card::class);
@@ -56,13 +66,19 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'link'        , Link::class);
         Blade::component($prefix . 'menu'        , Menu::class);
         Blade::component($prefix . 'menuItem'    , MenuItem::class);
+        Blade::component($prefix . 'modal'       , Modal::class);
+        Blade::component($prefix . 'password'    , Password::class);
+        Blade::component($prefix . 'pin'         , Pin::class);
         Blade::component($prefix . 'radio'       , Radio::class);
+        Blade::component($prefix . 'rating'      , Rating::class);
+        Blade::component($prefix . 'raw-select'  , RawSelect::class);
+        Blade::component($prefix . 'select'      , Select::class);
         Blade::component($prefix . 'skeleton'    , Skeleton::class);
         Blade::component($prefix . 'switch'      , Toggle::class);
         Blade::component($prefix . 'tab'         , Tab::class);
         Blade::component($prefix . 'tabs'        , Tabs::class);
         Blade::component($prefix . 'theme-toggle', ThemeToggle::class);
+        Blade::component($prefix . 'toast'       , Toast::class);
         Blade::component($prefix . 'toggle'      , Toggle::class);
-
     }
 }

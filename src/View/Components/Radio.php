@@ -9,83 +9,38 @@ class Radio extends Component
 {
     public function __construct(
         public ?string $id = null,
-        public mixed   $title = null,
-        public mixed   $label = null,
-        public ?string $color  = null,
-        public ?bool $aligned = false
+        public mixed   $title        = null,
+        public mixed   $label        = null,
+        public mixed   $labelBefore  = null,
+        public mixed   $labelChecked = null,
+        public ?string $color        = null,
     ) {
         if ($id)
             $this->id = $id;
         else
-            $this->id = 'checkbox-' . uniqid();
+            $this->id = 'radio-' . uniqid();
     }
-
-
-    public function prepend(&$attributes, &$__laravel_slots): bool {
-        return $attributes->has('label-before') || isset($__laravel_slots['label-before'])
-               || $attributes->has('label:before') || isset($__laravel_slots['label:before']);
-    }
-
     
     public function render(): View|Closure|string
     {
         return <<<'HTML'
         @php
-            $must_prepend = $prepend($attributes, $__laravel_slots);
-            $labelChecked = null;
-        @endphp
-        @if ($label && $must_prepend)
-            @php
+            $must_prepend = $labelBefore !== null;
+            if ($label && $must_prepend)
                 throw new Exception('Cannot declare a label both before and after the toggle');
-            @endphp
-        @endif
-        @if (!isset($label))
-            @if ($attributes->has('label:before'))
-                @php
-                    $label = $attributes->get('label:before');
-                @endphp
-            @elseif (isset($__laravel_slots['label:before']))
-                @php
-                    $label = $__laravel_slots['label:before'];
-                @endphp
-            @elseif ($attributes->has('label-before'))
-                @php
-                    $label = $attributes->get('label-before');
-                @endphp
-            @elseif (isset($__laravel_slots['label-before']))
-                @php
-                    $label = $__laravel_slots['label-before'];
-                @endphp
-            @endif
-        @endif
-        @if ($attributes->has('label:checked'))
-            @php
-                $labelChecked = $attributes->get('label:checked');
-            @endphp
-        @elseif (isset($__laravel_slots['label:checked']))
-            @php
-                $labelChecked = $__laravel_slots['label:checked'];
-            @endphp
-        @elseif ($attributes->has('label-checked'))
-            @php
-                $labelChecked = $attributes->get('label-checked');
-            @endphp
-        @elseif (isset($__laravel_slots['label-checked']))
-            @php
-                $labelChecked = $__laravel_slots['label-checked'];
-            @endphp
-        @endif
+            
+            if (!isset($label)) 
+                $label = $labelBefore;
+        @endphp
         @if ($label)
         <div {{ $attributes->class([
-                'group gap-2 items-center',
-                'flex flex-row'                      => $aligned,
-                'grid grid-cols-[auto_auto] gap-y-1' => !$aligned,
-                'justify-between'                    => $must_prepend,
-                'justify-start'                      => !$must_prepend,
+                'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
+                'justify-between' => $must_prepend,
+                'justify-start'   => !$must_prepend,
             ]) }}
         >
             @if ($title)
-            <header class="font-base text-lg col-span-full">{{ $title }}</header>
+            <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
             @endif
             <input id="{{ $id }}" type="radio"
                 {{ $attributes->except([
@@ -93,14 +48,15 @@ class Radio extends Component
                     ])
                     ->class([
                         'radio',
-                        'radio-primary'   => $color == 'primary',
-                        'radio-secondary' => $color === 'secondary',
-                        'radio-accent'    => $color === 'accent',
-                        'radio-info'      => $color === 'info',
-                        'radio-success'   => $color === 'success',
-                        'radio-warning'   => $color === 'warning',
-                        'radio-error'     => $color === 'error',
-                        'order-last'         => $must_prepend,
+                        'radio-neutral'   => ($type ?? $color) == 'neutral',
+                        'radio-primary'   => ($type ?? $color) == 'primary',
+                        'radio-secondary' => ($type ?? $color) === 'secondary',
+                        'radio-accent'    => ($type ?? $color) === 'accent',
+                        'radio-info'      => ($type ?? $color) === 'info',
+                        'radio-success'   => ($type ?? $color) === 'success',
+                        'radio-warning'   => ($type ?? $color) === 'warning',
+                        'radio-error'     => ($type ?? $color) === 'error',
+                        'order-last'      => $must_prepend,
                     ])
                     ->merge()
                 }}
@@ -123,13 +79,14 @@ class Radio extends Component
                 {{ $attributes
                     ->class([
                         'radio',
-                        'radio-primary'   => $color == 'primary',
-                        'radio-secondary' => $color === 'secondary',
-                        'radio-accent'    => $color === 'accent',
-                        'radio-info'      => $color === 'info',
-                        'radio-success'   => $color === 'success',
-                        'radio-warning'   => $color === 'warning',
-                        'radio-error'     => $color === 'error',
+                        'radio-neutral'   => ($type ?? $color) == 'neutral',
+                        'radio-primary'   => ($type ?? $color) == 'primary',
+                        'radio-secondary' => ($type ?? $color) === 'secondary',
+                        'radio-accent'    => ($type ?? $color) === 'accent',
+                        'radio-info'      => ($type ?? $color) === 'info',
+                        'radio-success'   => ($type ?? $color) === 'success',
+                        'radio-warning'   => ($type ?? $color) === 'warning',
+                        'radio-error'     => ($type ?? $color) === 'error', 
                     ])
                     ->merge()
                 }}

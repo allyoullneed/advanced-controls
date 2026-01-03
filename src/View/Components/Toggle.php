@@ -9,71 +9,29 @@ class Toggle extends Component
 {
     public function __construct(
         public ?string $id = null,
-        public mixed   $title = null,
-        public mixed   $label = null,
-        public ?string $color  = null,
+        public mixed   $title        = null,
+        public mixed   $label        = null,
+        public mixed   $labelBefore  = null,
+        public mixed   $labelChecked = null,
+        public ?string $color        = null,
     ) {
         if ($id)
             $this->id = $id;
         else
             $this->id = 'toggle-' . uniqid();
     }
-
-
-    public function prepend(&$attributes, &$__laravel_slots): bool {
-        return $attributes->has('label-before') || isset($__laravel_slots['label-before'])
-               || $attributes->has('label:before') || isset($__laravel_slots['label:before']);
-    }
-
     
     public function render(): View|Closure|string
     {
         return <<<'HTML'
         @php
-            $must_prepend = $prepend($attributes, $__laravel_slots);
-            $labelChecked = null;
-        @endphp
-        @if ($label && $must_prepend)
-            @php
+            $must_prepend = $labelBefore !== null;
+            if ($label && $must_prepend)
                 throw new Exception('Cannot declare a label both before and after the toggle');
-            @endphp
-        @endif
-        @if (!isset($label))
-            @if ($attributes->has('label:before'))
-                @php
-                    $label = $attributes->get('label:before');
-                @endphp
-            @elseif (isset($__laravel_slots['label:before']))
-                @php
-                    $label = $__laravel_slots['label:before'];
-                @endphp
-            @elseif ($attributes->has('label-before'))
-                @php
-                    $label = $attributes->get('label-before');
-                @endphp
-            @elseif (isset($__laravel_slots['label-before']))
-                @php
-                    $label = $__laravel_slots['label-before'];
-                @endphp
-            @endif
-        @endif
-        @if ($attributes->has('label:checked'))
-            @php
-                $labelChecked = $attributes->get('label:checked');
-            @endphp
-        @elseif (isset($__laravel_slots['label:checked']))
-            @php
-                $labelChecked = $__laravel_slots['label:checked'];
-            @endphp
-        @elseif ($attributes->has('label-checked'))
-            @php
-                $labelChecked = $attributes->get('label-checked');
-            @endphp
-        @elseif (isset($__laravel_slots['label-checked']))
-            @php
-                $labelChecked = $__laravel_slots['label-checked'];
-            @endphp
-        @endif
+            
+            if (!isset($label)) 
+                $label = $labelBefore;
+        @endphp
         @if ($label)
         <div {{ $attributes->class([
                 'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
@@ -90,6 +48,7 @@ class Toggle extends Component
                     ])
                     ->class([
                         'toggle switch',
+                        'toggle-neutral switch-neutral'     => ($type ?? $color) == 'neutral',
                         'toggle-primary switch-primary'     => ($type ?? $color) == 'primary',
                         'toggle-secondary switch-secondary' => ($type ?? $color) === 'secondary',
                         'toggle-accent switch-accent'       => ($type ?? $color) === 'accent',
@@ -120,6 +79,7 @@ class Toggle extends Component
                 {{ $attributes
                     ->class([
                         'toggle switch',
+                        'toggle-neutral switch-neutral'     => ($type ?? $color) == 'neutral',
                         'toggle-primary switch-primary'     => $color == 'primary',
                         'toggle-secondary switch-secondary' => $color === 'secondary',
                         'toggle-accent switch-accent'       => $color === 'accent',

@@ -7,12 +7,14 @@ use Illuminate\View\Component;
 
 class Dropdown extends Component
 {
+    public  string $id;
+    public  bool   $hover;
+    public ?string $anchor;
+
     public function __construct(
-        public ?string $id = null,
-        public ?bool   $hover = null,
-        public ?string $align = null,
-        public ?string $direction = null,
-        public ?string $anchor = null
+        ?string $id = null,
+        ?bool $hover = null,
+        ?string $anchor = null
     ) {
         if ($id)
             $this->id = $id;
@@ -31,17 +33,10 @@ class Dropdown extends Component
                     'popovertarget' => $anchor ? 'popover-' . $anchor : null
                 ])->except('class') }}
                 {{ $attributes->except('class')->class([
-                    'dropdown [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
-                    'dropdown-hover'                    => $hover,
+                    'dropdown [&>.dropdown-content]:absolute [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
+                    'dropdown-hover' => $hover,
                     'hover:[&>.dropdown-content]:block' => $hover,
-                    'dropdown-start'                    => $align === 'start',
-                    'dropdown-center'                   => $align === 'center',
-                    'dropdown-end'                      => $align === 'end',
-                    'dropdown-top'                      => $direction === 'top',
-                    'dropdown-bottom'                   => $direction === 'bottom',
-                    'dropdown-left'                     => $direction === 'left',
-                    'dropdown-right'                    => $direction === 'right',
-                    'contents'                          => $anchor
+                    'contents' => $anchor
                 ]) }}
             >
             <div

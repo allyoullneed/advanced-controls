@@ -15,13 +15,13 @@ class Skeleton extends Component
         @if ($slot->isEmpty())
             <div 
                 {{ $attributes->class([
-                    'skeleton'
+                    'skeleton skeleton-animated'
                 ])->merge() }}
             ></div>
         @else
             <span 
                 {{ $attributes->class([
-                    'skeleton skeleton-text'
+                    'skeleton skeleton-animated skeleton-text'
                 ])->merge() }}
             >
                 {{ $slot }}

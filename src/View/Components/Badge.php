@@ -21,7 +21,8 @@ class Badge extends Component
         return <<<'HTML'
         <div
             {{ $attributes->class([
-                'badge',
+                'badge select-none cursor-default',
+                'badge-neutral'   => ($type ?? $color) === 'neutral',
                 'badge-primary'   => ($type ?? $color) === 'primary',
                 'badge-secondary' => ($type ?? $color) === 'secondary',
                 'badge-accent'    => ($type ?? $color) === 'accent',

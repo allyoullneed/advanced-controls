@@ -8,26 +8,49 @@ use Illuminate\View\Component;
 class Card extends Component
 {
     public function __construct(
-        public  mixed  $figure = null
+        public mixed $figure      = null,
+        public mixed  $title      = null,
+        public mixed  $description    = null,
+        public mixed  $actions    = null,
+        public bool   $horizontal = false,
+        public bool   $separators = false
     ) {
     }
 
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div class="card bg-base-100 w-96 shadow-sm">
-        @if ($figure)
-        <figure>
-            {{ $figure }}
-        </figure>
-        @endif
-        <div class="card-body">
-            <h2 class="card-title">Card Title</h2>
-            <p>{{ $slot }}</p>
-            <div class="card-actions justify-end">
-            <button class="btn btn-primary">Buy Now</button>
+        <div {{
+            $attributes->class([
+                'card bg-base-100 shadow-xl',
+                'card-side' => $horizontal
+            ])->merge()
+        }}> 
+            @if ($figure)
+            <figure {{
+                $figure->attributes->class([
+                ])->merge()
+            }}>
+                {{ $figure }}
+            </figure>
+            @endif
+            <div class="card-body">
+                @if ($title)
+                    <h2 class="card-title">{{ $title }}</h2>
+                    @if ($separators)
+                        <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
+                    @endif
+                @endif
+                <p>{{ $description ?? $slot }}</p>
+                @if ($actions)
+                    @if ($separators)
+                        <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
+                    @endif
+                    <div class="card-actions justify-end">
+                        {{ $actions }}
+                    </div>
+                @endif
             </div>
-        </div>
         </div>
         HTML;
     }

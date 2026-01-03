@@ -23,8 +23,6 @@ class Tabs extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @php
-        @endphp
         <div 
             {{ $attributes->class([
                 'tabs *:p-2 md:*:p-6 flex',  
