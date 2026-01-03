@@ -13,6 +13,7 @@ class Button extends Component
         public ?string $size    = null,
         public ?string $color   = null,
         public ?string $icon   = null,
+        public ?string $trailIcon   = null,
     ) {
     }
 
@@ -44,12 +45,21 @@ class Button extends Component
         >
             <span class="not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner"></span>
             
-            @if($icon)
-                <span class="block" @if($spinner) wire:loading.class="hidden" wire:target="{{ $spinnerTarget() }}" @endif>
+            @if(gettype($icon) === 'string')
+                <span  class="h-lh aspect-square">
                     <x-icon :name="$icon" />
                 </span>
+            @elseif ($icon)
+                {{ $icon }}
             @endif
             {{ $label ?? $slot }}
+            @if(gettype($trailIcon) === 'string')
+                <span  class="h-lh aspect-square">
+                    <x-icon :name="$trailIcon" />
+                </span>
+            @elseif ($trailIcon)
+                {{ $trailIcon }}
+            @endif
         </button>
         HTML;
     }
