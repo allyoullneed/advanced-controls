@@ -8,12 +8,12 @@ use Illuminate\View\Component;
 class Card extends Component
 {
     public function __construct(
-        public mixed $figure      = null,
-        public mixed  $title      = null,
-        public mixed  $description    = null,
-        public mixed  $actions    = null,
-        public bool   $horizontal = false,
-        public bool   $separators = false
+        public mixed  $figure      = null,
+        public mixed  $title       = null,
+        public mixed  $description = null,
+        public mixed  $actions     = null,
+        public bool   $horizontal  = false,
+        public bool   $separators  = false
     ) {
     }
 
@@ -36,12 +36,25 @@ class Card extends Component
             @endif
             <div class="card-body">
                 @if ($title)
-                    <h2 class="card-title">{{ $title }}</h2>
+                    @if (gettype($title) === 'string')
+                        <h2>{{ $title }}</h2>
+                    @else
+                        <h2 {{ $title->attribute->class(["card-title"])->merge() }}>{{ $title }}</h2>
+                    @endif
                     @if ($separators)
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
                     @endif
                 @endif
-                <p>{{ $description ?? $slot }}</p>
+                @isset($description)
+                    <p>{{ $description }}</p>
+                @endisset
+                @if (gettype($slot) === 'string')
+                    <p>{{ $description ?? $slot }}</p>
+                @else
+                    <div {{ $slot->attributes }}>
+                        {{ $slot }}
+                    </div>
+                @endif
                 @if ($actions)
                     @if ($separators)
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
