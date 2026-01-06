@@ -39,7 +39,7 @@ class Card extends Component
                     @if (gettype($title) === 'string')
                         <h2>{{ $title }}</h2>
                     @else
-                        <h2 {{ $title->attribute->class(["card-title"])->merge() }}>{{ $title }}</h2>
+                        <h2 {{ $title->attributes->class(["card-title"])->merge() }}>{{ $title }}</h2>
                     @endif
                     @if ($separators)
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
