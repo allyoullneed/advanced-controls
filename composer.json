@@ -3,7 +3,6 @@
     "description": "UI components for Statamic, powered by Livewire 4",
     "require": {
         "blade-ui-kit/blade-icons": "^1.8",
-        "livewire/livewire": "^4",
         "illuminate/support": "^12"
     },
     "require-dev": {

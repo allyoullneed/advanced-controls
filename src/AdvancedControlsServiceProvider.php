@@ -4,7 +4,6 @@ namespace AllYouNeed\AdvancedControls;
  
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
 
 use AllYouNeed\AdvancedControls\View\Components\Alert;
 use AllYouNeed\AdvancedControls\View\Components\Avatar;
