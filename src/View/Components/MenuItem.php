@@ -47,7 +47,7 @@ class MenuItem extends Component
                         {{ $slot }}
                         </details>
                 @else
-                    <a
+                    <a class="min-w-max"
                         href="{{ $href }}"
                         {{ $attributes->class([
                                 'select-none',
@@ -64,7 +64,7 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                <a href="{{ $href }}" class="min-w-max" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
@@ -73,7 +73,7 @@ class MenuItem extends Component
                     {{ $label }}
                 </a>
             @else
-                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                <a href="{{ $href }}" class="min-w-max" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
