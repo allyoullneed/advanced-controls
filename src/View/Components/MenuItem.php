@@ -40,7 +40,7 @@ class MenuItem extends Component
                         </details>
                 @else
                     <a
-                        :href="$href"
+                        href="{{ $href }}"
                         {{ $attributes->class([
                                 'select-none',
                             'menu-title' => $title
@@ -49,9 +49,9 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a :href="$href" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
+                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
             @else
-                <a :href="$href" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
+                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
             @endif
             </li>
         @endif
