@@ -7,16 +7,11 @@ use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
-    public ?string $label;
-    public bool $collapsible;
-    public bool $title;
-    
-
-
     public function __construct(
-        ?string $label = null,
-        ?bool $collapsible = false,
-        ?bool $title = false
+        public ?string $label = null,
+        public ?string $href  = null,
+        public bool $collapsible = false,
+        public bool $title = false
     ) {
         $this->label       = $label;
         $this->collapsible = $collapsible;
@@ -28,7 +23,7 @@ class MenuItem extends Component
         return <<<'HTML'
         @if ($label || !$slot->isEmpty())
         <li 
-            {{ $attributes->except(['href', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
+            {{ $attributes->except(['wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
             >
             @if ($label && !$slot->isEmpty())
                 @if ($collapsible)
@@ -45,6 +40,7 @@ class MenuItem extends Component
                         </details>
                 @else
                     <a
+                        :href="$href"
                         {{ $attributes->class([
                                 'select-none',
                             'menu-title' => $title
@@ -53,9 +49,9 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
+                <a :href="$href" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
             @else
-                <a class="Coinx {{ $label }}" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
+                <a :href="$href" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
             @endif
             </li>
         @endif
