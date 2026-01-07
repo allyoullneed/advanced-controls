@@ -10,13 +10,9 @@ class MenuItem extends Component
     public function __construct(
         public ?string $label = null,
         public mixed   $icon  = null,
-        public ?string $href  = null,
         public bool $collapsible = false,
         public bool $title = false
     ) {
-        $this->label       = $label;
-        $this->collapsible = $collapsible;
-        $this->title       = $title;
     }
 
     public function render(): View|Closure|string
@@ -24,7 +20,7 @@ class MenuItem extends Component
         return <<<'HTML'
         @if ($label || !$slot->isEmpty())
         <li 
-            {{ $attributes->except(['wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
+            {{ $attributes->except(['href', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
             >
             @if ($label && !$slot->isEmpty())
                 @if ($collapsible)
@@ -48,11 +44,10 @@ class MenuItem extends Component
                         </details>
                 @else
                     <a class="min-w-max"
-                        href="{{ $href }}"
-                        {{ $attributes->class([
-                                'select-none',
+                        {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->class([
+                            'select-none',
                             'menu-title' => $title
-                        ]) }}
+                        ])->merge() }}
                     >
                         @if (gettype($icon) === 'string')
                             <x-icon class="h-lh" :name="$icon"/>
@@ -64,7 +59,7 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a href="{{ $href }}" class="min-w-max" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                <a class="min-w-max" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
@@ -73,7 +68,7 @@ class MenuItem extends Component
                     {{ $label }}
                 </a>
             @else
-                <a href="{{ $href }}" class="min-w-max" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                <a class="min-w-max" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
