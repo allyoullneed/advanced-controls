@@ -8,12 +8,13 @@ use Illuminate\View\Component;
 class Button extends Component
 {
     public function __construct(
-        public ?string $label   = null,
-        public ?string $variant = null,
-        public ?string $size    = null,
-        public ?string $color   = null,
-        public ?string $icon   = null,
-        public ?string $trailIcon   = null,
+        public ?string $label      = null,
+        public ?string $variant    = null,
+        public ?string $size       = null,
+        public ?string $color      = null,
+        public ?string $icon       = null,
+        public ?string $trailIcon  = null,
+        public bool    $spinnerEnd = false,
     ) {
     }
 
@@ -43,7 +44,10 @@ class Button extends Component
                 'btn-xs'             => $size === 'xs'
             ])->merge() }}
         >
-            <span class="not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner"></span>
+            <span @class([
+                'not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner',
+                'order-last' => $spinnerEnd
+                ])></span>
             
             @if(gettype($icon) === 'string')
                 <span  class="h-lh aspect-square">

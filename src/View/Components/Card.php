@@ -10,7 +10,6 @@ class Card extends Component
     public function __construct(
         public mixed   $figure      = null,
         public mixed   $title       = null,
-        public mixed   $description = null,
         public mixed   $actions     = null,
         public bool    $horizontal  = false,
         public bool    $separators  = false,
@@ -61,16 +60,11 @@ class Card extends Component
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
                     @endif
                 @endif
-                @isset($description)
-                    <p>{{ $description }}</p>
-                @endisset
-                @if (gettype($slot) === 'string')
-                    <p>{{ $description ?? $slot }}</p>
-                @else
-                    <div {{ $slot->attributes }}>
-                        {{ $slot }}
-                    </div>
-                @endif
+                
+                <div {{ $slot->attributes->class(['grow-1'])->merge() }}>
+                    {{ $slot }}
+                </div>
+                    
                 @if ($actions)
                     @if ($separators)
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
