@@ -9,6 +9,7 @@ class MenuItem extends Component
 {
     public function __construct(
         public ?string $label = null,
+        public mixed   $icon  = null,
         public ?string $href  = null,
         public bool $collapsible = false,
         public bool $title = false
@@ -35,7 +36,14 @@ class MenuItem extends Component
                                 'select-none',
                                 'menu-title' => $title
                                 ])->merge()->except(['open', 'title']) }}
-                        >{{ $label }}</summary>
+                        >
+                            @if (gettype($icon) === 'string')
+                                <x-icon class="h-lh" :name="$icon"/>
+                            @else
+                                {{ $icon }}
+                            @endif
+                            {{ $label }}
+                        </summary>
                         {{ $slot }}
                         </details>
                 @else
@@ -45,13 +53,34 @@ class MenuItem extends Component
                                 'select-none',
                             'menu-title' => $title
                         ]) }}
-                    >{{ $label }}</a>
+                    >
+                        @if (gettype($icon) === 'string')
+                            <x-icon class="h-lh" :name="$icon"/>
+                        @else
+                            {{ $icon }}
+                        @endif
+                        {{ $label }}
+                    </a>
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>{{ $label }}</a>
+                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                    @if (gettype($icon) === 'string')
+                        <x-icon class="h-lh" :name="$icon"/>
+                    @else
+                        {{ $icon }}
+                    @endif
+                    {{ $label }}
+                </a>
             @else
-                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>{{ $label ||   $slot->isEmpty() }}{{ $slot }}</a>
+                <a href="{{ $href }}" {{ $attributes->only((['wire:navigate', 'wire:navigate.hover'])) }}>
+                    @if (gettype($icon) === 'string')
+                        <x-icon class="h-lh" :name="$icon"/>
+                    @else
+                        {{ $icon }}
+                    @endif
+                    {{ $slot }}
+                </a>
             @endif
             </li>
         @endif
