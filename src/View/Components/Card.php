@@ -23,22 +23,21 @@ class Card extends Component
         return <<<'HTML'
         <div {{
             $attributes->class([
-                'card border-1',
+                'card',
                 'card-side' => $horizontal,
-                'border-base-300'  => $color === null,
-                'border-neutral'   => $color === 'neutral',
-                'border-primary'   => $color === 'primary',
-                'border-secondary' => $color === 'secondary',
-                'border-accent'    => $color === 'accent',
-                'border-info'      => $color === 'info',
-                'border-success'   => $color === 'success',
-                'border-warning'   => $color === 'warning',
-                'border-error'     => $color === 'error',
-                'card-xs'          => $size === "xs",
-                'card-sm'          => $size === "sm",
-                'card-md'          => $size === "md",
-                'card-lg'          => $size === "lg",
-                'card-xl'          => $size === "xl",
+                'border-1 border-neutral'   => $color === 'neutral',
+                'border-1 border-primary'   => $color === 'primary',
+                'border-1 border-secondary' => $color === 'secondary',
+                'border-1 border-accent'    => $color === 'accent',
+                'border-1 border-info'      => $color === 'info',
+                'border-1 border-success'   => $color === 'success',
+                'border-1 border-warning'   => $color === 'warning',
+                'border-1 border-error'     => $color === 'error',
+                'card-xs'                   => $size === "xs",
+                'card-sm'                   => $size === "sm",
+                'card-md'                   => $size === "md",
+                'card-lg'                   => $size === "lg",
+                'card-xl'                   => $size === "xl",
             ])->merge()
         }}> 
             @if ($figure)
