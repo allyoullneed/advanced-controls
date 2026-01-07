@@ -49,7 +49,7 @@ class Card extends Component
                 {{ $figure }}
             </figure>
             @endif
-            <div class="card-body">
+            <div class="card-body ayn-child:[:where(.card-actions)]:justify-end">
                 @if ($title)
                     @if (gettype($title) === 'string')
                         <h2>{{ $title }}</h2>
@@ -69,8 +69,8 @@ class Card extends Component
                     @if ($separators)
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
                     @endif
-                    <div @class([
-                        'card-actions justify-end',
+                    <div {{ $actions->attributes->class([
+                        'card-actions',
                         'ayn-desc:[:where(button.btn)]:btn-neutral ayn-desc:[:where(button.btn)]:text-neutral-content'     => $color === 'neutral',
                         'ayn-desc:[:where(button.btn)]:btn-primary ayn-desc:[:where(button.btn)]:text-primary-content'     => $color === 'primary',
                         'ayn-desc:[:where(button.btn)]:btn-secondary ayn-desc:[:where(button.btn)]:text-secondary-content' => $color === 'secondary',
@@ -79,7 +79,7 @@ class Card extends Component
                         'ayn-desc:[:where(button.btn)]:btn-success ayn-desc:[:where(button.btn)]:text-success-content'     => $color === 'success',
                         'ayn-desc:[:where(button.btn)]:btn-warning ayn-desc:[:where(button.btn)]:text-warning-content'     => $color === 'warning',
                         'ayn-desc:[:where(button.btn)]:btn-error ayn-desc:[:where(button.btn)]:text-error-content'         => $color === 'error',
-                    ])>
+                    ])->merge() }}>
                         {{ $actions }}
                     </div>
                 @endif
