@@ -8,11 +8,12 @@ use Illuminate\View\Component;
 class Badge extends Component
 {
     public function __construct(
-        public ?string $label = null,
-        public ?string $color = null,
-        public ?string $type  = null,
+        public ?string $label   = null,
+        public mixed   $icon    = null,
+        public ?string $color   = null,
+        public ?string $type    = null,
         public ?string $variant = null,
-        public ?string $size  = null,
+        public ?string $size    = null,
     ) {
     }
 
@@ -42,8 +43,8 @@ class Badge extends Component
         >
             @if (isset($icon) && $icon !== "")
                 @if (gettype($icon) === 'string')
-                    <x-icon :name="$icon" class="mb-4 shrink-0 size-6"/>
-                @else
+                    <x-icon :name="$icon" class="h-lh"/>
+                @elseif ($icon)
                     <div
                         {{ $icon->attributes->merge(['class' => 'mb-4']) }}
                     >
