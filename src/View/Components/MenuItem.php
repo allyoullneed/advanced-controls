@@ -20,7 +20,7 @@ class MenuItem extends Component
         return <<<'HTML'
         @if ($label || !$slot->isEmpty())
         <li 
-            {{ $attributes->except(['href', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
+            {{ $attributes->except(['href', 'target', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
             >
             @if ($label && !$slot->isEmpty())
                 @if ($collapsible)
@@ -44,7 +44,7 @@ class MenuItem extends Component
                         </details>
                 @else
                     <a class="min-w-max"
-                        {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->class([
+                        {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->class([
                             'select-none',
                             'menu-title' => $title
                         ])->merge() }}
@@ -59,7 +59,7 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a class="min-w-max" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
+                <a class="min-w-max" {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
@@ -68,7 +68,7 @@ class MenuItem extends Component
                     {{ $label }}
                 </a>
             @else
-                <a class="min-w-max" {{ $attributes->only((['href', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
+                <a class="min-w-max" {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else
