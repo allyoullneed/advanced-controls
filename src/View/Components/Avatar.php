@@ -18,8 +18,14 @@ class Avatar extends Component
         return <<<'HTML'
         <span
             {{ $attributes->class([
+                'w-max flex gap-2 items-center'
             ])->merge() }}
         >
+            @if (gettype($picture) === 'string')
+                <img class="h-lh aspect-square" :src="$picture"/>
+            @else
+                {{ $picture }}
+            @endif
             {{ $name ?? $slot }}
         </span>
         HTML;
