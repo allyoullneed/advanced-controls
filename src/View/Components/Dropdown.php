@@ -13,7 +13,6 @@ class Dropdown extends Component
         public ?string $align     = null,
         public ?string $direction = null,
         public ?string $anchor    = null,
-        public ?string $zClass    = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -66,7 +65,6 @@ class Dropdown extends Component
             @endif
             <div
                 {{ $attributes->class([
-                    $zClass,
                     'dropdown' => $anchor !== null,
                     'dropdown-content' => $anchor === null
                 ])->merge([
