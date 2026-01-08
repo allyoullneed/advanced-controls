@@ -20,7 +20,7 @@ class MenuItem extends Component
         return <<<'HTML'
         @if ($label || !$slot->isEmpty())
         <li 
-            {{ $attributes->except(['href', 'target', 'wire:navigate', 'wire:navigate.hover', 'open', 'title'])->merge() }}
+            {{ $attributes->except(['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore', 'open'])->merge() }}
             >
             @if ($label && !$slot->isEmpty())
                 @if ($collapsible)
@@ -31,7 +31,7 @@ class MenuItem extends Component
                             {{ $attributes->class([
                                 'select-none',
                                 'menu-title' => $title
-                                ])->merge()->except(['open', 'title']) }}
+                                ])->merge()->except(['open']) }}
                         >
                             @if (gettype($icon) === 'string')
                                 <x-icon class="h-lh" :name="$icon"/>
@@ -43,9 +43,9 @@ class MenuItem extends Component
                         {{ $slot }}
                         </details>
                 @else
-                    <a class="min-w-max"
-                        {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->class([
-                            'select-none',
+                    <a
+                        {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
+                            'min-w-max select-none',
                             'menu-title' => $title
                         ])->merge() }}
                     >
@@ -59,16 +59,22 @@ class MenuItem extends Component
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a class="min-w-max" {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
+                <a {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
+                    'min-w-max select-none',
+                    'menu-title' => $title
+                ])->merge() }}>
                     @if (gettype($icon) === 'string')
-                        <x-icon class="h-lh" :name="$icon"/>
+                        <x-icon class="h-lh" :name="$icon"/>    
                     @else
                         {{ $icon }}
                     @endif
-                    {{ $label }}
+                    {{ $title }}{{ $label }}
                 </a>
             @else
-                <a class="min-w-max" {{ $attributes->only((['href', 'target', 'wire:navigate', 'wire:navigate.hover']))->merge() }}>
+                <a {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
+                    'min-w-max select-none',
+                    'menu-title' => $title
+                ])->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
                     @else

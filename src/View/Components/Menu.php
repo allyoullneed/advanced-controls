@@ -24,7 +24,7 @@ class Menu extends Component
         return <<<'HTML'
             <ul
                 {{ $attributes->class([
-                    'menu  [&_ul]:min-w-[calc(100%-.5rem)]'
+                    'menu'
                 ])->merge() }}
             >{{ $slot }}
                 </ul>
