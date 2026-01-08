@@ -8,12 +8,12 @@ use Illuminate\View\Component;
 class Dropdown extends Component
 {
     public function __construct(
-        public ?string $id = null,
-        public ?bool   $hover = null,
-        public ?string $align = null,
+        public ?string $id        = null,
+        public ?bool   $hover     = null,
+        public ?string $align     = null,
         public ?string $direction = null,
-        public ?string $anchor = null,
-        public string $zIndex = 'z-999',
+        public ?string $anchor    = null,
+        public ?string $zClass    = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -66,7 +66,7 @@ class Dropdown extends Component
             @endif
             <div
                 {{ $attributes->class([
-                    $zIndex,
+                    $zClass,
                     'dropdown' => $anchor !== null,
                     'dropdown-content' => $anchor === null
                 ])->merge([
