@@ -14,6 +14,7 @@ class Button extends Component
         public ?string $color      = null,
         public ?string $icon       = null,
         public ?string $trailIcon  = null,
+        public bool    $noSpinner  = false,
         public bool    $spinnerEnd = false,
     ) {
     }
@@ -44,13 +45,19 @@ class Button extends Component
                 'btn-xs'             => $size === 'xs'
             ])->merge() }}
         >
-            <span @class([
-                'not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner',
-                'order-last' => $spinnerEnd
-                ])></span>
+            @if (!$noSpinner)
+                <span @class([
+                    'not-in-data-loading:hidden in-data-loading:loading in-data-loading:loading-spinner',
+                    'order-last' => $spinnerEnd
+                    ])></span>
+            @endif
             
             @if(gettype($icon) === 'string')
-                <span  class="h-lh aspect-square">
+                <span @class([
+                    'h-lh aspect-square',
+                    'in-data-loading:hidden' => !$noSpinner && !$spinnerEnd
+                ])
+                >
                     <x-icon :name="$icon" />
                 </span>
             @elseif ($icon)
@@ -58,7 +65,11 @@ class Button extends Component
             @endif
             {{ $label ?? $slot }}
             @if(gettype($trailIcon) === 'string')
-                <span  class="h-lh aspect-square">
+                <span @class([
+                    'h-lh aspect-square',
+                    'in-data-loading:hidden' => !$noSpinner && $spinnerEnd
+                ])
+                >
                     <x-icon :name="$trailIcon" />
                 </span>
             @elseif ($trailIcon)

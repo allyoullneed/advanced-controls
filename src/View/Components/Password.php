@@ -15,7 +15,7 @@ class Password extends Component
         public mixed   $helper      = null,
         public mixed   $icon        = null,
         public mixed   $trailIcon   = null,
-        public mixed   $eye     = null,
+        public mixed   $eye         = null,
         public bool    $eyeFocus    = false,
         public ?string $color       = null,
         public bool    $ghost       = false,
@@ -38,7 +38,7 @@ class Password extends Component
             {{ $attributes }}
         >
             @if ($eye)
-                @if (gettype($eye) === 'boolean')
+                @if (gettype($eye) === 'boolean' || $eye === 'eye')
                     <x-button variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last"
                         :tabIndex="!$eyeFocus ? -1 : null"
