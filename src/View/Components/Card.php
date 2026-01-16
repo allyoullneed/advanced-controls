@@ -48,7 +48,7 @@ class Card extends Component
                 {{ $figure }}
             </figure>
             @endif
-            <div class="card-body ayn-child:[:where(.card-actions)]:justify-end">
+            <div class="card-body overflow-auto ayn-child:[:where(.card-actions)]:justify-end">
                 @if ($title)
                     @if (gettype($title) === 'string')
                         <h2>{{ $title }}</h2>

@@ -8,17 +8,19 @@ use Illuminate\View\Component;
 class Password extends Component
 {
     public function __construct(
-        public mixed   $title       = null,
-        public mixed   $label       = null,
-        public ?string $placeholder = '',
-        public mixed   $error       = null,
-        public mixed   $helper      = null,
-        public mixed   $icon        = null,
-        public mixed   $trailIcon   = null,
-        public mixed   $eye         = null,
-        public bool    $eyeFocus    = false,
-        public ?string $color       = null,
-        public bool    $ghost       = false,
+        public mixed   $title          = null,
+        public mixed   $label          = null,
+        public ?string $placeholder    = '',
+        public ?string $pattern        = null,
+        public bool    $defaultPattern = false,
+        public mixed   $error          = null,
+        public mixed   $helper         = null,
+        public mixed   $icon           = null,
+        public mixed   $trailIcon      = null,
+        public mixed   $eye            = null,
+        public bool    $eyeFocus       = false,
+        public ?string $color          = null,
+        public bool    $ghost          = false,
     ) {
     }
 
@@ -29,6 +31,7 @@ class Password extends Component
             :title="$title"
             :label="$label"
             :placeholder="$placeholder"
+            :pattern="$pattern ? $pattern : ($defaultPattern ? '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$' : null)"
             :error="$error"
             :helper="$helper"
             :color="$color"
@@ -36,10 +39,10 @@ class Password extends Component
             :icon="$icon"
             :trailIcon="$trailIcon"
             {{ $attributes }}
-        >
+        >+
             @if ($eye)
                 @if (gettype($eye) === 'boolean' || $eye === 'eye')
-                    <x-button variant="ghost" size="sm"
+                    <x-button no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="
@@ -52,7 +55,7 @@ class Password extends Component
                         ">
                         <x-icon name="heroicon-o-eye"/>
                     </x-button>
-                    <x-button variant="ghost" size="sm"
+                    <x-button no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last hidden"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="

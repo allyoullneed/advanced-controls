@@ -12,8 +12,8 @@ class Input extends Component
         public mixed   $label       = null,
         public mixed   $append      = null,
         public ?string $placeholder = null,
-        public mixed   $helper      = null,
         public ?string $error       = null,
+        public mixed   $helper      = null,
         public mixed   $icon        = null,
         public mixed   $trailIcon   = null,
         public string  $type        = 'text',
@@ -26,16 +26,10 @@ class Input extends Component
     ) {
     }
 
-    public function errorFieldName(): ?string
-    {
-        return $this->attributes->whereStartsWith('wire:model')->first() ?? $this->attributes['name'];
-    }
-
-
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])->class([
+        <div {{ $attributes->except(['type', 'value', 'required', 'accept'])->class([
             'flex flex-col w-full'
             ])->merge()
         }}>
@@ -43,14 +37,10 @@ class Input extends Component
         <header class="font-base text-lg">{{ $title }}</header>
         @endif
         <label
-            {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])
+            {{ $attributes->except(['type', 'value', 'required', 'accept'])
                 ->class([
                     'flex gap-2 items-center w-full whitespace-nowrap',
-                    'cursor-pointer'                                      => $type === 'color',
-                    'ps-0'                                                => $type  === 'color' && !$label && !$icon,
-                    'pe-0'                                                => $type  === 'color' && !$append && !$trailIcon,
                     'input'                                               => $type  !== 'file',
-                    '!input-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
                     'input-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
                     'input-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
                     'input-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
@@ -82,9 +72,7 @@ class Input extends Component
             @if (gettype($label) === 'string')
                 <div 
                     @class([
-                        'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',
-                        'shrink'  => $type !== 'color', 
-                        'grow'    => $type === 'color',                        
+                        'label-text basis-[max-content] shrink whitespace-nowrap overflow-x-hidden text-ellipsis',
                         'text-xs' => $size === 'xs',
                         'text-sm' => $size === 'sm',
                         'text-lg' => $size === 'lg',
@@ -96,18 +84,15 @@ class Input extends Component
             @endif
 
             <input
-                {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->merge([
+                {{ $attributes->only(['name', 'value', 'required'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,
                         'maxlength' => $maxlength > 0 ? $maxlength : null,
                 ]) }}
                 @class([
-                    'peer',
-                    'basis-1/4 grow'                                                                                                      => $type !== 'color',
-                    'basis-[2lh] shrink'                                                                                                  => $type === 'color',
+                    'peer basis-1/4 grow',
                     'input file-input px-0 border rounded-sm inline-flex items-center'                                                    => $type  === 'file',
-                    '!input-error'                                                                                                        => $type  === 'file' && $errors->has($errorFieldName()),
                     'border-[color-mix(in_oklab,oklch(20%_.0132_233.32)_40%,#0000)]'                                                      => $type  === 'file' && $color !== 'primary' && $color !== 'secondary' && $color !== 'accent' && $color !== 'info' && $color !== 'success' && $color !== 'warning' && $color !== 'error',
                     'input-primary file:rounded-none file:bg-primary file:text-primary-content border-primary outline-primary!'           => $type  === 'file' && $color === 'primary',
                     'input-secondary file:rounded-none file:bg-secondary file:text-secondary-content border-secondary outline-secondary!' => $type  === 'file' && $color === 'secondary',
@@ -136,9 +121,7 @@ class Input extends Component
 
             @if (gettype($label) === 'object')
                 <div {{ $label->attributes->class([
-                    'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis order-first',
-                    'shrink'  => $type !== 'color', 
-                    'grow'    => $type === 'color',               
+                    'label-text basis-[max-content] basis-[max-content] shrink whitespace-nowrap overflow-x-hidden text-ellipsis order-first',                
                     'text-xs' => $size === 'xs',
                     'text-sm' => $size === 'sm',
                     'text-lg' => $size === 'lg',
@@ -151,9 +134,7 @@ class Input extends Component
             @if ($append)
                 <div {{
                     (gettype($append) === 'object' ? $append->attributes : $attributes)->class([
-                    'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',
-                    'shrink'  => $type !== 'color', 
-                    'grow'    => $type === 'color',
+                    'label-text basis-[max-content] basis-[max-content] shrink whitespace-nowrap overflow-x-hidden text-ellipsis',
                     'text-xs' => $size === 'xs',
                     'text-sm' => $size === 'sm',
                     'text-lg' => $size === 'lg',
@@ -201,20 +182,17 @@ class Input extends Component
         </label>
 
         @if (gettype($helper) === 'object')
-            <span {{
-                $helper->attributes->class([
-                    'helper-text text-sm text-gray-500',
-                ])->merge()
-            }}>{{ $helper }}</span>
+        <span {{
+            $helper->attributes->class([
+                'helper-text text-sm text-gray-500',
+            ])->merge()
+        }}>{{ $helper }}</span>
         @elseif ($helper)
-            <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
+        <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
         @endif
-        
-        @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
         @if ($error)
             <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
         @endif
-
         </div>
         HTML;
     }

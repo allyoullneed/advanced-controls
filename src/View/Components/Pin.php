@@ -12,6 +12,7 @@ class Pin extends Component
         ?string $id = null,
         public mixed   $title     = null,
         public mixed   $label     = null,
+        public mixed   $helper    = null,
         public mixed   $icon      = null,
         public ?string $color     = null,
         public mixed   $trailIcon = null,
@@ -30,7 +31,9 @@ class Pin extends Component
     {
         return <<<'HTML'
         <div
-            class="flex flex-col"
+            {{ $attributes->class([
+                'flex flex-col'
+            ])->merge() }}
             x-data="{
                 id: '{{ $id }}',
                 value: '',
@@ -153,6 +156,17 @@ class Pin extends Component
                 @endif
             </div>
             <input {{ $attributes->only(['name']) }}" class="hidden" x-bind:value="value"/>
+
+            @if (gettype($helper) === 'object')
+                <span {{
+                    $helper->attributes->class([
+                        'helper-text text-sm text-gray-500',
+                    ])->merge()
+                }}>{{ $helper }}</span>
+            @elseif ($helper)
+                <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
+            @endif
+
         </div>
         HTML;
     }

@@ -22,7 +22,7 @@ class Badge extends Component
         return <<<'HTML'
         <div
             {{ $attributes->class([
-                'badge select-none cursor-default',
+                'badge select-none cursor-default max-w-full',
                 'badge-neutral'   => ($type ?? $color) === 'neutral',
                 'badge-primary'   => ($type ?? $color) === 'primary',
                 'badge-secondary' => ($type ?? $color) === 'secondary',
@@ -46,21 +46,23 @@ class Badge extends Component
                     <x-icon :name="$icon" class="h-lh"/>
                 @elseif ($icon)
                     <div
-                        {{ $icon->attributes->merge(['class' => 'mb-4']) }}
+                        {{ $icon->attributes->merge() }}
                     >
                     {{ $icon }}
                     </div>
                 @endif
             @elseif ($type === 'success')
-                <x-icon name="heroicon-o-check-circle" class="mb-4 shrink-0 size-6"/>
+                <x-icon name="heroicon-o-check-circle" class="shrink-0 h-lh"/>
             @elseif ($type === 'warning')
-                <x-icon name="heroicon-o-exclamation-triangle" class="mb-4 shrink-0 size-6"/>
+                <x-icon name="heroicon-o-exclamation-triangle" class="shrink-0 h-lh"/>
             @elseif ($type === 'error')
-                <x-icon name="heroicon-o-x-circle" class="mb-4 shrink-0 size-6"/>
+                <x-icon name="heroicon-o-x-circle" class="shrink-0 h-lh"/>
             @elseif (($type === "" || $type === "info") && $icon === null)
-                <x-icon name="heroicon-o-information-circle" class="mb-4 shrink-0 size-6"/>
+                <x-icon name="heroicon-o-information-circle" class="shrink-0 h-lh"/>
             @endif
+            <div class="whitespace-nowrap overflow-hidden text-ellipsis">
             {{ $label ?? $slot }}
+            </div>
         </div>
         HTML;
     }

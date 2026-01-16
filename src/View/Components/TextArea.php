@@ -5,7 +5,7 @@ namespace AllYouNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 
-class Input extends Component
+class TextArea extends Component
 {
     public function __construct(
         public mixed   $title       = null,
@@ -28,7 +28,7 @@ class Input extends Component
 
     public function errorFieldName(): ?string
     {
-        return $this->attributes->whereStartsWith('wire:model')->first() ?? $this->attributes['name'];
+        return $this->attributes->whereStartsWith('wire:model')->first() ?? $this->attributes['name']?? ''  ;
     }
 
 
@@ -49,21 +49,21 @@ class Input extends Component
                     'cursor-pointer'                                      => $type === 'color',
                     'ps-0'                                                => $type  === 'color' && !$label && !$icon,
                     'pe-0'                                                => $type  === 'color' && !$append && !$trailIcon,
-                    'input'                                               => $type  !== 'file',
-                    '!input-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
-                    'input-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
-                    'input-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
-                    'input-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
-                    'input-info border-info outline-info!'                => $type  !== 'file' && $color === 'info',
-                    'input-success border-success outline-success!'       => $type  !== 'file' && $color === 'success',
-                    'input-warning border-warning outline-warning!'       => $type  !== 'file' && $color === 'warning',
-                    'input-error border-error outline-error!'             => $type  !== 'file' && $color === 'error',
-                    'input-xs'                                            => $type  !== 'file' && $size === 'xs',
-                    'input-sm'                                            => $type  !== 'file' && $size === 'sm',
-                    'input-md'                                            => $type  !== 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
-                    'input-lg'                                            => $type  !== 'file' && $size === 'lg',
-                    'input-xl'                                            => $type  !== 'file' && $size === 'xl',
-                    'input-ghost'                                         => $ghost,
+                    'textarea'                                               => $type  !== 'file',
+                    '!textarea-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
+                    'textarea-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
+                    'textarea-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
+                    'textarea-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
+                    'textarea-info border-info outline-info!'                => $type  !== 'file' && $color === 'info',
+                    'textarea-success border-success outline-success!'       => $type  !== 'file' && $color === 'success',
+                    'textarea-warning border-warning outline-warning!'       => $type  !== 'file' && $color === 'warning',
+                    'textarea-error border-error outline-error!'             => $type  !== 'file' && $color === 'error',
+                    'textarea-xs'                                            => $type  !== 'file' && $size === 'xs',
+                    'textarea-sm'                                            => $type  !== 'file' && $size === 'sm',
+                    'textarea-md'                                            => $type  !== 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
+                    'textarea-lg'                                            => $type  !== 'file' && $size === 'lg',
+                    'textarea-xl'                                            => $type  !== 'file' && $size === 'xl',
+                    'textarea-ghost'                                         => $ghost,
                 ])
                 ->merge([   
                 ])
@@ -95,7 +95,7 @@ class Input extends Component
                 </div>
             @endif
 
-            <input
+            <textarea
                 {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
@@ -106,27 +106,28 @@ class Input extends Component
                     'peer',
                     'basis-1/4 grow'                                                                                                      => $type !== 'color',
                     'basis-[2lh] shrink'                                                                                                  => $type === 'color',
-                    'input file-input px-0 border rounded-sm inline-flex items-center'                                                    => $type  === 'file',
-                    '!input-error'                                                                                                        => $type  === 'file' && $errors->has($errorFieldName()),
+                    'textarea file-textarea px-0 border rounded-sm inline-flex items-center'                                                    => $type  === 'file',
+                    '!textarea-error'                                                                                                        => $type  === 'file' && $errors->has($errorFieldName()),
                     'border-[color-mix(in_oklab,oklch(20%_.0132_233.32)_40%,#0000)]'                                                      => $type  === 'file' && $color !== 'primary' && $color !== 'secondary' && $color !== 'accent' && $color !== 'info' && $color !== 'success' && $color !== 'warning' && $color !== 'error',
-                    'input-primary file:rounded-none file:bg-primary file:text-primary-content border-primary outline-primary!'           => $type  === 'file' && $color === 'primary',
-                    'input-secondary file:rounded-none file:bg-secondary file:text-secondary-content border-secondary outline-secondary!' => $type  === 'file' && $color === 'secondary',
-                    'input-accent file:rounded-none file:bg-accent file:text-accent-content border-accent outline-accent!'                => $type  === 'file' && $color === 'accent',
-                    'input-info file:rounded-none file:bg-info file:text-info-content border-info outline-info!'                          => $type  === 'file' && $color === 'info',
-                    'input-success file:rounded-none file:bg-success file:text-success-content border-success outline-success!'           => $type  === 'file' && $color === 'success',
-                    'input-warning file:rounded-none file:bg-warning file:text-warning-content border-warning outline-warning!'           => $type  === 'file' && $color === 'warning',
-                    'input-error file:rounded-none file:bg-error file:text-error-content border-error outline-error!'                     => $type  === 'file' && $color === 'error',
-                    'input-xs'                                                                                                            => $type  === 'file' && $size === 'xs',
-                    'input-sm'                                                                                                            => $type  === 'file' && $size === 'sm',
-                    'input-md'                                                                                                            => $type  === 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
-                    'input-lg'                                                                                                            => $type  === 'file' && $size === 'lg',
-                    'input-xl'                                                                                                            => $type  === 'file' && $size === 'xl',
+                    'textarea-primary file:rounded-none file:bg-primary file:text-primary-content border-primary outline-primary!'           => $type  === 'file' && $color === 'primary',
+                    'textarea-secondary file:rounded-none file:bg-secondary file:text-secondary-content border-secondary outline-secondary!' => $type  === 'file' && $color === 'secondary',
+                    'textarea-accent file:rounded-none file:bg-accent file:text-accent-content border-accent outline-accent!'                => $type  === 'file' && $color === 'accent',
+                    'textarea-info file:rounded-none file:bg-info file:text-info-content border-info outline-info!'                          => $type  === 'file' && $color === 'info',
+                    'textarea-success file:rounded-none file:bg-success file:text-success-content border-success outline-success!'           => $type  === 'file' && $color === 'success',
+                    'textarea-warning file:rounded-none file:bg-warning file:text-warning-content border-warning outline-warning!'           => $type  === 'file' && $color === 'warning',
+                    'textarea-error file:rounded-none file:bg-error file:text-error-content border-error outline-error!'                     => $type  === 'file' && $color === 'error',
+                    'textarea-xs'                                                                                                            => $type  === 'file' && $size === 'xs',
+                    'textarea-sm'                                                                                                            => $type  === 'file' && $size === 'sm',
+                    'textarea-md'                                                                                                            => $type  === 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
+                    'textarea-lg'                                                                                                            => $type  === 'file' && $size === 'lg',
+                    'textarea-xl'                                                                                                            => $type  === 'file' && $size === 'xl',
                 ])
                 @if(($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                     x-init="$nextTick(() => length = $el.value?.length ?? 0)"
-                    x-on:input="length = event.target.value.length"
+                    x-on:textarea="length = event.target.value.length"
                 @endif
-            />
+            ></textarea>
+
 
             @if (gettype($icon) === 'object')  
                 <div {{ $icon->attributes->class(['flex order-first']) }}>

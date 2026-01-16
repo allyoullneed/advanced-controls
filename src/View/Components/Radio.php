@@ -8,7 +8,9 @@ use Illuminate\View\Component;
 class Radio extends Component
 {
     public function __construct(
-        public ?string $id = null,
+        public ?string $id           = null,
+        public ?string $name         = null,
+        public ?string $value        = null,
         public mixed   $title        = null,
         public mixed   $label        = null,
         public mixed   $labelBefore  = null,
@@ -42,10 +44,11 @@ class Radio extends Component
             @if ($title)
             <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
             @endif
-            <input id="{{ $id }}" type="radio"
-                {{ $attributes->except([
-                    'type'
-                    ])
+            <input id="{{ $id }}"
+                type="radio"
+                name="{{ $name }}"
+                value="{{ $value }}"
+                {{ $attributes->except(['type'])
                     ->class([
                         'radio',
                         'radio-neutral'   => ($type ?? $color) == 'neutral',
@@ -61,7 +64,7 @@ class Radio extends Component
                     ->merge()
                 }}
             />
-            <label :for="$id"
+            <label for="{{ $id }}"
                 {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->class([
                     'text-sm dropping-texts relative cursor-pointer select-none',
                 ])->merge() }}
@@ -75,7 +78,10 @@ class Radio extends Component
             </label>
             </div>
         @else
-            <input type="radio"
+            <input id="{{ $id }}"
+                type="radio"
+                name="{{ $name }}"
+                value="{{ $value }}"
                 {{ $attributes
                     ->class([
                         'radio',
