@@ -68,7 +68,7 @@ class RawSelect extends Component
             @elseif ($title)
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
-            <div class="relative w-full flex items-center justify-stretch">
+            <div class="relative w-full h-full flex items-center justify-stretch">
                 <select @class([
                         'select peer w-full',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
