@@ -39,7 +39,7 @@ class Password extends Component
             :icon="$icon"
             :trailIcon="$trailIcon"
             {{ $attributes }}
-        >+
+        >
             @if ($eye)
                 @if (gettype($eye) === 'boolean' || $eye === 'eye')
                     <x-button no-spinner variant="ghost" size="sm"
