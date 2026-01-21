@@ -35,11 +35,12 @@ class Radio extends Component
                 $label = $labelBefore;
         @endphp
         @if ($label)
-        <div {{ $attributes->class([
+        <div 
+            @class([
                 'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
                 'justify-between' => $must_prepend,
                 'justify-start'   => !$must_prepend,
-            ]) }}
+            ])
         >
             @if ($title)
             <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
