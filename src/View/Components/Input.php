@@ -41,7 +41,9 @@ class Input extends Component
             'flex flex-col w-full'
             ])->merge()
         }}>
-        @if ($title)
+        @if (gettype($title) === 'object')
+        <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
+        @elseif ($title)
         <header class="font-base text-lg">{{ $title }}</header>
         @endif
         <label

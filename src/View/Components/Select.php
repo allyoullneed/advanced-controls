@@ -73,11 +73,11 @@ class Select extends Component
                 }
             }"
         > 
-        @if (gettype($title) === 'object')
-        <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
-        @elseif ($title)
-        <header class="font-base text-lg">{{ $title }}</header>
-        @endif
+            @if (gettype($title) === 'object')
+            <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
+            @elseif ($title)
+            <header class="font-base text-lg">{{ $title }}</header>
+            @endif
 
         <x-dropdown class="w-full">
             <x-slot:trigger @class([

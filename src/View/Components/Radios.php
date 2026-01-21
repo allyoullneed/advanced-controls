@@ -30,7 +30,11 @@ class Radios extends Component
             'flex-row gap-y-1' => $inline,
             'flex-col' => !$inline,
         ])->merge() }}>
-            <header class="w-full font-base text-lg">{{ $title }}</header>
+            @if (gettype($title) === 'object')
+            <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
+            @elseif ($title)
+            <header class="font-base text-lg">{{ $title }}</header>
+            @endif
             <input type="hidden"/>
             
             <div @class(['flex gap-1']) @style(['flex-direction: inherit'])>
