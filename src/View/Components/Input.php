@@ -35,7 +35,9 @@ class Input extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])->class([
+        <div {{ $attributes->except([
+                    'type', 'value', 'required', 'accept', 'wire:model'
+                ])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col w-full'
             ])->merge()
         }}>
@@ -43,8 +45,9 @@ class Input extends Component
         <header class="font-base text-lg">{{ $title }}</header>
         @endif
         <label
-            {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])
-                ->class([
+            {{ $attributes->except([
+                    'type', 'value', 'required', 'accept', 'wire:model'
+                ])->whereDoesntStartWith('wire:model')->class([
                     'flex gap-2 items-center w-full whitespace-nowrap',
                     'cursor-pointer'                                      => $type === 'color',
                     'ps-0'                                                => $type  === 'color' && !$label && !$icon,
@@ -96,12 +99,13 @@ class Input extends Component
             @endif
 
             <input
-                {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->merge([
+                {{ $attributes->only(['name', 'value', 'required'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,
                         'maxlength' => $maxlength > 0 ? $maxlength : null,
                 ]) }}
+                {{ $attributes->whereStartsWith('wire:model') }}
                 @class([
                     'peer',
                     'basis-1/4 grow'                                                                                                      => $type !== 'color',
