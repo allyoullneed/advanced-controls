@@ -105,42 +105,49 @@ class Toggle extends Component
                 {{ $slot }}
             </div>
         @else
-            @if ($title)
-                <header class="font-base text-lg col-span-full">{{ $title }}</header>
-            @endif
-            <input type="checkbox"
-                value="{{ $value }}"
-                {{ $attributes->class([
-                        'toggle switch',
-                        'ring-2 ring-offset-2 ring-error'   => $errors->has($errorFieldName()),
-                        'toggle-neutral switch-neutral'     => ($type ?? $color) == 'neutral',
-                        'toggle-primary switch-primary'     => $color == 'primary',
-                        'toggle-secondary switch-secondary' => $color === 'secondary',
-                        'toggle-accent switch-accent'       => $color === 'accent',
-                        'toggle-info switch-info'           => $color === 'info',
-                        'toggle-success switch-success'     => $color === 'success',
-                        'toggle-warning switch-warning'     => $color === 'warning',
-                        'toggle-error switch-error'         => $color === 'error',    
-                    ])->merge([
-                        'checked' => $checked
-                    ])
-                }}
-            />
+            <div {{ $attributes->whereDoesntStartWith('wire:model')->except(['type', 'name', 'value', 'checked'])->class([
+                    'group grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1',
+                    'justify-between' => $must_prepend,
+                    'justify-start'   => !$must_prepend,
+                ]) }}
+            >
+                @if ($title)
+                    <header class="font-base text-lg col-span-full">{{ $title }}</header>
+                @endif
+                <input type="checkbox"
+                    value="{{ $value }}"
+                    {{ $attributes->class([
+                            'toggle switch',
+                            'ring-2 ring-offset-2 ring-error'   => $errors->has($errorFieldName()),
+                            'toggle-neutral switch-neutral'     => ($type ?? $color) == 'neutral',
+                            'toggle-primary switch-primary'     => $color == 'primary',
+                            'toggle-secondary switch-secondary' => $color === 'secondary',
+                            'toggle-accent switch-accent'       => $color === 'accent',
+                            'toggle-info switch-info'           => $color === 'info',
+                            'toggle-success switch-success'     => $color === 'success',
+                            'toggle-warning switch-warning'     => $color === 'warning',
+                            'toggle-error switch-error'         => $color === 'error',    
+                        ])->merge([
+                            'checked' => $checked
+                        ])
+                    }}
+                />
 
-            @if (gettype($helper) === 'object')
-                <span {{
-                    $helper->attributes->class([
-                        'helper-text text-sm text-gray-500 col-span-full',
-                    ])->merge()
-                }}>{{ $helper }}</span>
-            @elseif ($helper)
-                <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
-            @endif
+                @if (gettype($helper) === 'object')
+                    <span {{
+                        $helper->attributes->class([
+                            'helper-text text-sm text-gray-500 col-span-full',
+                        ])->merge()
+                    }}>{{ $helper }}</span>
+                @elseif ($helper)
+                    <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
+                @endif
 
-            @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $message }}</x-badge> @enderror
-            @if ($error)
-                <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $error }}</x-badge>
-            @endif
+                @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @if ($error)
+                    <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $error }}</x-badge>
+                @endif
+            </div>
         @endif
 
         HTML;

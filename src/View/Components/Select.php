@@ -19,6 +19,7 @@ class Select extends Component
         public ?string $size        = null,
         public ?string $color       = null,
         public bool    $ghost       = false,
+        public array   $options     = [],
         public bool    $multiple    = false,
         public ?int    $rows        = null
     ) {
@@ -72,7 +73,9 @@ class Select extends Component
                 }
             }"
         > 
-        @if ($title)
+        @if (gettype($title) === 'object')
+        <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
+        @elseif ($title)
         <header class="font-base text-lg">{{ $title }}</header>
         @endif
 
@@ -122,9 +125,11 @@ class Select extends Component
                                     'col-start-2' => $label !== null,
                             ])>
                                 <template x-for="option in selectedOptions">
-                                    <x-badge :color="$color" @mousedown.prevent=""  >
-                                        <span x-text="options.find((opt) => opt.value === option).text"></span>
-                                        <x-button :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
+                                    <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
+                                        <x-slot class="flex gap-1 items-center">
+                                            <span x-text="options.find((opt) => opt.value === option).text"></span>
+                                            <x-button noSpinner :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
+                                        </x-slot>
                                     </x-badge>
                                 </template>
                             </div>
@@ -151,6 +156,9 @@ class Select extends Component
                     size="{{ $rows }}"
                 @endif
             >
+                @foreach ($options as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
                 {{ $slot }}
             </select>
             @if (gettype($label) === 'object')
@@ -166,14 +174,21 @@ class Select extends Component
             @endif
         </x-dropdown>
 
-        @if ($error || $helper)
-        <span {{
-            $attributes->class([
-                'helper-text text-sm text-gray-500 col-span-full',
-                'text-error' => $error,
-            ])->merge()
-        }}>{{ $error ?? $helper }}</span>
+        @if (gettype($helper) === 'object')
+            <span {{
+                $helper->attributes->class([
+                    'helper-text text-sm text-gray-500',
+                ])->merge()
+            }}>{{ $helper }}</span>
+        @elseif ($helper)
+            <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
         @endif
+        
+        @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
+        @if ($error)
+            <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
+        @endif
+        
         </div>
         HTML;
     }

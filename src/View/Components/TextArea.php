@@ -16,7 +16,6 @@ class TextArea extends Component
         public ?string $error       = null,
         public mixed   $icon        = null,
         public mixed   $trailIcon   = null,
-        public string  $type        = 'text',
         public ?string $size        = null,
         public ?string $color       = null,
         public bool    $ghost       = false,
@@ -43,48 +42,23 @@ class TextArea extends Component
         <header class="font-base text-lg">{{ $title }}</header>
         @endif
         <label
-            {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])
-                ->class([
-                    'flex gap-2 items-center w-full whitespace-nowrap',
-                    'cursor-pointer'                                      => $type === 'color',
-                    'ps-0'                                                => $type  === 'color' && !$label && !$icon,
-                    'pe-0'                                                => $type  === 'color' && !$append && !$trailIcon,
-                    'textarea'                                               => $type  !== 'file',
-                    '!textarea-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
-                    'textarea-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
-                    'textarea-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
-                    'textarea-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
-                    'textarea-info border-info outline-info!'                => $type  !== 'file' && $color === 'info',
-                    'textarea-success border-success outline-success!'       => $type  !== 'file' && $color === 'success',
-                    'textarea-warning border-warning outline-warning!'       => $type  !== 'file' && $color === 'warning',
-                    'textarea-error border-error outline-error!'             => $type  !== 'file' && $color === 'error',
-                    'textarea-xs'                                            => $type  !== 'file' && $size === 'xs',
-                    'textarea-sm'                                            => $type  !== 'file' && $size === 'sm',
-                    'textarea-md'                                            => $type  !== 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
-                    'textarea-lg'                                            => $type  !== 'file' && $size === 'lg',
-                    'textarea-xl'                                            => $type  !== 'file' && $size === 'xl',
-                    'textarea-ghost'                                         => $ghost,
-                ])
-                ->merge([   
-                ])
-            }}
+            {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])->merge() }}
+            @class([
+                'flex flex-wrap gap-2 items-center w-full'
+            ])
             @if (($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                 x-data="{ length: 0, minlength: {{ $minlength }}, maxlength: {{ $maxlength }} }"
             @endif
             >
 
             @if (gettype($icon) === 'string')
-                <div class="flex h-lh">
-                    <x-icon :name="$icon"/>
-                </div>
+                    <x-icon class="h-lh" :name="$icon"/>
             @endif
 
             @if (gettype($label) === 'string')
                 <div 
                     @class([
-                        'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',
-                        'shrink'  => $type !== 'color', 
-                        'grow'    => $type === 'color',                        
+                        'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',                     
                         'text-xs' => $size === 'xs',
                         'text-sm' => $size === 'sm',
                         'text-lg' => $size === 'lg',
@@ -96,37 +70,34 @@ class TextArea extends Component
             @endif
 
             <textarea
-                {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->merge([
-                        'type' => $type,
+                {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->class([
+                    'w-full textarea',
+                    '!textarea-error'                                                                      => $errors->has($errorFieldName()),
+                    'textarea-neutral border-neutral! focus:outline-neutral! focus:shadow-neutral'         => $color === 'neutral',
+                    'textarea-primary border-primary! focus:outline-primary! focus:shadow-primary'         => $color === 'primary',
+                    'textarea-secondary border-secondary! focus:outline-secondary! focus:shadow-secondary' => $color === 'secondary',
+                    'textarea-accent border-accent! focus:outline-accent! focus:shadow-accent'             => $color === 'accent',
+                    'textarea-info border-info! focus:outline-info! focus:shadow-info'                     => $color === 'info',
+                    'textarea-success border-success! focus:outline-success! focus:shadow-success'         => $color === 'success',
+                    'textarea-warning border-warning! focus:outline-warning! focus:shadow-warning'         => $color === 'warning',
+                    'textarea-error border-error! focus:outline-error! focus:shadow-error'                 => $color === 'error',
+                    'textarea-xs'                                                                          => $size === 'xs',
+                    'textarea-sm'                                                                          => $size === 'sm',
+                    'textarea-md'                                                                          => $size === 'md',
+                    'textarea-lg'                                                                          => $size === 'lg',
+                    'textarea-xl'                                                                          => $size === 'xl',
+                ])->merge([
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,
                         'maxlength' => $maxlength > 0 ? $maxlength : null,
                 ]) }}
-                @class([
-                    'peer',
-                    'basis-1/4 grow'                                                                                                      => $type !== 'color',
-                    'basis-[2lh] shrink'                                                                                                  => $type === 'color',
-                    'textarea file-textarea px-0 border rounded-sm inline-flex items-center'                                                    => $type  === 'file',
-                    '!textarea-error'                                                                                                        => $type  === 'file' && $errors->has($errorFieldName()),
-                    'border-[color-mix(in_oklab,oklch(20%_.0132_233.32)_40%,#0000)]'                                                      => $type  === 'file' && $color !== 'primary' && $color !== 'secondary' && $color !== 'accent' && $color !== 'info' && $color !== 'success' && $color !== 'warning' && $color !== 'error',
-                    'textarea-primary file:rounded-none file:bg-primary file:text-primary-content border-primary outline-primary!'           => $type  === 'file' && $color === 'primary',
-                    'textarea-secondary file:rounded-none file:bg-secondary file:text-secondary-content border-secondary outline-secondary!' => $type  === 'file' && $color === 'secondary',
-                    'textarea-accent file:rounded-none file:bg-accent file:text-accent-content border-accent outline-accent!'                => $type  === 'file' && $color === 'accent',
-                    'textarea-info file:rounded-none file:bg-info file:text-info-content border-info outline-info!'                          => $type  === 'file' && $color === 'info',
-                    'textarea-success file:rounded-none file:bg-success file:text-success-content border-success outline-success!'           => $type  === 'file' && $color === 'success',
-                    'textarea-warning file:rounded-none file:bg-warning file:text-warning-content border-warning outline-warning!'           => $type  === 'file' && $color === 'warning',
-                    'textarea-error file:rounded-none file:bg-error file:text-error-content border-error outline-error!'                     => $type  === 'file' && $color === 'error',
-                    'textarea-xs'                                                                                                            => $type  === 'file' && $size === 'xs',
-                    'textarea-sm'                                                                                                            => $type  === 'file' && $size === 'sm',
-                    'textarea-md'                                                                                                            => $type  === 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
-                    'textarea-lg'                                                                                                            => $type  === 'file' && $size === 'lg',
-                    'textarea-xl'                                                                                                            => $type  === 'file' && $size === 'xl',
-                ])
+
+
                 @if(($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                     x-init="$nextTick(() => length = $el.value?.length ?? 0)"
                     x-on:textarea="length = event.target.value.length"
                 @endif
-            ></textarea>
+            >{{ $slot }}</textarea>
 
 
             @if (gettype($icon) === 'object')  
@@ -138,8 +109,6 @@ class TextArea extends Component
             @if (gettype($label) === 'object')
                 <div {{ $label->attributes->class([
                     'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis order-first',
-                    'shrink'  => $type !== 'color', 
-                    'grow'    => $type === 'color',               
                     'text-xs' => $size === 'xs',
                     'text-sm' => $size === 'sm',
                     'text-lg' => $size === 'lg',
@@ -153,8 +122,6 @@ class TextArea extends Component
                 <div {{
                     (gettype($append) === 'object' ? $append->attributes : $attributes)->class([
                     'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',
-                    'shrink'  => $type !== 'color', 
-                    'grow'    => $type === 'color',
                     'text-xs' => $size === 'xs',
                     'text-sm' => $size === 'sm',
                     'text-lg' => $size === 'lg',
@@ -176,8 +143,6 @@ class TextArea extends Component
                     </div>
                 @endif
             @endif
-            
-            {{ $slot }}
 
             @if (($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                 <div class="relative flex size-6 items-center justify-center v-popper--has-tooltip">
