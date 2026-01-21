@@ -17,6 +17,8 @@ class RawSelect extends Component
         public ?string $size        = null,
         public ?string $color       = null,
         public bool    $ghost       = false,
+        public bool    $clearable   = false,
+        public array   $options     = [],
     ) {
     }
 
@@ -24,11 +26,7 @@ class RawSelect extends Component
     {
         return <<<'HTML'
         <div 
-            {{ $attributes->except([
-                'name', 'value', 'required'
-            ])->whereDoesntStartWith('wire:model')->class([
-                'flex flex-col'
-            ])->merge() }}
+            {{ $attributes->class(['flex flex-col'])->merge() }}
             x-data="{
                 color: '{{ $color }}',
                 options: [],
@@ -65,14 +63,13 @@ class RawSelect extends Component
                 }
             }"
         > 
-            @if ($title)
-                <header class="font-base text-lg">{{ $title }}</header>
+            @if (gettype($title) === 'object')
+            <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
+            @elseif ($title)
+            <header class="font-base text-lg">{{ $title }}</header>
             @endif
             <div class="relative w-full flex items-center justify-stretch">
-                <select 
-                    {{ $attributes->only(['name', 'value', 'required']) }}
-                    {{ $attributes->whereStartsWith('wire:model') }}
-                    @class([
+                <select @class([
                         'select peer w-full',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
@@ -90,7 +87,12 @@ class RawSelect extends Component
                         'select-ghost' => $ghost,
 
                     ])>
+                    @if ($clearable)
                     <option value></option>
+                    @endif
+                    @foreach ($options as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
                     {{ $slot }}
                 </select>
                 @if ($placeholder)
