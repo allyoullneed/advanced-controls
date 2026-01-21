@@ -24,7 +24,11 @@ class RawSelect extends Component
     {
         return <<<'HTML'
         <div 
-            {{ $attributes->class(['flex flex-col'])->merge() }}
+            {{ $attributes->except([
+                'name', 'value', 'required'
+            ])->whereDoesntStartWith('wire:model')->class([
+                'flex flex-col'
+            ])->merge() }}
             x-data="{
                 color: '{{ $color }}',
                 options: [],
@@ -65,7 +69,10 @@ class RawSelect extends Component
                 <header class="font-base text-lg">{{ $title }}</header>
             @endif
             <div class="relative w-full flex items-center justify-stretch">
-                <select @class([
+                <select 
+                    {{ $attributes->only(['name', 'value', 'required']) }}
+                    {{ $attributes->whereStartsWith('wire:model') }}
+                    @class([
                         'select peer w-full',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
