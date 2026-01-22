@@ -37,7 +37,6 @@ class Select extends Component
                 init() {
                     const selectElement = $el.querySelector('select');       
                     selectElement.querySelectorAll('option').forEach((option) => {
-
                         option.addEventListener('mousedown', 
                             function (e) {
                                 if (!e.shiftKey) {
@@ -152,12 +151,12 @@ class Select extends Component
                     'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
                     'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
                 ])
-                @if ($rows)
-                    size="{{ $rows }}"
+                @if ($rows || count($options) > 0)
+                    size="{{ $rows ?? min(12, count($options)) }}"
                 @endif
             >
                 @foreach ($options as $value => $label)
-                    <option value="{{ $value }}">{{ $label }}</option>
+                    <option value="{{ $value }}">{{ $label ?? $value }}</option>
                 @endforeach
                 {{ $slot }}
             </select>
@@ -168,7 +167,8 @@ class Select extends Component
                 'text-sm' => $size === 'sm',
                 'text-lg' => $size === 'lg',
                 'text-xl' => $size === 'xl',
-                ]) }}>
+                ]) }}
+            >
                 {{ $label }}
             </div>
             @endif

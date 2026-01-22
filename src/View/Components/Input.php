@@ -114,7 +114,7 @@ class Input extends Component
                     'basis-[2lh] shrink'                                                                                                  => $type === 'color',
                     'input file-input px-0 border rounded-sm inline-flex items-center'                                                    => $type  === 'file',
                     '!input-error'                                                                                                        => $type  === 'file' && $errors->has($errorFieldName()),
-                    'border-[color-mix(in_oklab,oklch(20%_.0132_233.32)_40%,#0000)]'                                                      => $type  === 'file' && $color !== 'primary' && $color !== 'secondary' && $color !== 'accent' && $color !== 'info' && $color !== 'success' && $color !== 'warning' && $color !== 'error',
+                    'border-[color-mix(in_oklab,oklch(20%_.0132_233.32)_40%,#0000)]'                                                      => $type  === 'file' && $color === 'neutral',
                     'input-primary file:rounded-none file:bg-primary file:text-primary-content border-primary outline-primary!'           => $type  === 'file' && $color === 'primary',
                     'input-secondary file:rounded-none file:bg-secondary file:text-secondary-content border-secondary outline-secondary!' => $type  === 'file' && $color === 'secondary',
                     'input-accent file:rounded-none file:bg-accent file:text-accent-content border-accent outline-accent!'                => $type  === 'file' && $color === 'accent',

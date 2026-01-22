@@ -91,7 +91,7 @@ class RawSelect extends Component
                     <option value></option>
                     @endif
                     @foreach ($options as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
+                        <option value="{{ $value }}">{{ $label ?? $value }}</option>
                     @endforeach
                     {{ $slot }}
                 </select>
