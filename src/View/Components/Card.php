@@ -51,7 +51,7 @@ class Card extends Component
             <div class="card-body ayn-child:[:where(.card-actions)]:justify-end">
                 @if ($title)
                     @if (gettype($title) === 'string')
-                        <h2>{{ $title }}</h2>
+                        <h2 class="card-title">{{ $title }}</h2>
                     @else
                         <h2 {{ $title->attributes->class(["card-title"])->merge() }}>{{ $title }}</h2>
                     @endif
