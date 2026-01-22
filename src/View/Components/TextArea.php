@@ -97,7 +97,7 @@ class TextArea extends Component
 
                 @if(($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                     x-init="$nextTick(() => length = $el.value?.length ?? 0)"
-                    x-on:textarea="length = event.target.value.length"
+                    x-on:input="length = event.target.value.length"
                 @endif
             >{{ $slot }}</textarea>
 
@@ -147,7 +147,7 @@ class TextArea extends Component
             @endif
 
             @if (($minlength > 0 || $maxlength > 0) && $lengthIndicator)
-                <div class="relative flex size-6 items-center justify-center v-popper--has-tooltip">
+                <div class="absolute bottom-2 right-2 flex size-6 items-center justify-center v-popper--has-tooltip">
                     <svg class="absolute right-0 h-full w-full text-gray-200 dark:text-gray-700" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"></circle>
                     </svg>
