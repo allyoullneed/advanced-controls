@@ -6,11 +6,9 @@ use Illuminate\View\Component;
 
 class Tab extends Component
 {
-    public ?string $icon = null;
-    public  string $label;
     public function __construct(
-        ?string $icon = null,
-         string $label
+        public  string $label,
+        public ?string $icon    = null
     ) {
         $this->icon = $icon;
         $this->label = $label;
@@ -20,8 +18,12 @@ class Tab extends Component
     {
         return <<<'HTML'
         @aware(['id'])
-        <label class="tab">
-            <input type="radio" name="{{ $id }}"/>
+        <label
+            @class([
+                'tab has-checked:tab-active'
+            ])
+        >
+            <input class="appearance-none" type="radio" name="{{ $id }}"/>
             @if ($icon)
                 <x-icon :name="$icon" class="size-4 me-2"/>
             @endif
@@ -29,7 +31,7 @@ class Tab extends Component
         </label>
         <div
             {{ $attributes->class([
-                'tab-content'
+                'tab-content w-full order-1'
             ])->merge() }}
         >
             {{ $slot }}

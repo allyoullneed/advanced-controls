@@ -8,11 +8,12 @@ use Illuminate\View\Component;
 class Tabs extends Component
 {
     public string $id;
-    public bool $vertical = false;
-    public bool $checked = false;
 
     public function __construct(
-        ?string $id = null
+        ?string $id = null,
+        public bool $vertical   = false,
+        public ?string $variant = null,
+        public ?string $size    = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -25,10 +26,18 @@ class Tabs extends Component
         return <<<'HTML'
         <div 
             {{ $attributes->class([
-                'tabs *:p-2 md:*:p-6 flex',  
-                '[&>.tab]:before:absolute [&>.tab]:before:bottom-0 [&>.tab]:before:grow [&>:.tab]:before:w-[80%] [&>.tab]:before:h-[3px] [&>.tab]:before:bg-black',
-                'before:[&>.tab]:border-b-3' => !$vertical,
-                'before:[&>.tab]:border-e-3' => $vertical
+                'tabs [&>.tab-content]:p-2 md:[&>.tab-content]:p-6 [&>.tab-content]:hidden *:[.tab:has(:checked)_+_.tab-content]:block flex flex-wrap',
+                'tabs-border tabs-bordered'          => $variant === 'border',
+                'tabs-lift tabs-lifted'              => $variant === 'lift',
+                'tabs-box'                           => $variant === 'box',
+                'tabs-vertical'                      => $vertical,
+                'tabs-xs'                            => $size === 'xs',
+                'tabs-sm'                            => $size === 'sm',
+                'tabs-md'                            => $size === 'md',
+                'tabs-lg'                            => $size === 'lg',
+                'tabs-xl'                            => $size === 'xl',
+                'before:[&>.tab]:border-b-3'         => !$vertical,
+                'before:[&>.tab]:border-e-3'         => $vertical,
             ])->merge() }}
         >
             {{ $slot }}
