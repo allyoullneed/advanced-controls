@@ -35,11 +35,11 @@ class Checkbox extends Component
                 $label = $labelBefore;
         @endphp
         @if ($label)
-        <div {{ $attributes->class([
+        <div @class([
                 'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
                 'justify-between' => $must_prepend,
                 'justify-start'   => !$must_prepend,
-            ]) }}
+            ])
         >
             @if ($title)
             <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
@@ -48,10 +48,7 @@ class Checkbox extends Component
                 type="checkbox"
                 name="{{ $name }}"
                 value="{{ $value }}"
-                {{ $attributes->except([
-                    'type'
-                    ])
-                    ->class([
+                {{ $attributes->except(['type'])->class([
                         'checkbox',
                         'checkbox-neutral'   => ($type ?? $color) == 'neutral',
                         'checkbox-primary'   => ($type ?? $color) == 'primary',
@@ -67,8 +64,8 @@ class Checkbox extends Component
                 }}
             />
             <label for="{{ $id }}"
-                {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->class([
-                    'text-sm dropping-texts relative cursor-pointer select-none',
+                {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
+                    'text-sm dropping-texts relative cursor-pointer select-none whitespace-nowrap',
                 ])->merge() }}
             >
                 @if ($labelChecked)

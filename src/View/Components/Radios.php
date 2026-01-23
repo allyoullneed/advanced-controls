@@ -25,7 +25,7 @@ class Radios extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div {{ $attributes->class([
+        <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
             'flex flex-wrap ',
             'flex-row gap-y-1' => $inline,
             'flex-col' => !$inline,
@@ -37,13 +37,14 @@ class Radios extends Component
             @endif
             <input type="hidden"/>
             
-            <div @class(['flex gap-1']) @style(['flex-direction: inherit'])>
+            <div @class(['flex flex-wrap gap-1']) @style(['flex-direction: inherit'])>
                 @foreach ($options as $value => $label)
                     <x-radio
                         :name="$attributes->get('name')"
                         :label="$label ?? $value"
                         :value="$value"
                         :color="$color"
+                        {{ $attributes->whereStartsWith('wire:model') }}
                     />
                 @endforeach
                 {{ $slot }}

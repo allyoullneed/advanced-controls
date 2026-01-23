@@ -68,8 +68,9 @@ class RawSelect extends Component
             @elseif ($title)
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
-            <div class="relative w-full h-full flex items-center justify-stretch">
-                <select @class([
+            <div class="relative w-full h-full flex flex-wrap items-center justify-stretch">
+                <select {{ $attributes->whereStartsWith('wire:model') }}
+                    @class([
                         'select peer w-full',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
@@ -97,6 +98,21 @@ class RawSelect extends Component
                 </select>
                 @if ($placeholder)
                     <span class="absolute left-2 peer-has-[option:not([value='']):checked]:hidden text-current/50 select-none">{{ $placeholder }}</span>
+                @endif
+
+                @if (gettype($helper) === 'object')
+                    <span {{
+                        $helper->attributes->class([
+                            'helper-text text-sm text-gray-500',
+                        ])->merge()
+                    }}>{{ $helper }}</span>
+                @elseif ($helper)
+                    <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
+                @endif
+                
+                @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @if ($error)
+                    <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
                 @endif
             </div>
         </div>
