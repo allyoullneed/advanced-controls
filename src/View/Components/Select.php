@@ -28,6 +28,15 @@ class Select extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @php
+            $model = $attributes->whereStartsWith('wire:model');
+            if ($model) {
+                $model = substr($model, 2 + strpos($model, "="));
+                $model = substr($model, 0, strlen($model) - 1);
+            }
+            else
+                $model = $name
+        @endphp
         <div 
             {{ $attributes->except([
                 'name', 'id', 'value', 'required'
@@ -35,7 +44,7 @@ class Select extends Component
             x-data="{
                 color: '{{ $color }}',
                 options: [],
-                selectedOptions: [],
+                selectedOptions: @if ($model) $wire.entangle('{{ $model }}') @else [] @endif,
                 init() {
                     const selectElement = $el.querySelector('select');
                     selectElement.querySelectorAll('option').forEach((option) => {
@@ -79,7 +88,7 @@ class Select extends Component
             @elseif ($title)
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
-
+            
             <x-dropdown class="w-full">
                 <x-slot:trigger @class([
                     'select cursor-pointer custom-multiselect select-header w-full',
@@ -127,7 +136,7 @@ class Select extends Component
                                 ])>
                                     <template x-for="option in selectedOptions">
                                         <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
-                                            <x-slot class="flex gap-1 items-center">
+                                            <x-slot class="flex items-center">
                                                 <span x-text="options.find((opt) => opt.value === option).text"></span>
                                                 <x-button noSpinner :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
                                             </x-slot>
