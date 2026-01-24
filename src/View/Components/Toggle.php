@@ -13,7 +13,7 @@ class Toggle extends Component
         public mixed   $label          = null,
         public mixed   $labelBefore    = null,
         public mixed   $labelChecked   = null,
-        public mixed   $helper      = null,
+        public mixed   $helper         = null,
         public ?string $error          = null,
         public ?string $color          = null,
         public string  $value          = "1",
@@ -46,7 +46,8 @@ class Toggle extends Component
         
         @if ($label)
             <div {{ $attributes->whereDoesntStartWith('wire:model')->except(['type', 'name', 'value', 'checked'])->class([
-                    'group grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1',
+                    'group',
+                    'grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1' => $label,
                     'justify-between' => $must_prepend,
                     'justify-start'   => !$must_prepend,
                 ]) }}
@@ -106,7 +107,8 @@ class Toggle extends Component
             </div>
         @else
             <div {{ $attributes->whereDoesntStartWith('wire:model')->except(['type', 'name', 'value', 'checked'])->class([
-                    'group grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1',
+                    'group',
+                    'grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1' => $label,
                     'justify-between' => $must_prepend,
                     'justify-start'   => !$must_prepend,
                 ]) }}
