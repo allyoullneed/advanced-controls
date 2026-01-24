@@ -60,9 +60,13 @@ class Badge extends Component
             @elseif (($type === "" || $type === "info") && $icon === null)
                 <x-icon name="heroicon-o-information-circle" class="shrink-0 h-lh"/>
             @endif
-            <div class="whitespace-nowrap overflow-hidden text-ellipsis">
-            {{ $label ?? $slot }}
-            </div>
+            @if (gettype($label ?? $slot) === 'object')
+                {{ $label ?? $slot }}
+            @else
+                <div class="whitespace-nowrap overflow-hidden text-ellipsis">
+                {{ $label ?? $slot }}
+                </div>
+            @endif
         </div>
         HTML;
     }
