@@ -54,7 +54,13 @@ class MenuItem extends Component
                         @else
                             {{ $icon }}
                         @endif
-                        {{ $label }}
+                        @if (gettype($label) === 'object')
+                            <div {{ $label->attributes }}>
+                                {{ $label }}
+                            </div>
+                        @else
+                            {{ $label }}
+                        @endif
                     </a>
                     {{ $slot }}
                 @endif

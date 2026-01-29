@@ -16,6 +16,7 @@ class Toggle extends Component
         public mixed   $helper         = null,
         public ?string $error          = null,
         public ?string $color          = null,
+        public ?string $size         = null,
         public string  $value          = "1",
         public ?string $valueUnchecked = null,
         public bool    $checked        = false,
@@ -58,6 +59,11 @@ class Toggle extends Component
                 <label
                     {{ (gettype($label) === 'object' ? $label->attributes : $attributes->except(['type', 'name', 'value', 'checked', 'class']))->class([
                         'flex gap-2 items-center text-sm dropping-texts relative cursor-pointer select-none',
+                        'text-xl' => $size === 'xl',
+                        'text-lg' => $size === 'lg',
+                        'text-md' => $size === 'md',
+                        'text-sm' => $size === 'sm',
+                        'text-xs' => $size === 'xs',
                     ])->merge() }}
                 >
                     <input id="{{ $id }}" type="checkbox"
@@ -128,7 +134,12 @@ class Toggle extends Component
                             'toggle-info switch-info'           => $color === 'info',
                             'toggle-success switch-success'     => $color === 'success',
                             'toggle-warning switch-warning'     => $color === 'warning',
-                            'toggle-error switch-error'         => $color === 'error',    
+                            'toggle-error switch-error'         => $color === 'error',
+                            'toggle-xl switch-xl'               => $size === 'xl',
+                            'toggle-lg switch-lg'               => $size === 'lg',
+                            'toggle-md switch-md'               => $size === 'md',
+                            'toggle-sm switch-sm'               => $size === 'sm',
+                            'toggle-xs switch-xs'               => $size === 'xs',
                         ])->merge([
                             'checked' => $checked
                         ])

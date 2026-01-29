@@ -16,6 +16,7 @@ class Checkbox extends Component
         public mixed   $labelBefore  = null,
         public mixed   $labelChecked = null,
         public ?string $color        = null,
+        public ?string $size         = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -58,6 +59,11 @@ class Checkbox extends Component
                         'checkbox-success'   => ($type ?? $color) === 'success',
                         'checkbox-warning'   => ($type ?? $color) === 'warning',
                         'checkbox-error'     => ($type ?? $color) === 'error',
+                        'checkbox-xl'        => $size === 'xl',
+                        'checkbox-lg'        => $size === 'lg',
+                        'checkbox-md'        => $size === 'md',
+                        'checkbox-sm'        => $size === 'sm',
+                        'checkbox-xs'        => $size === 'xs',
                         'order-last'         => $must_prepend,
                     ])
                     ->merge()
@@ -66,6 +72,11 @@ class Checkbox extends Component
             <label for="{{ $id }}"
                 {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
                     'text-sm dropping-texts relative cursor-pointer select-none whitespace-nowrap',
+                    'text-xl' => $size === 'xl',
+                    'text-lg' => $size === 'lg',
+                    'text-md' => $size === 'md',
+                    'text-sm' => $size === 'sm',
+                    'text-xs' => $size === 'xs',
                 ])->merge() }}
             >
                 @if ($labelChecked)
@@ -91,7 +102,12 @@ class Checkbox extends Component
                         'checkbox-info'      => ($type ?? $color) === 'info',
                         'checkbox-success'   => ($type ?? $color) === 'success',
                         'checkbox-warning'   => ($type ?? $color) === 'warning',
-                        'checkbox-error'     => ($type ?? $color) === 'error', 
+                        'checkbox-error'     => ($type ?? $color) === 'error',
+                        'checkbox-xl'        => $size === 'xl',
+                        'checkbox-lg'        => $size === 'lg',
+                        'checkbox-md'        => $size === 'md',
+                        'checkbox-sm'        => $size === 'sm',
+                        'checkbox-xs'        => $size === 'xs',
                     ])
                     ->merge()
                 }}

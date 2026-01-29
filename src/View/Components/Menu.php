@@ -26,8 +26,9 @@ class Menu extends Component
                 {{ $attributes->class([
                     'menu'
                 ])->merge() }}
-            >{{ $slot }}
-                </ul>
+            >
+                {{ $slot }}
+            </ul>
         HTML;
     }
 }

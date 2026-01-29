@@ -7,11 +7,13 @@ use Illuminate\View\Component;
 
 class ThemeToggle extends Component
 {
-    public string $type       = 'classic';
-    public string $lightTheme = 'light';
-    public string $darkTheme  = 'dark'; 
 
-    public function __construct(?string $type)
+    public function __construct(
+        public  string $type       = 'classic',
+        public  string $lightTheme = 'light',
+        public  string $darkTheme  = 'dark',
+        public ?string $size       = null,
+    )
     {
         if (isset($type))
             $this->type = $type;
@@ -22,17 +24,17 @@ class ThemeToggle extends Component
         return <<<'HTML'
             <div
                 x-data="{
-                    theme: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches ? '{{ $darkTheme }}' : '{{ $lightTheme }}').as('data-theme'),
+                    theme: localStorage.getItem('data-theme'),
                     init() {
                         document.documentElement.classList.add(this.theme);
                         document.documentElement.setAttribute('data-theme', this.theme);
-                        setTimeout(() => { $el.classList.add('theme-toggle-animated'); }, 500);
+                        setTimeout(() => { $el.classList.add('theme-toggle-animated'); }, 100);
                         window.addEventListener('storage', (event) => {
-                            if (event.key === 'theme') {
-                                var oldTheme = event.oldValue.replace(/\&quot;/g, ''),
-                                    newTheme = event.newValue.replace(/\&quot;/g, '');
-                                this.theme = newTheme;
-                                document.documentElement.classList.replace(oldTheme, newTheme);
+                            if (event.key === 'data-theme') {
+                                this.theme = event.newValue;
+                                document.documentElement.classList.replace(event.oldValue, event.newValue);
+                                document.documentElement.setAttribute('data-theme', event.newValue);
+                                $dispatch('data-theme-changed', { newTheme: event.newValue });
                             }
                         });
                     },
@@ -42,11 +44,19 @@ class ThemeToggle extends Component
                         document.documentElement.classList.replace(oldTheme, this.theme);
                         document.documentElement.setAttribute('data-theme', this.theme);
                         localStorage.setItem('data-theme', this.theme);
-                        reload();
+                         $dispatch('data-theme-changed', { newTheme: this.theme });
                     }
                 }"
-                @click="toggle()"
-                {{ $attributes->merge(['class' => 'theme-toggle aspect-square']) }}
+                @click="toggle();"
+                @data-theme-changed.window="theme = event.detail.newTheme;"
+                {{ $attributes->class([
+                    'theme-toggle aspect-square',
+                    'size-4'  => $size === 'xs',
+                    'size-6'  => $size === 'sm',
+                    'size-8'  => $size === 'md',
+                    'size-10' => $size === 'lg',
+                    'size-12' => $size === 'xl',
+                ])->merge() }}
                 :class="theme === '{{ $darkTheme }}' ? 'theme-toggle--toggled' : ''"
             >
             @if ($type === 'around')
@@ -187,17 +197,6 @@ class ThemeToggle extends Component
                     <path pathLength="1" d="M9.4 9 5.7 5.4" />
                     <path pathLength="1" d="M5.7 15.8H.6" />
                     </g>
-                </svg>
-            @elseif ($type === 'moon')
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    class="theme-toggle__inner-moon"
-                    viewBox="0 0 32 32"
-                >
-                    <path d="M27.5 11.5v-7h-7L16 0l-4.5 4.5h-7v7L0 16l4.5 4.5v7h7L16 32l4.5-4.5h7v-7L32 16l-4.5-4.5zM16 25.4a9.39 9.39 0 1 1 0-18.8 9.39 9.39 0 1 1 0 18.8z" />
-                    <circle cx="16" cy="16" r="8.1" />
                 </svg>
             @elseif ($type === 'within')
                 <svg

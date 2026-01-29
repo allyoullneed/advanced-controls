@@ -16,6 +16,7 @@ class Radio extends Component
         public mixed   $labelBefore  = null,
         public mixed   $labelChecked = null,
         public ?string $color        = null,
+        public ?string $size         = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -35,47 +36,57 @@ class Radio extends Component
                 $label = $labelBefore;
         @endphp
         @if ($label)
-        <div @class([
-                'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
-                'justify-between' => $must_prepend,
-                'justify-start'   => !$must_prepend,
-            ])
-        >
-            @if ($title)
-            <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
-            @endif
-            <input id="{{ $id }}"
-                type="radio"
-                name="{{ $name }}"
-                value="{{ $value }}"
-                {{ $attributes->except(['type'])->class([
-                        'radio',
-                        'radio-neutral'   => ($type ?? $color) == 'neutral',
-                        'radio-primary'   => ($type ?? $color) == 'primary',
-                        'radio-secondary' => ($type ?? $color) === 'secondary',
-                        'radio-accent'    => ($type ?? $color) === 'accent',
-                        'radio-info'      => ($type ?? $color) === 'info',
-                        'radio-success'   => ($type ?? $color) === 'success',
-                        'radio-warning'   => ($type ?? $color) === 'warning',
-                        'radio-error'     => ($type ?? $color) === 'error',
-                        'order-last'      => $must_prepend,
-                    ])
-                    ->merge()
-                }}
-            />
-            <label for="{{ $id }}"
-                {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
-                    'text-sm dropping-texts relative cursor-pointer select-none whitespace-nowrap',
-                ])->merge() }}
+            <div @class([
+                    'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
+                    'justify-between' => $must_prepend,
+                    'justify-start'   => !$must_prepend,
+                ])
             >
-                @if ($labelChecked)
-                    <div class="inline group-has-checked:hidden">{{ $label }}</div>
-                    <div class="hidden group-has-checked:inline">{{ $labelChecked }}</div>
-                @else
-                    {{ $label }}
+                @if ($title)
+                <header class="font-base text-lg col-span-full">{{ $must_prepend }}{{ $title }}</header>
                 @endif
-            </label>
-            </div>
+                <input id="{{ $id }}"
+                    type="radio"
+                    name="{{ $name }}"
+                    value="{{ $value }}"
+                    {{ $attributes->except(['type'])->class([
+                            'radio',
+                            'radio-neutral'   => ($type ?? $color) == 'neutral',
+                            'radio-primary'   => ($type ?? $color) == 'primary',
+                            'radio-secondary' => ($type ?? $color) === 'secondary',
+                            'radio-accent'    => ($type ?? $color) === 'accent',
+                            'radio-info'      => ($type ?? $color) === 'info',
+                            'radio-success'   => ($type ?? $color) === 'success',
+                            'radio-warning'   => ($type ?? $color) === 'warning',
+                            'radio-error'     => ($type ?? $color) === 'error',
+                            'radio-xl'        => $size === 'xl',
+                            'radio-lg'        => $size === 'lg',
+                            'radio-md'        => $size === 'md',
+                            'radio-sm'        => $size === 'sm',
+                            'radio-xs'        => $size === 'xs',
+                            'order-last'      => $must_prepend,
+                        ])
+                        ->merge()
+                    }}
+                />
+                <label for="{{ $id }}"
+                    {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
+                        'text-sm dropping-texts relative cursor-pointer select-none whitespace-nowrap',
+                        'text-xl' => $size === 'xl',
+                        'text-lg' => $size === 'lg',
+                        'text-md' => $size === 'md',
+                        'text-sm' => $size === 'sm',
+                        'text-xs' => $size === 'xs',
+                    ])->merge() }}
+                >
+                    @if ($labelChecked)
+                        <div class="inline group-has-checked:hidden">{{ $label }}</div>
+                        <div class="hidden group-has-checked:inline">{{ $labelChecked }}</div>
+                    @else
+                        {{ $label }}
+                    @endif
+                </label>
+                </div>
         @else
             <input id="{{ $id }}"
                 type="radio"
@@ -91,7 +102,12 @@ class Radio extends Component
                         'radio-info'      => ($type ?? $color) === 'info',
                         'radio-success'   => ($type ?? $color) === 'success',
                         'radio-warning'   => ($type ?? $color) === 'warning',
-                        'radio-error'     => ($type ?? $color) === 'error', 
+                        'radio-error'     => ($type ?? $color) === 'error',
+                        'radio-xl'        => $size === 'xl',
+                        'radio-lg'        => $size === 'lg',
+                        'radio-md'        => $size === 'md',
+                        'radio-sm'        => $size === 'sm',
+                        'radio-xs'        => $size === 'xs',
                     ])
                     ->merge()
                 }}
