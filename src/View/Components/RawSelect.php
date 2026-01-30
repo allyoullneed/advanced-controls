@@ -28,7 +28,6 @@ class RawSelect extends Component
         <div 
             {{ $attributes->class(['flex flex-col'])->merge() }}
             x-data="{
-                color: '{{ $color }}',
                 options: [],
                 selectedOptions: [],
                 init() {
@@ -50,9 +49,7 @@ class RawSelect extends Component
                     selectElement.setAttribute('x-model', 'selectedOptions');
                 },
                 toggleOption(value) {
-                    console.log('Searching for ' + value);
                     const index = this.selectedOptions.findIndex((opt) => opt === value);
-                    console.log('Found at index ' + index)
                     if (index >= 0)
                         this.selectedOptions.splice(index, 1);
                     else

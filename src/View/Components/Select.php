@@ -42,9 +42,8 @@ class Select extends Component
                 'name', 'id', 'value', 'required'
             ])->whereDoesntStartWith('wire:model')->class(['flex flex-col'])->merge() }}
             x-data="{
-                color: '{{ $color }}',
                 options: [],
-                selectedOptions: @if ($model) $wire.entangle('{{ $model }}') @else [] @endif,
+                selectedOptions: [],
                 init() {
                     const selectElement = $el.querySelector('select');
                     selectElement.querySelectorAll('option').forEach((option) => {
@@ -62,7 +61,9 @@ class Select extends Component
                         if (option.selected || option.checked)
                             this.selectedOptions.push(option.value ?? option.innerText);
                     });
-                    selectElement.setAttribute('x-model', 'selectedOptions');
+                    @if ($model)
+                    $nextTick(function() { $wire.entangle('{{ $model }}'); });
+                    @endif
                 },
                 toggleOption(value) {
                     @if($multiple)
@@ -72,10 +73,7 @@ class Select extends Component
                         else
                             this.selectedOptions.push(value);
                     @else
-                        if (this.selectedOptions[0] === value)
-                            this.selectedOptions = [];
-                        else
-                            this.selectedOptions = [value];
+                        this.selectedOptions = [value];
                     @endif
                 },
                 removeOption(value) {
@@ -128,7 +126,7 @@ class Select extends Component
                                 class="absolute text-current/50 select-none">{{ $placeholder }}</span>
                             @endif
                             @if ($multiple)
-                                <div x-model="selectedOptions"
+                                <div
                                     @class([
                                         'row-start-1 flex flex-wrap gap-2 pillbox',
                                         'col-start-1' => $label === null,
@@ -137,22 +135,23 @@ class Select extends Component
                                     <template x-for="option in selectedOptions">
                                         <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
                                             <x-slot class="flex items-center">
-                                                <span x-text="options.find((opt) => opt.value === option).text"></span>
+                                                <span x-text="options.find((opt) => opt.value === option)?.text"></span>
                                                 <x-button noSpinner :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
                                             </x-slot>
                                         </x-badge>
                                     </template>
                                 </div>
                             @else
-                                <span x-text="options.find((opt) => opt.value === selectedOptions[0]).text"></span>
+                                <span x-text="options.find((opt) => opt.value === selectedOptions[0])?.text"></span>
                             @endif
                         </div>
                     </div>
                 </x-slot:trigger>
 
-                <select  multiple
+                <select multiple
+                    x-model="selectedOptions"
                     @class([
-                        'h-max w-full mt-1 select options-container [&>option+option]:mt-1',
+                        'w-full mt-1 select options-container [&>option+option]:mt-1',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
                         'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
