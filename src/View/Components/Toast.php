@@ -61,7 +61,7 @@ class Toast extends Component
                             <div
                                 class="flex pointer-events-auto relative transition duration-300 ease-in-out"
                                 x-data="{ isVisible: false, timeout: null }"
-                                x-cloak x-show="isVisible" role="alert"
+                                x-cloak x-show="isVisible"
                                 x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
                                 x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
                                 x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
@@ -79,7 +79,7 @@ class Toast extends Component
                         <!-- Info Notification  -->
                         <template x-if="notification.type === 'info'">     
                             <x-alert
-                                type="info" role="alert"
+                                type="info"
                                 class="pointer-events-auto relative"
                                 ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
                                 x-data="{ isVisible: false, timeout: null }"
@@ -111,7 +111,7 @@ class Toast extends Component
                         <!-- Success Notification  -->
                         <template x-if="notification.type === 'success'">
                             <x-alert
-                                type="success" role="alert"
+                                type="success"
                                 class="pointer-events-auto relative"
                                 ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
                                 x-data="{ isVisible: false, timeout: null }"
@@ -143,7 +143,7 @@ class Toast extends Component
                         <!-- Warning Notification  -->
                         <template x-if="notification.type === 'warning'"> 
                             <x-alert
-                                type="warning" role="alert"
+                                type="warning"
                                 class="pointer-events-auto relative"
                                 ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
                                 x-data="{ isVisible: false, timeout: null }"
@@ -175,7 +175,7 @@ class Toast extends Component
                         <!-- Error Notification  -->             
                         <template x-if="notification.type === 'error'">     
                             <x-alert
-                                type="error" role="alert"
+                                type="error"
                                 class="pointer-events-auto relative"
                                 ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
                                 x-data="{ isVisible: false, timeout: null }"
@@ -206,7 +206,6 @@ class Toast extends Component
 
                         <template x-if="!notification.html && notification.type !== 'info' && notification.type !== 'success' && notification.type !== 'warning' && notification.type !== 'error'">     
                             <x-alert
-                                role="alert"
                                 class="pointer-events-auto relative"
                                 ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
                                 x-data="{ isVisible: false, timeout: null }"
