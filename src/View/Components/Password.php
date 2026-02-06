@@ -42,7 +42,7 @@ class Password extends Component
         >
             @if ($eye)
                 @if (gettype($eye) === 'boolean' || $eye === 'eye')
-                    <x-button no-spinner variant="ghost" size="sm"
+                    <x-button type="button" no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="
@@ -55,7 +55,7 @@ class Password extends Component
                         ">
                         <x-icon name="heroicon-o-eye"/>
                     </x-button>
-                    <x-button no-spinner variant="ghost" size="sm"
+                    <x-button type="button" no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last hidden"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="
