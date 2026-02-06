@@ -51,6 +51,12 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         }
         else {
             $this->registerComponents();
+            \Blade::directive('renderif', function ($expression) {
+                return "<?php if (" . $expression . "): ?>";
+            });
+            Blade::directive('endrenderif', function ($expression) {
+                return "<?php endif; ?>";
+            });
         }   
     }
     public function registerComponents()

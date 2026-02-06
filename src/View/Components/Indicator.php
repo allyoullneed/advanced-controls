@@ -35,13 +35,12 @@ class Indicator extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @php
-            $noIndicator = $noIndicator || $attributes->has('no-indicator');
-            $arr_position = $parse_position($position);
-        @endphp
-        @if ($noIndicator)
+        @renderif ($noIndicator)
             {{ $slot }}
         @else
+            @php
+                $arr_position = $parse_position($position);
+            @endphp
             <div
                 {{ $attributes->except(['position', 'size'])->class([
                     'indicator',
@@ -87,7 +86,7 @@ class Indicator extends Component
                 @endif
                 {{ $slot }}
             </div>
-        @endif
+        @endrenderif
         HTML;
     }
 }
