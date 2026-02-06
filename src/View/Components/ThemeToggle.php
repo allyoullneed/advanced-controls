@@ -24,7 +24,7 @@ class ThemeToggle extends Component
         return <<<'HTML'
             <div
                 x-data="{
-                    theme: localStorage.getItem('data-theme'),
+                    theme: localStorage.getItem('data-theme') ?? 'light',
                     init() {
                         document.documentElement.classList.add(this.theme);
                         document.documentElement.setAttribute('data-theme', this.theme);
