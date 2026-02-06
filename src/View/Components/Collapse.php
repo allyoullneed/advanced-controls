@@ -33,7 +33,11 @@ class Collapse extends Component
         @if ($keepOpen)
         <input type="checkbox" />
         @endif
-        <div class="collapse-title font-semibold">{{ $label }}</div>
+        @if (gettype($label) === 'object')
+            <div {{ $label->attributes->class(['collapse-title font-semibold'])->merge() }}>{{ $label }}</div>
+        @else
+            <div class="collapse-title font-semibold">{{ $label }}</div>
+        @endif
         <div class="collapse-content text-sm">
             {{ $slot }}
         </div>
