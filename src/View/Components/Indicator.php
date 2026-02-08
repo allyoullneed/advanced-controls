@@ -10,10 +10,11 @@ class Indicator extends Component
     public ?string $indicator = null;
 
     public function __construct(
-        public ?string $label = null,
-        public ?string $color = null,
-        public ?string $position = null,
-        public bool $noIndicator = false,
+        public ?string $label       = null,
+        public ?string $color       = null,
+        public ?string $position    = null,
+        public bool    $noIndicator = false,
+        public bool    $transparent = false,
     ) {
     }
 
@@ -35,7 +36,7 @@ class Indicator extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @renderif ($noIndicator)
+        @renderif ($transparent)
             {{ $slot }}
         @else
             @php
@@ -43,10 +44,10 @@ class Indicator extends Component
             @endphp
             <div
                 {{ $attributes->except(['position', 'size'])->class([
-                    'indicator',
+                    'indicator' => !$noIndicator,
                     ])->merge() }}
             >
-                @if ($indicator)
+                @if (!$noIndicator && $indicator)
                     <div {{ $indicator->attributes->except(['position', 'size'])->class([
                         'flex justify-center items-center indicator-item',
                         'indicator-top'    => in_array('top'   , $arr_position),
@@ -61,7 +62,7 @@ class Indicator extends Component
                     class="indicator-item ">
                         {{ $indicator }}
                     </div>
-                @else
+                @elseif (!$noIndicator)
                     <span 
                         {{ $attributes->except(['position', 'size'])->class([
                             'indicator-item status',
