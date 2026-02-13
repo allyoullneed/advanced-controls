@@ -36,7 +36,7 @@ class Input extends Component
     {
         return <<<'HTML'
         <div {{ $attributes->except([
-                    'type', 'value', 'required', 'accept', 'wire:model'
+                    'type', 'value', 'required', 'autocomplete'
                 ])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col w-full'
             ])->merge()
@@ -48,7 +48,7 @@ class Input extends Component
         @endif
         <label
             {{ $attributes->except([
-                    'type', 'value', 'required', 'accept', 'wire:model'
+                    'type', 'value', 'required', 'autocomplete'
                 ])->whereDoesntStartWith('wire:model')->class([
                     'flex gap-2 items-center w-full whitespace-nowrap',
                     'cursor-pointer'                                      => $type === 'color',
@@ -56,6 +56,7 @@ class Input extends Component
                     'pe-0'                                                => $type  === 'color' && !$append && !$trailIcon,
                     'input'                                               => $type  !== 'file',
                     '!input-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
+                    'input-neutral border-neutral outline-neutral!'       => $type  !== 'file' && $color === 'neutral',
                     'input-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
                     'input-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
                     'input-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
@@ -101,7 +102,7 @@ class Input extends Component
             @endif
 
             <input
-                {{ $attributes->only(['name', 'value', 'required'])->merge([
+                {{ $attributes->only(['name', 'value', 'required', 'autocomplete'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,
