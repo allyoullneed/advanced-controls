@@ -19,6 +19,7 @@ use AllYouNeed\AdvancedControls\View\Components\Dropdown;
 use AllYouNeed\AdvancedControls\View\Components\Indicator;
 use AllYouNeed\AdvancedControls\View\Components\Input;
 use AllYouNeed\AdvancedControls\View\Components\Link;
+use AllYouNeed\AdvancedControls\View\Components\Loading;
 use AllYouNeed\AdvancedControls\View\Components\Menu;
 use AllYouNeed\AdvancedControls\View\Components\MenuItem;
 use AllYouNeed\AdvancedControls\View\Components\Modal;
@@ -80,6 +81,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'indicator'     , Indicator::class);
         Blade::component($prefix . 'input'         , Input::class);
         Blade::component($prefix . 'link'          , Link::class);
+        Blade::component($prefix . 'loading'       , Loading::class);
         Blade::component($prefix . 'menu'          , Menu::class);
         Blade::component($prefix . 'menuItem'      , MenuItem::class);
         Blade::component($prefix . 'modal'         , Modal::class);
