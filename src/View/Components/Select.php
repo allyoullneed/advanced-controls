@@ -21,7 +21,8 @@ class Select extends Component
         public bool    $ghost       = false,
         public array   $options     = [],
         public bool    $multiple    = false,
-        public ?int    $rows        = null
+        public ?int    $rows        = null,
+        public ?int    $maxRows     = null
     ) {
     }
 
@@ -88,17 +89,21 @@ class Select extends Component
             @endif
             
             <x-dropdown class="w-full">
-                <x-slot:trigger @class([
-                    'select cursor-pointer custom-multiselect select-header w-full',
-                    'select-neutral'   => $color === 'neutral',
-                    'select-primary'   => $color === 'primary',
-                    'select-secondary' => $color === 'secondary',
-                    'select-accent'    => $color === 'accent',
-                    'select-info'      => $color === 'info',
-                    'select-success'   => $color === 'success',
-                    'select-warning'   => $color === 'warning',
-                    'select-error'     => $color === 'error',
-                ])>
+                <x-slot:trigger
+                    @class([
+                        'select cursor-pointer custom-multiselect select-header w-full',
+                        'select-neutral'   => $color === 'neutral',
+                        'select-primary'   => $color === 'primary',
+                        'select-secondary' => $color === 'secondary',
+                        'select-accent'    => $color === 'accent',
+                        'select-info'      => $color === 'info',
+                        'select-success'   => $color === 'success',
+                        'select-warning'   => $color === 'warning',
+                        'select-error'     => $color === 'error',
+                    ])
+                    @style([ 
+                        'height: unset' => $maxRows > 1,
+                    ])>
                     <div @class([
                         'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
                     ])>
@@ -128,10 +133,13 @@ class Select extends Component
                             @if ($multiple)
                                 <div
                                     @class([
-                                        'row-start-1 flex flex-wrap gap-2 pillbox',
+                                        'row-start-1 flex flex-wrap gap-2 pillbox overflow-auto',
                                         'col-start-1' => $label === null,
                                         'col-start-2' => $label !== null,
-                                ])>
+                                    ])
+                                    @style([
+                                        'max-height: calc(' . (6 * $maxRows) . ' * var(--size-selector) + ' . (2 * ($maxRows - 1)) . ' * var(--spacing))' => $maxRows > 1
+                                    ])>
                                     <template x-for="option in selectedOptions">
                                         <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
                                             <x-slot class="flex items-center">
