@@ -31,7 +31,7 @@ class Dropdown extends Component
                     'popovertarget' => $anchor ? 'popover-' . $anchor : null
                 ])->except('class') }}
                 {{ $attributes->except('class')->class([
-                    'dropdown [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
+                    'relative dropdown [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
                     'dropdown-hover'                    => $hover,
                     'hover:[&>.dropdown-content]:block' => $hover,
                     'dropdown-start'                    => $align === 'start',
@@ -65,8 +65,9 @@ class Dropdown extends Component
             @endif
             <div
                 {{ $attributes->class([
+                    'z-1000',
                     'dropdown' => $anchor !== null,
-                    'dropdown-content' => $anchor === null
+                    'dropdown-content absolute' => $anchor === null
                 ])->merge([
                     'tabindex' => -1,
                     'id'       => $anchor ? 'popover-' . $anchor : null,

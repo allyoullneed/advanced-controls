@@ -4,11 +4,11 @@ namespace AllYouNeed\AdvancedControls;
 
 class ComponentIndex {
     private int $i = 0;
-    public function value() {
+    public function increment() {
         $this->i += 1;
         return $this->i;
     }
-    public function count() {
+    public function value() {
         return $this->i;
     }
 }

@@ -19,13 +19,13 @@ class Tab extends Component
         return <<<'HTML'
         @aware(['id', 'showIndex', 'tabAttributes', 'vertical'])
         @php
-            $index = $showIndex?->value();
+            $index = $showIndex?->increment();
         @endphp
         <label
-            @class([
-                'tab has-checked:tab-active flex justify-end items-center',
+            {{ (gettype($label) === 'object' ? $label->attributes : $attributes->only(['style']))->class([
+                'tab whitespace-nowrap has-checked:tab-active flex items-center',
                 'col-start-1' => $vertical,
-            ])
+            ]) }}
         >
             <input class="appearance-none" type="radio" name="{{ $id }}" id="{{ $id }}-{{ $index }}" onfocus="this.blur()" @if ($index === 1) checked @endif/>
             @if ($icon)
@@ -35,7 +35,8 @@ class Tab extends Component
         </label>
         <div
             {{ $attributes->class([
-                'tab-content w-full order-1',
+                'tab-content w-full self-stretch order-1',
+                '-mt-px' => !$vertical,
                 'col-start-2 row-span-3 h-auto' => $vertical,
             ])->merge($tabAttributes->getAttributes()) }}
         >
@@ -44,4 +45,13 @@ class Tab extends Component
 
         HTML;
     }
+
+        //     <div
+        //     {{ $attributes->class([
+        //         'tab-content w-full self-stretch -mt-px order-1',
+        //         'col-start-2 row-span-3 h-auto' => $vertical,
+        //     ])->merge($tabAttributes->getAttributes()) }}
+        // >
+        //     {{ $slot }}
+        // </div>
 }

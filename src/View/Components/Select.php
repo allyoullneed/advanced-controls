@@ -22,7 +22,7 @@ class Select extends Component
         public array   $options     = [],
         public bool    $multiple    = false,
         public ?int    $rows        = null,
-        public ?int    $maxRows     = null
+        public int     $maxRows     = 1
     ) {
     }
 
@@ -107,7 +107,11 @@ class Select extends Component
                     <div @class([
                         'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
                     ])>
-                        @if (gettype($icon) === 'string')
+                        @if (gettype($icon) === 'object')
+                            <div {{ $icon->attributes->class(["h-lh aspect-square"])->merge() }}>
+                            {{ $icon }}
+                            </div>
+                        @elseif (gettype($icon) === 'string')
                             <div class="h-lh aspect-square">
                                 <x-icon :name="$icon"/>
                             </div>
@@ -125,7 +129,7 @@ class Select extends Component
                                 {{ $label }}
                             </div>
                         @endif
-                        <div class="h-full relative flex items-center">
+                        <div class="w-full h-full relative flex items-center">
                             @if ($placeholder)
                                 <span x-show="selectedOptions.length === 0"
                                 class="absolute text-current/50 select-none">{{ $placeholder }}</span>
@@ -133,12 +137,12 @@ class Select extends Component
                             @if ($multiple)
                                 <div
                                     @class([
-                                        'row-start-1 flex flex-wrap gap-2 pillbox overflow-auto',
+                                        'row-start-1 flex flex-wrap gap-2 pillbox overflow-auto items-center',
                                         'col-start-1' => $label === null,
                                         'col-start-2' => $label !== null,
                                     ])
                                     @style([
-                                        'max-height: calc(' . (6 * $maxRows) . ' * var(--size-selector) + ' . (2 * ($maxRows - 1)) . ' * var(--spacing))' => $maxRows > 1
+                                        'min-height: calc(6 * var(--size-selector) + 2 * var(--spacing)); max-height: calc(' . (6 * $maxRows) . ' * var(--size-selector) + ' . (2 * ($maxRows - 1)) . ' * var(--spacing))' => $maxRows > 1
                                     ])>
                                     <template x-for="option in selectedOptions">
                                         <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
@@ -159,7 +163,7 @@ class Select extends Component
                 <select multiple
                     x-model="selectedOptions"
                     @class([
-                        'w-full mt-1 select options-container [&>option+option]:mt-1',
+                        'w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
                         'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',

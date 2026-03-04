@@ -12,7 +12,7 @@ class Alert extends Component
         public ?string $description = null,
         public ?string $color       = null,
         public ?string $type        = null,
-        public ?string $variant       = null,
+        public ?string $variant     = null,
         public  mixed  $icon        = null
     ) {
         if ($type === 'info' || $type === 'success' || $type === 'warning' || $type === 'error')
@@ -49,63 +49,65 @@ class Alert extends Component
                 'alert-outline'          => $variant === 'outline',
                 'alert-dash alert-outline border-dashed' => $variant === 'dash'
                 ])
+                @if ($attributes->has(':class'))
+                    :class="{!! $attributes->get(':class') !!}"
+                @endif
             >
-            <div class="flex items-start gap-4">
-            @if (isset($icon) && $icon !== "")
-                @if (gettype($icon) === 'string')
-                    <x-icon :name="$icon" class="shrink-0 size-6"/>
-                @else
-                    <div
-                        {{ $icon->attributes}}
-                    >
-                    {{ $icon }}
-                    </div>
-                @endif
-            @elseif ($type === 'success')
-                <x-icon name="heroicon-o-check-circle" class="shrink-0 size-6"/>
-            @elseif ($type === 'warning')
-                <x-icon name="heroicon-o-exclamation-triangle" class="shrink-0 size-6"/>
-            @elseif ($type === 'error')
-                <x-icon name="heroicon-o-x-circle" class="shrink-0 size-6"/>
-            @elseif (($type === "" || $type === "info") && $icon === null)
-                <x-icon name="heroicon-o-information-circle" class="shrink-0 size-6"/>
-            @endif
-            <div class="basis-fullblock self-center flex flex-col items-start">
-                @if ($title)
-                    @if (gettype($title) === 'object')
-                        <span {{
-                            $title->attributes->class([
-                                'block font-bold' => $description != null
-                            ])->merge()
-                        }}>{{ $title }}</span>
-                    @else
-                        <span {{
-                            $attributes->except(['class'])->class([
-                                'block font-bold' => $description != null
-                            ])
-                        }}>{{ $title }}</span>
+                <div class="flex items-start gap-4">
+                    @if (isset($icon) && $icon !== "")
+                        @if (gettype($icon) === 'string')
+                            <x-icon :name="$icon" class="shrink-0 size-6"/>
+                        @else
+                            <div
+                                {{ $icon->attributes}}
+                            >
+                            {{ $icon }}
+                            </div>
+                        @endif
+                    @elseif ($type === 'success')
+                        <x-icon name="heroicon-o-check-circle" class="shrink-0 size-6"/>
+                    @elseif ($type === 'warning')
+                        <x-icon name="heroicon-o-exclamation-triangle" class="shrink-0 size-6"/>
+                    @elseif ($type === 'error')
+                        <x-icon name="heroicon-o-x-circle" class="shrink-0 size-6"/>
+                    @elseif (($type === "" || $type === "info") && $icon === null)
+                        <x-icon name="heroicon-o-information-circle" class="shrink-0 size-6"/>
                     @endif
-                @endif
-                    @if (gettype($description) === 'object' && $slot->isNotEmpty())
-                        <span {{ $attributes->except(['class'])->class(['text-xs' => $title != null])->merge() }}>
+                    <div class="basis-fullblock self-center flex flex-col items-start">
+                        @if ($title)
+                            @if (gettype($title) === 'object')
+                                <span {{
+                                    $title->attributes->class([
+                                        'block font-bold' => $description != null
+                                    ])->merge()
+                                }}>{{ $title }}</span>
+                            @else
+                                <span {{
+                                    $attributes->except(['class'])->class([
+                                        'block font-bold' => $description != null
+                                    ])
+                                }}>{{ $title }}</span>
+                            @endif
+                        @endif
+                        @if (gettype($description) === 'object' && $slot->isNotEmpty())
+                            <span {{ $attributes->except(['class'])->class(['text-xs' => $title != null])->merge() }}>
+                                <span {{ $description->attributes->class(['text-xs' => $title != null])->merge() }}>
+                                    {{ $description }}
+                                </span>
+                                {{ $slot }}
+                            </span>
+                        @elseif (gettype($description) === 'object')
                             <span {{ $description->attributes->class(['text-xs' => $title != null])->merge() }}>
                                 {{ $description }}
                             </span>
-                            {{ $slot }}
-                        </span>
-                    @elseif (gettype($description) === 'object')
-                        <span {{ $description->attributes->class(['text-xs' => $title != null])->merge() }}>
-                            {{ $description }}
-                        </span>
-                    @elseif ($description || $slot->isNotEmpty())
-                        <span {{ $attributes->except(['class'])->class(['text-xs' => $title != null])->merge() }}>
-                            {{ $description }}
-                            {{ $slot }}
-                        </span>
+                        @elseif ($description || $slot->isNotEmpty())
+                            <span {{ $attributes->except(['class'])->class(['text-xs' => $title != null])->merge() }}>
+                                {{ $description }}
+                                {{ $slot }}
+                            </span>
                         @endif
-
-            </div>
-            </div>
+                    </div>
+                </div>
             </div>
             @if (isset($actions))
                 <div 

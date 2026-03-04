@@ -11,7 +11,7 @@ use AllYouNeed\AdvancedControls\ComponentIndex;
 class Tabs extends Component
 {
     public string $id;
-    public object $showIndex;
+    public ComponentIndex $showIndex;
     public bool $vertical;
     public ComponentAttributeBag  $tabAttributes;
 
@@ -34,13 +34,17 @@ class Tabs extends Component
         else
             $this->tabAttributes = new ComponentAttributeBag([]);
     }
+    
+    // @style([
+    //     'grid-template-columns: repeat(' . $showIndex->value() . ', auto) 1fr' => !$vertical
+    // ])
 
     public function render(): View|Closure|string
     {
         return <<<'HTML'
         <div 
             {{ $attributes->class([
-                'tabs [&>.tab-content]:hidden *:[.tab:has(:checked)_+_.tab-content]:block',
+                'tabs [&>.tab]:rounded-b-none [&>.tab-content]:hidden *:[.tab:has(:checked)_+_.tab-content]:block',
                 'tabs-border'                              => $variant === 'border' && !$vertical,
                 '[&>.tab]:border-e-3 [&>.tab]:has-checked:border-e-current' => $variant === 'border' && $vertical,
                 'tabs-bordered'                            => $variant === 'border',
@@ -53,10 +57,9 @@ class Tabs extends Component
                 'tabs-md'                                  => $size === 'md',
                 'tabs-lg'                                  => $size === 'lg',
                 'tabs-xl'                                  => $size === 'xl',
-                'flex flex-wrap before:[&>.tab]:border-b-3'               => !$vertical,
+                'flex flex-wrap content-start before:[&>.tab]:border-b-3'               => !$vertical,
                 'grid grid-cols-[auto_1fr] grid-flow-col items-stretch before:[&>.tab]:border-e-3' => $vertical,
             ])->merge() }}
-            style="grid-template-rows: repeat({{ $showIndex->count() }}, minmax(0, 1fr))"
         >
             {{ $slot }}
         </div>

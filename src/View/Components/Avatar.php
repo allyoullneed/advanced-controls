@@ -17,15 +17,19 @@ class Avatar extends Component
     {
         return <<<'HTML'
         <span
-            {{ $attributes->class([
-                'w-max flex gap-2 items-center'
+            {{ $attributes->except(['class'])->class([
+                'avatar flex justify-start items-center gap-2'
             ])->merge() }}
         >
-            @if (gettype($picture) === 'string')
-                <img class="h-lh aspect-square" :src="$picture"/>
-            @else
-                {{ $picture }}
-            @endif
+            <div {{ $attributes->only(['class'])->class(["rounded-full aspect-square"]) }}>
+                @if (gettype($picture) === 'string')
+                    <img class="object-contain aspect-square rounded-full" src="{{ $picture }}"/>
+                @elseif ($picture)
+                    {{ $picture }}
+                @else
+                    <x-icon name="heroicon-s-user" class="mt-2"/>
+                @endif
+            </div>
             {{ $name ?? $slot }}
         </span>
         HTML;

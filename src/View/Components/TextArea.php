@@ -17,6 +17,7 @@ class TextArea extends Component
         public mixed   $icon        = null,
         public mixed   $trailIcon   = null,
         public ?string $size        = null,
+        public ?string $resize      = null,
         public ?string $color       = null,
         public bool    $ghost       = false,
         public ?int    $minlength   = 0,
@@ -34,8 +35,8 @@ class TextArea extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div {{ $attributes->except(['type', 'value', 'required', 'accept', 'wire:model'])->class([
-            'flex flex-col w-full'
+        <div {{ $attributes->except(['type', 'value', 'required', 'rows', 'accept', 'wire:model'])->class([
+            'relative flex flex-col w-full'
             ])->merge()
         }}>
         @if (gettype($title) === 'object')
@@ -72,8 +73,12 @@ class TextArea extends Component
             @endif
 
             <textarea
-                {{ $attributes->only(['name', 'value', 'required', 'wire:model'])->class([
+                {{ $attributes->only(['name', 'value', 'required', 'rows', 'wire:model'])->class([
                     'w-full textarea',
+                    'resize-none'                                                                          => $resize === 'none',
+                    'resize-y'                                                                             => $resize === 'vertical' || $resize === 'y',
+                    'resize-x'                                                                             => $resize === 'horizontal' || $resize === 'x',
+                    'resize'                                                                               => $resize === 'both',
                     '!textarea-error'                                                                      => $errors->has($errorFieldName()),
                     'textarea-neutral border-neutral! focus:outline-neutral! focus:shadow-neutral'         => $color === 'neutral',
                     'textarea-primary border-primary! focus:outline-primary! focus:shadow-primary'         => $color === 'primary',
@@ -147,7 +152,11 @@ class TextArea extends Component
             @endif
 
             @if (($minlength > 0 || $maxlength > 0) && $lengthIndicator)
-                <div class="absolute bottom-2 right-2 flex size-6 items-center justify-center v-popper--has-tooltip">
+                <div @class([
+                    'absolute flex size-6 items-center justify-center v-popper--has-tooltip',
+                    'bottom-2 right-2' => $resize !== 'none',
+                    'bottom-1 right-1' => $resize === 'none'
+                ])>
                     <svg class="absolute right-0 h-full w-full text-gray-200 dark:text-gray-700" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"></circle>
                     </svg>

@@ -40,6 +40,11 @@ class Radio extends Component
                     'group grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-1',
                     'justify-between' => $must_prepend,
                     'justify-start'   => !$must_prepend,
+                    'text-xl'         => $size === 'xl',
+                    'text-lg'         => $size === 'lg',
+                    'text-base'       => $size === 'md',
+                    'text-sm'         => $size === 'sm',
+                    'text-xs'         => $size === 'xs',
                 ])
             >
                 @if ($title)
@@ -71,12 +76,7 @@ class Radio extends Component
                 />
                 <label for="{{ $id }}"
                     {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
-                        'text-sm dropping-texts relative cursor-pointer select-none whitespace-nowrap',
-                        'text-xl' => $size === 'xl',
-                        'text-lg' => $size === 'lg',
-                        'text-md' => $size === 'md',
-                        'text-sm' => $size === 'sm',
-                        'text-xs' => $size === 'xs',
+                        'label label-text relative cursor-pointer select-none whitespace-nowrap',
                     ])->merge() }}
                 >
                     @if ($labelChecked)

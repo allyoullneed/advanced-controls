@@ -16,11 +16,12 @@ class Carousel extends Component
     public function __construct(
         public  mixed $slides       = null,
         public ?int   $count        = null,
-        public  float $timePerSlide = 5.,
+        public  float $timePerSlide = 4,
+        public  float $rotationTime = 1,
         public  bool  $indicators   = false,
     ) {
         $this->showIndex = new ComponentIndex();
-        $this->slideAttributes = new ComponentAttributeBag(['class' => 'carousel-slide',]);
+        $this->slideAttributes = new ComponentAttributeBag();
     }
 
     public function render(): View|Closure|string
@@ -28,45 +29,59 @@ class Carousel extends Component
         return <<<'HTML'
         @php
             if (!$count)
-                $count = $showIndex->count();
+                $count = $showIndex->value();
         @endphp
-        <div {{ $attributes->class(['overflow-x-hidden'])->merge() }}>
+        <div {{ $attributes->class(['overflow-hidden'])->merge() }}>
             <style>
                 .carousel > div {
-                    animation: sliderotation calc(var(--slides) * var(--time-per-slide)) steps(var(--slides)) infinite,
-                                smooth var(--time-per-slide) ease infinite;
+                    --unit:     1s;
+
+                    --total: calc(var(--delay) + var(--duration) + var(--transition));
+                    --total-duration: calc(var(--total) * var(--unit));
+
+                    --delay-start: calc(var(--delay) / var(--total) * 100%);
+                    --transition-start: calc((var(--delay) + var(--transition)) / var(--total) * 100%);
+                    
+                    --timing: linear(0, 
+                        0 var(--delay-start), 
+                        1 var(--transition-start), 
+                        1);
+
+                    animation: sliderotation calc(var(--slides) * var(--total-duration)) steps(var(--slides)) calc(var(--duration) * var(--unit)) infinite,
+                               var(--total-duration) var(--timing) infinite calc(var(--duration) * var(--unit)) smooth;
                     animation-composition: add;
                     transition: transform;
                 }
                 .carousel template {
                     display: contents;
                 }
-                .carousel .carousel-slide {
+                .carousel > div > *  {
                     width: calc(100% / var(--slides_per_stop) - 1rem * (var(--slides_per_stop) - 1) / var(--slides_per_stop));
                     flex: none;
                 }
                 @keyframes smooth {
-                    0% { transform: translateX(0) }
-                    75% { transform: translateX(0) }
-                    100%   { transform: translateX(calc(-1 * (100% + 1rem) / var(--slides_per_stop))) }
+                    from { transform: translateX(0) }
+                    to   { transform: translateX(calc(-1 * (100% + 1rem) / var(--slides_per_stop))) }
                 }
                 @keyframes sliderotation {
                     from { transform: translateX(0) }
                     to   { transform: translateX(calc(-1 * var(--slides) * (100% + 1rem) / var(--slides_per_stop))) }
                 }
             </style>
-            <div class="carousel w-full overflow-visible p-0"
+            <div class="carousel w-full h-full overflow-visible p-0"
+                @style([
+                    '--slides:' . ($slides ? count($slides) : $count),
+                    '--duration: ' . $timePerSlide,
+                    '--delay: 0' ,
+                    '--transition: '. $rotationTime
+                ])
                 @if ($slides)
                 x-data="{
                     slides: {{ json_encode($slides) }}
                 }"
                 @endif
             >
-                <div class="flex w-full flex-row gap-4"
-                    @style([
-                        '--time-per-slide:' . $timePerSlide . 's',
-                        '--slides:' . ($slides ? count($slides) : $count),
-                ])>
+                <div class="flex w-full flex-row gap-4 *:object-cover">
                     {{ $slot }}
                     {{ $slot }}
                 </div>

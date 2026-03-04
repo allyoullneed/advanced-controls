@@ -56,7 +56,6 @@ class Toast extends Component
             >
                 <template x-for="(notification, index) in notifications" x-bind:key="notification.id">  
                     <div>
-                        <!-- HTML Notification  -->
                         <template x-if="notification.html">
                             <div
                                 class="flex pointer-events-auto relative transition duration-300 ease-in-out"
@@ -65,23 +64,32 @@ class Toast extends Component
                                 x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
                                 x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
                                 x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
-                                x-transition:enter=""
+                                x-transition:enter="transition duration-300 ease-out"
                                 x-transition:enter-end="translate-y-0"
                                 x-transition:enter-start="translate-y-8"
-                                x-transition:leave=""
+                                x-transition:leave="transition duration-300 ease-in"
                                 x-transition:leave-end="-translate-x-24 opacity-0 md:translate-x-24"
                                 x-transition:leave-start="translate-x-0 opacity-100"
                             >
                                 <div x-html="notification.html"></div>
-                                <x-button label="✕" class="border-0 ml-1 shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
+                                <x-button label="✕" class="border-0 ml-1 shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="isVisible = false; removeNotification(notification.id)"/>
                             </div>
                         </template>
-                        <!-- Info Notification  -->
-                        <template x-if="notification.type === 'info'">     
+                        <template x-if="!notification.html">     
                             <x-alert
-                                type="info"
-                                class="pointer-events-auto relative"
-                                ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
+                                class="pointer-events-auto relative flex flex-row flex-nowrap gap-2"
+                                ::class="[
+                                    notification.variant === 'soft' ? 'alert-soft' : '',
+                                    notification.variant === 'outline' ? 'bg-base-100' : '',
+                                    notification.type === 'info' ? 'alert-info' : '',
+                                    notification.type === 'success' ? 'alert-success' : '',
+                                    notification.type === 'warning' ? 'alert-warning' : '',
+                                    notification.type === 'error' ? 'alert-error' : '',
+                                    notification.variant === 'outline' && notification.type === 'info' ? '*:text-info' : '',
+                                    notification.variant === 'outline' && notification.type === 'success' ? '*:text-success' : '',
+                                    notification.variant === 'outline' && notification.type === 'warning' ? '*:text-warning' : '',
+                                    notification.variant === 'outline' && notification.type === 'error' ? '*:text-error' : '',
+                                ]"
                                 x-data="{ isVisible: false, timeout: null }"
                                 x-show="isVisible" x-cloak
                                 x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
@@ -95,142 +103,25 @@ class Toast extends Component
                                 x-transition:leave-start="translate-x-0 opacity-100"
                             >
                                 <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
-                                <x-slot:description x-show="notification.message">
-                                    <x-avatar x-show="notification.sender" class="block font-bold mt-2">
+                                <x-slot:description
+                                    class="pe-12"
+                                    x-show="notification.message"
+                                >
+                                    <div x-show="notification.sender" class="block font-bold mt-2">
                                         <img alt="Avatar" x-bind:src="notification.sender?.avatar" class="size-8 rounded-full mr-2 inline-block align-middle"/>
                                         <span x-text="notification.sender?.name"></span>
-                                    </x-avatar>
+                                    </div>
                                     <span x-html="notification.message"></span>
+                                    <div class="absolute inset-0">
+                                        <x-button label="✕" 
+                                            ::class="[
+                                                notification.variant ? 'btn-' + notification.variant : '',
+                                                notification.type    ? 'btn-' + notification.type : ''
+                                            ]"
+                                            class="btn-circle border-0 ml-auto shadow-none absolute top-1/2 end-1 inset-e-1 -translate-y-1/2"
+                                            aria-label="dismiss notification" x-on:click="isVisible = false; removeNotification(notification.id)"/>
+                                    </div>
                                 </x-slot:description>
-                                <x-slot:actions>
-                                    <x-button label="✕" color="info" ::class="notification.variant ? 'btn-' + notification.variant : ''" class="border-0 ml-auto shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
-                                </x-slot:actions>
-                        </x-alert>
-                        </template>
-
-                        <!-- Success Notification  -->
-                        <template x-if="notification.type === 'success'">
-                            <x-alert
-                                type="success"
-                                class="pointer-events-auto relative"
-                                ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
-                                x-data="{ isVisible: false, timeout: null }"
-                                x-show="isVisible" x-cloak
-                                x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
-                                x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
-                                x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
-                                x-transition:enter="transition duration-300 ease-out"
-                                x-transition:enter-end="translate-y-0"
-                                x-transition:enter-start="translate-y-8"
-                                x-transition:leave="transition duration-300 ease-in"
-                                x-transition:leave-end="-translate-x-24 opacity-0 md:translate-x-24"
-                                x-transition:leave-start="translate-x-0 opacity-100"
-                            >
-                                <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
-                                <x-slot:description x-show="notification.message">
-                                    <x-avatar x-show="notification.sender" class="block font-bold mt-2">
-                                        <img alt="Avatar" x-bind:src="notification.sender?.avatar" class="size-8 rounded-full mr-2 inline-block align-middle"/>
-                                        <span x-text="notification.sender?.name"></span>
-                                    </x-avatar>
-                                    <span x-html="notification.message"></span>
-                                </x-slot:description>
-                                <x-slot:actions>
-                                    <x-button label="✕" color="success" ::class="notification.variant ? 'btn-' + notification.variant : ''" class="border-0 ml-auto shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
-                                </x-slot:actions>
-                            </x-alert>
-                        </template>
-
-                        <!-- Warning Notification  -->
-                        <template x-if="notification.type === 'warning'"> 
-                            <x-alert
-                                type="warning"
-                                class="pointer-events-auto relative"
-                                ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
-                                x-data="{ isVisible: false, timeout: null }"
-                                x-show="isVisible" x-cloak
-                                x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
-                                x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
-                                x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
-                                x-transition:enter="transition duration-300 ease-out"
-                                x-transition:enter-end="translate-y-0"
-                                x-transition:enter-start="translate-y-8"
-                                x-transition:leave="transition duration-300 ease-in"
-                                x-transition:leave-end="-translate-x-24 opacity-0 md:translate-x-24"
-                                x-transition:leave-start="translate-x-0 opacity-100"
-                            >
-                                <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
-                                <x-slot:description x-show="notification.message">
-                                    <x-avatar x-show="notification.sender" class="block font-bold mt-2">
-                                        <img alt="Avatar" x-bind:src="notification.sender?.avatar" class="size-8 rounded-full mr-2 inline-block align-middle"/>
-                                        <span x-text="notification.sender?.name"></span>
-                                    </x-avatar>
-                                    <span x-html="notification.message"></span>
-                                </x-slot:description>
-                                <x-slot:actions>
-                                    <x-button label="✕" color="warning" ::class="notification.variant ? 'btn-' + notification.variant : ''" class="border-0 ml-auto shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
-                                </x-slot:actions>
-                            </x-alert>
-                        </template>
-
-                        <!-- Error Notification  -->             
-                        <template x-if="notification.type === 'error'">     
-                            <x-alert
-                                type="error"
-                                class="pointer-events-auto relative"
-                                ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
-                                x-data="{ isVisible: false, timeout: null }"
-                                x-show="isVisible" x-cloak
-                                x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
-                                x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
-                                x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
-                                x-transition:enter="transition duration-300 ease-out"
-                                x-transition:enter-end="translate-y-0"
-                                x-transition:enter-start="translate-y-8"
-                                x-transition:leave="transition duration-300 ease-in"
-                                x-transition:leave-end="-translate-x-24 opacity-0 md:translate-x-24"
-                                x-transition:leave-start="translate-x-0 opacity-100"
-                            >
-                                <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
-                                <x-slot:description x-show="notification.message">
-                                    <x-avatar x-show="notification.sender" class="block font-bold mt-2">
-                                        <img alt="Avatar" x-bind:src="notification.sender?.avatar" class="size-8 rounded-full mr-2 inline-block align-middle"/>
-                                        <span x-text="notification.sender?.name"></span>
-                                    </x-avatar>
-                                    <span x-html="notification.message"></span>
-                                </x-slot:description>
-                                <x-slot:actions>
-                                    <x-button label="✕" color="error" ::class="notification.variant ? 'btn-' + notification.variant : ''" class="border-0 ml-auto shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
-                                </x-slot:actions>
-                            </x-alert>
-                        </template>
-
-                        <template x-if="!notification.html && notification.type !== 'info' && notification.type !== 'success' && notification.type !== 'warning' && notification.type !== 'error'">     
-                            <x-alert
-                                class="pointer-events-auto relative"
-                                ::class="[notification.variant ? 'alert-' + notification.variant : '', notification.variant === 'outline' ? 'bg-base-200' : '']"
-                                x-data="{ isVisible: false, timeout: null }"
-                                x-cloak x-show="isVisible"
-                                x-on:pause-auto-dismiss.window="clearTimeout(timeout)"
-                                x-on:resume-auto-dismiss.window=" timeout = setTimeout(() => {(isVisible = false), removeNotification(notification.id) }, displayDuration)"
-                                x-init="$nextTick(() => { isVisible = true }), (timeout = setTimeout(() => { isVisible = false, removeNotification(notification.id)}, displayDuration))"
-                                x-transition:enter="transition duration-300 ease-out"
-                                x-transition:enter-end="translate-y-0"
-                                x-transition:enter-start="translate-y-8"
-                                x-transition:leave="transition duration-300 ease-in"
-                                x-transition:leave-end="-translate-x-24 opacity-0 md:translate-x-24"
-                                x-transition:leave-start="translate-x-0 opacity-100"
-                            >
-                                <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
-                                <x-slot:description x-show="notification.message">
-                                    <x-avatar x-show="notification.sender" class="block font-bold mt-2">
-                                        <img alt="Avatar" x-bind:src="notification.sender?.avatar" class="size-8 rounded-full mr-2 inline-block align-middle"/>
-                                        <span x-text="notification.sender?.name"></span>
-                                    </x-avatar>
-                                    <span x-html="notification.message"></span>
-                                </x-slot:description>
-                                <x-slot:actions>
-                                    <x-button label="✕" ::class="notification.variant ? 'btn-' + notification.variant : ''" class="border-0 ml-auto shadow-none aspect-square rounded-full" aria-label="dismiss notification" x-on:click="(isVisible = false), removeNotification(notification.id)"/>
-                                </x-slot:actions>
                             </x-alert>
                         </template>
 

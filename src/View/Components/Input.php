@@ -66,7 +66,7 @@ class Input extends Component
                     'input-error border-error outline-error!'             => $type  !== 'file' && $color === 'error',
                     'input-xs'                                            => $type  !== 'file' && $size === 'xs',
                     'input-sm'                                            => $type  !== 'file' && $size === 'sm',
-                    'input-md'                                            => $type  !== 'file' && $size !== 'xs' && $size !== 'sm' && $size !== 'lg' && $size !== 'xl',
+                    'input-md'                                            => $type  !== 'file' && $size === 'md',
                     'input-lg'                                            => $type  !== 'file' && $size === 'lg',
                     'input-xl'                                            => $type  !== 'file' && $size === 'xl',
                     'input-ghost'                                         => $ghost,
@@ -216,7 +216,8 @@ class Input extends Component
         @elseif ($helper)
             <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
         @endif
-        
+
+        @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
         @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
         @if ($error)
             <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>

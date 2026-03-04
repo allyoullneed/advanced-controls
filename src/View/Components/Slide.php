@@ -17,7 +17,7 @@ class Slide extends Component
         return <<<'HTML'
         @aware(['showIndex', 'showCondition', 'slideAttributes'])
         @php
-            $index = $showIndex?->value();
+            $index = $showIndex?->increment();
         @endphp
         <div
             {{ $attributes->except(['class'])->class([
@@ -29,12 +29,14 @@ class Slide extends Component
         >
             @if (gettype($image) === 'object')
                 {{ $image }}
-            @else
-                <img src="{{ $image }}" alt="" class="row-start-1 col-start-1"/>
+            @elseif ($image)
+                <img src="{{ $image }}" alt="" class="object-cover row-start-1 col-start-1"/>
             @endif
-            <div {{ $attributes->only(['class'])->class(['inset-0 row-start-1 col-start-1 z-1']) }}>
+            @if ($slot->isnotEmpty())
+            <div {{ $attributes->only(['class'])->class(['inset-0 row-start-1 col-start-1']) }}>
                 {{ $slot->withAttributes(['class']) }}
             </div>
+            @endif
         </div>
         HTML;
     }

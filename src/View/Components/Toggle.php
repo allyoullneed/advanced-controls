@@ -16,7 +16,7 @@ class Toggle extends Component
         public mixed   $helper         = null,
         public ?string $error          = null,
         public ?string $color          = null,
-        public ?string $size         = null,
+        public ?string $size           = null,
         public string  $value          = "1",
         public ?string $valueUnchecked = null,
         public bool    $checked        = false,
@@ -51,6 +51,11 @@ class Toggle extends Component
                     'grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1' => $label,
                     'justify-between' => $must_prepend,
                     'justify-start'   => !$must_prepend,
+                    'text-xl'         => $size === 'xl',
+                    'text-lg'         => $size === 'lg',
+                    'text-base'       => $size === 'md',
+                    'text-sm'         => $size === 'sm',
+                    'text-xs'         => $size === 'xs',
                 ]) }}
             >
                 @if ($title)
@@ -58,12 +63,7 @@ class Toggle extends Component
                 @endif
                 <label
                     {{ (gettype($label) === 'object' ? $label->attributes : $attributes->except(['type', 'name', 'value', 'checked', 'class']))->class([
-                        'flex gap-2 items-center text-sm dropping-texts relative cursor-pointer select-none',
-                        'text-xl' => $size === 'xl',
-                        'text-lg' => $size === 'lg',
-                        'text-md' => $size === 'md',
-                        'text-sm' => $size === 'sm',
-                        'text-xs' => $size === 'xs',
+                        'label label-text flex items-center gap-1.5 relative cursor-pointer select-none',
                     ])->merge() }}
                 >
                     <input id="{{ $id }}" type="checkbox"
@@ -81,6 +81,11 @@ class Toggle extends Component
                                 'toggle-success switch-success'     => ($type ?? $color) === 'success',
                                 'toggle-warning switch-warning'     => ($type ?? $color) === 'warning',
                                 'toggle-error switch-error'         => ($type ?? $color) === 'error',
+                                'toggle-xl switch-xl'               => $size === 'xl',
+                                'toggle-lg switch-lg'               => $size === 'lg',
+                                'toggle-md switch-md'               => $size === 'md',
+                                'toggle-sm switch-sm'               => $size === 'sm',
+                                'toggle-xs switch-xs'               => $size === 'xs',
                                 'order-last'                        => $must_prepend,
                             ])->merge([
                                 'checked' => $checked
@@ -88,8 +93,16 @@ class Toggle extends Component
                         }}
                     />
                     @if ($labelChecked)
-                        <div class="inline group-has-checked:hidden">{{ $label }}</div>
-                        <div class="hidden group-has-checked:inline">{{ $labelChecked }}</div>
+                        <div class="grid grid-cols-1">
+                            <span @class([
+                                'col-start-1 row-start-1 group-has-checked:opacity-0 transition-opacity duration-250',
+                                'justify-self-end' => $must_prepend,
+                            ])>{{ $label }}</span>
+                            <span @class([
+                                'col-start-1 row-start-1 group-not-has-checked:opacity-0 transition-opacity duration-250',
+                                'justify-self-end' => $must_prepend,
+                            ])>{{ $labelChecked }}</span>
+                        </div>
                     @else
                         {{ $label }}
                     @endif
@@ -113,8 +126,8 @@ class Toggle extends Component
             </div>
         @else
             <div {{ $attributes->whereDoesntStartWith('wire:model')->except(['type', 'name', 'value', 'checked'])->class([
-                    'group grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1 justify-start',
-                    'grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1' => $label,
+                    'group grid grid-cols-[auto_1fr] items-center justify-start'=> !$label,
+                    'grid grid-cols-[auto_1fr] items-center' => $label,
                     'justify-between' => $must_prepend,
                     'justify-start'   => !$must_prepend,
                 ]) }}
