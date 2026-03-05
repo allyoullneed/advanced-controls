@@ -190,8 +190,10 @@ class Input extends Component
         @elseif ($helper)
         <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
         @endif
+
+        @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
         @if ($error)
-            <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
+            <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
         @endif
         </div>
         HTML;

@@ -117,7 +117,7 @@ class Toggle extends Component
                     <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
                 @endif
                 
-                @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
                 @if ($error)
                     <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $error }}</x-badge>
                 @endif
@@ -169,9 +169,9 @@ class Toggle extends Component
                     <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
                 @endif
 
-                @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
                 @if ($error)
-                    <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $error }}</x-badge>
+                    <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
                 @endif
             </div>
         @endif

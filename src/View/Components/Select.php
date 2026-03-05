@@ -211,7 +211,7 @@ class Select extends Component
             
             @error('values.' . substr($attributes->get('name'), 0, -2)) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
             @if ($error)
-                <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
+                <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
             @endif
         
         </div>

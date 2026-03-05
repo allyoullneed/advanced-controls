@@ -218,9 +218,8 @@ class Input extends Component
         @endif
 
         @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
-        @error('values.' . $attributes->get('name')) <x-badge class="mt-1 order-last" type="error" size="sm">{{ $message }}</x-badge> @enderror
         @if ($error)
-            <x-badge class="mt-1 order-last" type="error" size="sm">{{ $error }}</x-badge>
+            <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
         @endif
 
         </div>
