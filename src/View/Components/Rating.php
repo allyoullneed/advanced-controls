@@ -3,15 +3,23 @@
 namespace AllYouNeed\AdvancedControls\View\Components;
 
 
+use AllYouNeed\AdvancedControls\ComponentIndex;
+
 use Illuminate\View\Component;
 
 class Rating extends Component
 {
+    public string $id;
+    public string $name;
+    public ?string                $size;
+    public object|int|string|null $showIndex;
+
     public function __construct(
-        public ?string $id = null,
+        ?string $id = null,
+        ?string $name = null,
         public int                      $maxValue = 5,
         public int                      $value    = 0,
-        public ?string                  $size     = null,
+               ?string                  $size     = null,
         public array|object|string|null $svg      = null,
         public bool|string              $mask     = false,
         public mixed                    $title    = null,
@@ -22,6 +30,9 @@ class Rating extends Component
             $this->id = $id;
         else
             $this->id = 'rating-' . uniqid();
+        $this->name = $name ?? $this->id;
+        $this->size = $size;
+        $this->showIndex = new ComponentIndex();
     }
     
     public function render(): View|Closure|string
@@ -74,10 +85,12 @@ class Rating extends Component
                     name="{{ $attributes['name'] ?? $id }}"
                     aria-label="{{ $i }} star{{ $i > 1 ? 's' : '' }}" />
                 @endfor
+            @elseif ($slot->isNotEmpty())
+                {{ $slot }}
             @else
-            <div @class([
-                'flex flex-row items-center',
-            ])>
+                <div @class([
+                    'flex flex-row items-center',
+                ])>
                 @for ($i = 1; $i <= $maxValue; $i++)
                 <label for="{{ $id }}-{{ $i }}" @class([
                     'transition cursor-pointer hover:scale-125',
@@ -167,6 +180,7 @@ class Rating extends Component
                 </label>
                 @endfor
                 </div>
+
             @endif
         </div>
         HTML;

@@ -9,7 +9,8 @@ class SkewedGallery extends Component
 {
     public function __construct(
         public string $skew = '100px',
-        public bool $left = false
+        public bool $left = false,
+        public array $pictures = []
     ) { }
 
     public function render(): View|Closure|string
@@ -21,7 +22,13 @@ class SkewedGallery extends Component
             ])->merge() }}
             style="--skew:{{ $skew }}"
         >
-            {{ $slot }}
+            @if (count($pictures) > 0)
+                @foreach ($pictures as $picture)
+                    <img src="{{ $picture }}"/>
+                @endforeach
+            @else
+                {{ $slot }}
+            @endif
         </div>  
         HTML;
     }

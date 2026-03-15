@@ -8,30 +8,62 @@ use Illuminate\View\Component;
 class TimelineEvent extends Component
 {
     public function __construct(
-        public ?bool $first = null,
-        public bool $last = false,
-        public ?string $color = null
+        public ?string $color     = null,
+        public mixed   $icon      = null,
+        public mixed   $start     = null,
+        public mixed   $end       = null,
+        public ?string $size      = null,
+        public bool    $swapped   = false,
     ) {
     }
-
-
-                // <hr @class([
-                //     'rounded-e-[var(--radius-selector)]' => !$vertical,
-                //     'rounded-b-[var(--radius-selector)]' => $vertical,
-                // ])/>
 
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @aware(['eventIndex'])
             <li {{ $attributes }}>
-                @if (($first !== null && !$first) || $eventIndex->increment() > 1)
-                    <hr/>
+                <hr/>
+                    
+                @if (gettype($icon) === 'object')
+                    {{ $icon->withAttributes(['class' => 'timeline-middle']) }}
+                @elseif ($icon)
+                    <x-icon @class([
+                        'timeline-middle',
+                        'size-7' => $size === 'xl',
+                        'size-6' => $size === 'lg',
+                        'size-5' => $size === 'md' || $size === null,
+                        'size-4' => $size === 'sm',
+                        'size-3' => $size === 'xs',
+                        ]) :name="$icon"/>
                 @endif
-                {{ $slot }}
-                @if ($last !== null && !$last)
-                    <hr/>
+
+                @if (gettype($start) === 'object')
+                    <div {{ $start->attributes->class([
+                        'timeline-start' => !$swapped,
+                        'timeline-end'   => $swapped,
+                        ])->merge() }}>
+                    {{ $start }}
+                    </div>
+                @elseif ($start)
+                    <div @class([
+                        'timeline-start' => !$swapped,
+                        'timeline-end'   => $swapped,
+                        ])>{{ $start }}</div>
                 @endif
+                
+                @if (gettype($end) === 'object')
+                    <div {{ $end->attributes->class([
+                        'timeline-start' => $swapped,
+                        'timeline-end'   => !$swapped,
+                        ])->merge() }}>
+                    {{ $end }}
+                    </div>
+                @elseif ($end)
+                    <div @class([
+                        'timeline-start' => $swapped,
+                        'timeline-end'   => !$swapped,
+                        ])>{{ $end }}</div>
+                @endif
+                <hr/>
             </li>
         HTML;
     }

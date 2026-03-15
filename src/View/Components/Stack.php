@@ -22,7 +22,7 @@ class Stack extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div {{ $attributes->class(['w-full'])->merge() }}
+        <div {{ $attributes }}
         >   
             {{ $slot }}
         </div>

@@ -27,13 +27,13 @@ class SlideShow extends Component
             $this->count = count($slides ?? []);
         $this->showIndex = new ComponentIndex();
         $this->showCondition = "return 'currentSlideIndex === ' .   \$showIndex->value();";
-        $this->slideAttributes = new ComponentAttributeBag(['x-cloak' => 1, 'class' => 'col-start-1 row-start-1',]);
+        $this->slideAttributes = new ComponentAttributeBag(['x-cloak' => 1, 'noDefaultClass' => 1]);
     }
     public function render(): View|Closure|string
     {
         return <<<'HTML'
         <div 
-            {{ $attributes->class(['relative w-full overflow-hidden'])->merge() }}
+            {{ $attributes->class(['relative w-full rounded-box overflow-hidden'])->merge() }}
             x-data="{
                 count: {{ $count }},
                 currentSlideIndex: 1,
@@ -107,7 +107,7 @@ class SlideShow extends Component
                     </svg>
                 </button>
             @endif
-            <div class="inset-0 grid grid-cols-1 bg-base-100">
+            <div class="slide h-full grid *:col-start-1 *:row-start-1" x-transition.opacity.duration.1000ms>
                 {{ $slot }}
             </div>
 

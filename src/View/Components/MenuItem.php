@@ -35,8 +35,10 @@ class MenuItem extends Component
                         >
                             @if (gettype($icon) === 'string')
                                 <x-icon class="h-lh" :name="$icon"/>
-                            @else
-                                {{ $icon }}
+                            @elseif ($icon)
+                                <div {{ $icon->attributes }}>
+                                {!! $icon->withAttributes($icon->attributes->getAttributes()) !!}
+                                </div>
                             @endif
                             {{ $label }}
                         </summary>
@@ -51,8 +53,10 @@ class MenuItem extends Component
                     >
                         @if (gettype($icon) === 'string')
                             <x-icon class="h-lh" :name="$icon"/>
-                        @else
-                            {{ $icon }}
+                        @elseif ($icon)
+                            <div {{ $icon->attributes }}>
+                            {!! $icon->withAttributes($icon->attributes->getAttributes()) !!}
+                            </div>
                         @endif
                         @if (gettype($label) === 'object')
                             <div {{ $label->attributes }}>
@@ -71,8 +75,10 @@ class MenuItem extends Component
                 ])->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>    
-                    @else
-                        {{ $icon }}
+                    @elseif ($icon)
+                        <div {{ $icon->attributes }}>
+                        {!! $icon->withAttributes($icon->attributes->getAttributes()) !!}
+                        </div>
                     @endif
                     {{ $title }}{{ $label }}
                 </a>
@@ -83,8 +89,10 @@ class MenuItem extends Component
                 ])->merge() }}>
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>
-                    @else
-                        {{ $icon }}
+                    @elseif ($icon)
+                        <div {{ $icon->attributes }}>
+                        {!! $icon->withAttributes($icon->attributes->getAttributes()) !!}
+                        </div>
                     @endif
                     {{ $slot }}
                 </a>

@@ -9,6 +9,7 @@ class Slide extends Component
 {
     public function __construct(
         public mixed $image = null,
+        public string $align = '',
     ) {
     }
 
@@ -19,10 +20,11 @@ class Slide extends Component
         @php
             $index = $showIndex?->increment();
         @endphp
-        <div
+        <div             
             {{ $attributes->except(['class'])->class([
-                'grid grid-cols-1 items-stretch justify-stretch',
-            ])->merge($slideAttributes?->getAttributes() ?? []) }}
+                'flex ' . $align => strlen($align) > 0,
+                'relative'  => !$slideAttributes?->has('noDefaultClass'),
+            ])->merge($slideAttributes?->except(['noDefaultClass'])->getAttributes() ?? []) }}
             @if ($showCondition)
                 x-show="{{ eval($showCondition) }}"
             @endif
@@ -30,13 +32,14 @@ class Slide extends Component
             @if (gettype($image) === 'object')
                 {{ $image }}
             @elseif ($image)
-                <img src="{{ $image }}" alt="" class="object-cover row-start-1 col-start-1"/>
+                <img src="{{ $image }}" alt="" class="w-full"/>
             @endif
-            @if ($slot->isnotEmpty())
-            <div {{ $attributes->only(['class'])->class(['inset-0 row-start-1 col-start-1']) }}>
-                {{ $slot->withAttributes(['class']) }}
+            <div {{ $attributes->only(['class'])->class([
+                    'grid grid-cols-1 grid-rows-1 *:row-start-1 *:col-start-1',
+                    'absolute top-0 w-full h-full' => $image
+                ]) }}>
+                {{ $slot }}
             </div>
-            @endif
         </div>
         HTML;
     }

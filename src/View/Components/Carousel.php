@@ -32,6 +32,7 @@ class Carousel extends Component
                 $count = $showIndex->value();
         @endphp
         <div {{ $attributes->class(['overflow-hidden'])->merge() }}>
+            @once
             <style>
                 .carousel > div {
                     --unit:     1s;
@@ -68,6 +69,7 @@ class Carousel extends Component
                     to   { transform: translateX(calc(-1 * var(--slides) * (100% + 1rem) / var(--slides_per_stop))) }
                 }
             </style>
+            @endonce
             <div class="carousel w-full h-full overflow-visible p-0"
                 @style([
                     '--slides:' . ($slides ? count($slides) : $count),

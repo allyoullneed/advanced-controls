@@ -52,16 +52,18 @@ class Radios extends Component
             @if (gettype($helper) === 'object')
                 <span {{
                     $helper->attributes->class([
-                        'w-full helper-text text-sm text-gray-500',
+                        'w-full helper-text text-left text-sm text-gray-500',
                     ])->merge()
                 }}>{{ $helper }}</span>
             @elseif ($helper)
-                <span class="w-full helper-text text-sm text-gray-500">{{ $helper }}</span>
+                <span class="w-full helper-text text-left text-sm text-gray-500">{{ $helper }}</span>
             @endif
             
-            @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
+            @error($attributes->whereStartsWith('wire:model')->first())
+                <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm">{{ $message }}</span></x-badge>
+            @enderror
             @if ($error)
-                <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
+                <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm"><span class="block truncate">{{ $error }}</span></x-badge>
             @endif
 
         </div>

@@ -38,6 +38,7 @@ use AllYouNeed\AdvancedControls\View\Components\Slide;
 use AllYouNeed\AdvancedControls\View\Components\SlideShow;
 use AllYouNeed\AdvancedControls\View\Components\Stack;
 use AllYouNeed\AdvancedControls\View\Components\StackElement;
+use AllYouNeed\AdvancedControls\View\Components\Star;
 use AllYouNeed\AdvancedControls\View\Components\Tab;
 use AllYouNeed\AdvancedControls\View\Components\Tabs;
 use AllYouNeed\AdvancedControls\View\Components\Table;
@@ -106,6 +107,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'slideshow'      , SlideShow::class);
         Blade::component($prefix . 'stack'          , Stack::class);
         Blade::component($prefix . 'stack-element'  , StackElement::class);
+        Blade::component($prefix . 'star'           , Star::class);
         Blade::component($prefix . 'switch'         , Toggle::class);
         Blade::component($prefix . 'tab'            , Tab::class);
         Blade::component($prefix . 'tabs'           , Tabs::class);

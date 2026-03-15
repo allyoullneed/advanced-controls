@@ -163,11 +163,11 @@ class Pin extends Component
             @if (gettype($helper) === 'object')
                 <span {{
                     $helper->attributes->class([
-                        'helper-text text-sm text-gray-500',
+                        'helper-text text-left text-sm text-gray-500',
                     ])->merge()
                 }}>{{ $helper }}</span>
             @elseif ($helper)
-                <span class="helper-text text-sm text-gray-500">{{ $helper }}</span>
+                <span class="helper-text text-left text-sm text-gray-500">{{ $helper }}</span>
             @endif
 
         </div>

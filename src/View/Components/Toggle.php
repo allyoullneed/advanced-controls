@@ -110,16 +110,18 @@ class Toggle extends Component
                 @if (gettype($helper) === 'object')
                     <span {{
                         $helper->attributes->class([
-                            'helper-text text-sm text-gray-500 col-span-full',
+                            'helper-text text-left text-sm text-gray-500 col-span-full',
                         ])->merge()
                     }}>{{ $helper }}</span>
                 @elseif ($helper)
-                    <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
+                    <span class="helper-text text-left text-sm text-gray-500 col-span-full">{{ $helper }}</span>
                 @endif
                 
-                @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @error($attributes->whereStartsWith('wire:model')->first())
+                    <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm">{{ $message }}</span></x-badge>
+                @enderror
                 @if ($error)
-                    <x-badge class="mt-1 order-last col-span-full" type="error" size="sm">{{ $error }}</x-badge>
+                    <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm"><span class="block truncate">{{ $error }}</span></x-badge>
                 @endif
                 
                 {{ $slot }}
@@ -162,16 +164,18 @@ class Toggle extends Component
                 @if (gettype($helper) === 'object')
                     <span {{
                         $helper->attributes->class([
-                            'helper-text text-sm text-gray-500 col-span-full',
+                            'helper-text text-left text-sm text-gray-500 col-span-full',
                         ])->merge()
                     }}>{{ $helper }}</span>
                 @elseif ($helper)
-                    <span class="helper-text text-sm text-gray-500 col-span-full">{{ $helper }}</span>
+                    <span class="helper-text text-left text-sm text-gray-500 col-span-full">{{ $helper }}</span>
                 @endif
 
-                @error($attributes->whereStartsWith('wire:model')->first()) <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $message }}</x-badge> @enderror
+                @error($attributes->whereStartsWith('wire:model')->first())
+                    <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm">{{ $message }}</span></x-badge>
+                @enderror
                 @if ($error)
-                    <x-badge class="mt-1 order-last truncate" type="error" size="sm">{{ $error }}</x-badge>
+                    <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm"><span class="block truncate">{{ $error }}</span></x-badge>
                 @endif
             </div>
         @endif
