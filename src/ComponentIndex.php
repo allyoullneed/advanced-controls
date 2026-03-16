@@ -1,6 +1,6 @@
 <?php
 
-namespace AllYouNeed\AdvancedControls;
+namespace AllYoullNeed\AdvancedControls;
 
 class ComponentIndex {
     private int $i = 0;

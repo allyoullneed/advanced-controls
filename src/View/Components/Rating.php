@@ -1,9 +1,9 @@
 <?php
 
-namespace AllYouNeed\AdvancedControls\View\Components;
+namespace AllYoullNeed\AdvancedControls\View\Components;
 
 
-use AllYouNeed\AdvancedControls\ComponentIndex;
+use AllYoullNeed\AdvancedControls\ComponentIndex;
 
 use Illuminate\View\Component;
 

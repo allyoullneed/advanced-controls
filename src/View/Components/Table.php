@@ -1,11 +1,11 @@
 <?php
 
-namespace AllYouNeed\AdvancedControls\View\Components;
+namespace AllYoullNeed\AdvancedControls\View\Components;
 
 
 use Illuminate\View\Component;
 
-use AllYouNeed\AdvancedControls\ComponentIndex;
+use AllYoullNeed\AdvancedControls\ComponentIndex;
 
 class Table extends Component
 {

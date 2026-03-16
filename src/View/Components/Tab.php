@@ -1,6 +1,6 @@
 <?php
 
-namespace AllYouNeed\AdvancedControls\View\Components;
+namespace AllYoullNeed\AdvancedControls\View\Components;
 
 use Illuminate\View\Component;
 

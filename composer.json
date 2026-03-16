@@ -1,5 +1,5 @@
 {
-    "name": "allyouneed/advanced-controls",
+    "name": "allyoullneed/advanced-controls",
     "description": "UI components for Statamic, powered by Livewire 4",
     "require": {
         "blade-ui-kit/blade-icons": "^1.8",
@@ -11,16 +11,16 @@
     "license": "proprietary",
     "autoload": {
         "psr-4": {
-            "AllYouNeed\\AdvancedControls\\": "src/"
+            "AllYoullNeed\\AdvancedControls\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "AllYouNeed\\AdvancedControls\\AdvancedControlsServiceProvider"
+                "AllYoullNeed\\AdvancedControls\\AdvancedControlsServiceProvider"
             ],
             "aliases": {
-                "AdvancedControls": "AllYouNeed\\AdvancedControls\\Facades\\AdvancedControls"
+                "AdvancedControls": "AllYoullNeed\\AdvancedControls\\Facades\\AdvancedControls"
             }
         }
     },

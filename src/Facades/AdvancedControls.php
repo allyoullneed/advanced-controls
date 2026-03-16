@@ -1,6 +1,6 @@
 <?php
 
-namespace Allyouneed\AdvancedControls;
+namespace AllYoullNeed\AdvancedControls;
 
 use Illuminate\Support\Facades\Facade;
 
