@@ -83,7 +83,7 @@ class Rating extends Component
                             'mask-triangle-4' => $mask === 'triangle-4',
                         ])->merge()}}
                     name="{{ $attributes['name'] ?? $id }}"
-                    aria-label="{{ $i }} star{{ $i > 1 ? 's' : '' }}" />
+                    aria-label="{{ $i }} star{{ $i != 1 ? 's' : '' }}" />
                 @endfor
             @elseif ($slot->isNotEmpty())
                 {{ $slot }}
@@ -98,6 +98,7 @@ class Rating extends Component
                     x-bind:class="rating >= {{ $i }} || 'opacity-20'">
                     <input x-model="rating" id="{{ $id }}-{{ $i }}" type="radio" class="sr-only" value="{{ $i }}"
                         name="{{ $attributes['name'] ?? $id }}"
+                        aria-label="{{ $i }} star{{ $i != 1 ? 's' : '' }}"
                         />
                     @if (gettype($svg) === 'object')
                         {!! $svg !!}

@@ -157,10 +157,10 @@ class TextArea extends Component
                     'bottom-2 right-2' => $resize !== 'none',
                     'bottom-1 right-1' => $resize === 'none'
                 ])>
-                    <svg class="absolute right-0 h-full w-full text-gray-200 dark:text-gray-700" viewBox="0 0 100 100">
+                    <svg class="absolute right-0 h-full w-full text-gray-200 dark:text-gray-700" viewBox="0 0 100 100" role="presentation">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"></circle>
                     </svg>
-                    <svg class="absolute right-0 h-full w-full -rotate-90" viewBox="0 0 100 100"
+                    <svg class="absolute right-0 h-full w-full -rotate-90" viewBox="0 0 100 100" role="presentation"
                     :class="{
                         'text-green-600':  length / maxlength < .5,
                         'text-amber-400':  length / maxlength >= .5 && length / maxlength < .75,

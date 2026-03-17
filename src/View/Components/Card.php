@@ -44,7 +44,7 @@ class Card extends Component
             <figure {{
                 $figure->attributes->class([
                 ])->merge()
-            }}>
+            }} role="presentation">
                 {{ $figure }}
             </figure>
             @endif

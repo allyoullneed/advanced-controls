@@ -25,15 +25,15 @@ class Avatar extends Component
         >
             <div {{ $attributes->only(['class'])->class(["rounded-full aspect-square"]) }}>
                 @if (gettype($picture) === 'string')
-                    <img class="object-contain aspect-square rounded-full" src="{{ $picture }}"/>
+                    <img class="object-contain aspect-square rounded-full" src="{{ $picture }}" alt="{{ $name ?? 'Unknown user' }}"/>
                 @elseif ($picture)
                     {{ $picture }}
                 @elseif (gettype($placeholder) === 'object')
                     {{ $placeholder }}
                 @elseif ($placeholder)
-                    <x-icon :name="$placeholder"/>
+                    <x-icon :name="$placeholder" aria-label="Guest"/>
                 @else
-                    <x-icon name="heroicon-s-user" class="mt-2"/>
+                    <x-icon name="heroicon-s-user" class="mt-2" aria-label="Guest"/>
                 @endif
             </div>
             {{ $name ?? $slot }}

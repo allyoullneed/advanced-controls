@@ -94,7 +94,7 @@ class Button extends Component
                     'in-data-loading:hidden' => $loadIndicator && !$indicatorEnd
                 ])
                 >
-                    <x-icon :name="$icon" />
+                    <x-icon :name="$icon" aria-hidden="true"/>
                 </span>
             @elseif ($icon)
                 {{ $icon }}

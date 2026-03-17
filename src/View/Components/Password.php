@@ -44,6 +44,7 @@ class Password extends Component
                 @if (gettype($eye) === 'boolean' || $eye === 'eye')
                     <x-button type="button" no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last"
+                        aria-label="Show password"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="
                             var eyeButton = this.nextElementSibling;
@@ -57,6 +58,7 @@ class Password extends Component
                     </x-button>
                     <x-button type="button" no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last hidden"
+                        aria-label="Hide password"
                         :tabIndex="!$eyeFocus ? -1 : null"
                         onclick="
                             var eyeButton = this.previousElementSibling;
