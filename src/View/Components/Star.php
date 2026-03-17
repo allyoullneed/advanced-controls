@@ -18,7 +18,7 @@ class Star extends Component
         @aware(['id', 'name', 'showIndex', 'size'])
         <label for="{{ $id }}-{{ $showIndex->increment() }}" class="transition cursor-pointer hover:scale-125"
             x-bind:class="rating >= {{ $showIndex?->value() }} || 'opacity-20'">
-            <input x-model="rating" id="{{ $id }}-{{ $showIndex->value() }}" type="radio" class="sr-only" value="{{ $showIndex->value() }}" name="{{ $name }}">      
+            <input x-model="rating" id="{{ $id }}-{{ $showIndex->value() }}" type="radio" class="sr-only" value="{{ $showIndex->value() }}" name="{{ $name }}" aria-label="{{ $showIndex->value() }} stars">      
         @if ($svg)
             <x-icon 
                 {{ $attributes->class([
