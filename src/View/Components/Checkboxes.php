@@ -9,12 +9,12 @@ class Checkboxes extends Component
 {
     public function __construct(
         public ?string $id = null,
-        public mixed   $title        = null,
-        public mixed   $helper       = null,
-        public ?string $error        = null,
-        public ?string $color        = null,
-        public ?bool   $inline       = false,
-        public array   $options      = [],
+        public mixed   $title      = null,
+        public mixed   $helper     = null,
+        public ?string $error      = null,
+        public ?string $color      = null,
+        public ?bool   $horizontal = false,
+        public array   $options    = [],
     ) {
         if ($id)
             $this->id = $id;
@@ -26,9 +26,8 @@ class Checkboxes extends Component
     {
         return <<<'HTML'
         <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
-            'flex flex-wrap ',
-            'flex-row gap-y-1' => $inline,
-            'flex-col' => !$inline,
+            'flex flex-col flex-wrap',
+            'flex-col' => !$horizontal,
         ])->merge() }}>
             @if (gettype($title) === 'object')
             <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
@@ -37,7 +36,11 @@ class Checkboxes extends Component
             @endif
             <input type="hidden" name="{{ $attributes->get('name') }}"/>
             
-            <div @class(['flex flex-wrap gap-1']) @style(['flex-direction: inherit'])>
+            <div @class([
+                'flex flex-wrap gap-1',
+                'flex-row' => $horizontal,
+                'flex-col' => !$horizontal,
+                ])>
                 @foreach ($options as $value => $label)
                     <x-checkbox
                         :name="$attributes->get('name')"

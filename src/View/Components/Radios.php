@@ -13,7 +13,7 @@ class Radios extends Component
         public mixed   $helper       = null,
         public ?string $error        = null,
         public ?string $color        = null,
-        public ?bool   $inline       = false,
+        public ?bool   $horizontal       = false,
         public array   $options      = [],
     ) {
         if ($id)
@@ -26,9 +26,8 @@ class Radios extends Component
     {
         return <<<'HTML'
         <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
-            'flex flex-wrap ',
-            'flex-row gap-y-1' => $inline,
-            'flex-col' => !$inline,
+            'flex flex-col flex-wrap',
+            'flex-col' => !$horizontal,
         ])->merge() }}>
             @if (gettype($title) === 'object')
             <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
@@ -37,7 +36,11 @@ class Radios extends Component
             @endif
             <input type="hidden"/>
             
-            <div @class(['flex flex-wrap gap-1']) @style(['flex-direction: inherit'])>
+            <div @class([
+                'flex flex-wrap gap-1',
+                'flex-row' => $horizontal,
+                'flex-col' => !$horizontal,
+                ])>
                 @foreach ($options as $value => $label)
                     <x-radio
                         :name="$attributes->get('name')"
