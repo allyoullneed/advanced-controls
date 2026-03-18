@@ -17,10 +17,7 @@ class Tab extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @aware(['id', 'showIndex', 'tabAttributes', 'vertical'])
-        @php
-            $index = $showIndex?->increment();
-        @endphp
+        @aware(['id', 'tabIndex', 'tabAttributes', 'vertical'])
         <label
             {{ (gettype($label) === 'object' ? $label->attributes : $attributes->only(['style']))->class([
                 'tab whitespace-nowrap has-checked:tab-active flex items-center',
@@ -28,7 +25,7 @@ class Tab extends Component
                 'col-start-1' => $vertical,
             ]) }}
         >
-            <input class="appearance-none" type="radio" name="{{ $id }}" id="{{ $id }}-{{ $index }}" onfocus="this.blur()" @if ($index === 1) checked @endif/>
+            <input class="appearance-none" type="radio" name="{{ $id }}" id="{{ $id }}-{{ $tabIndex?->increment() }}" onfocus="this.blur()" @if ($tabIndex?->value() === 1) checked @endif/>
             @if ($icon)
                 <x-icon :name="$icon" class="size-4 me-2"/>
             @endif

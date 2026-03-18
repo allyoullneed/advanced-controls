@@ -11,7 +11,7 @@ use AllYoullNeed\AdvancedControls\ComponentIndex;
 class Tabs extends Component
 {
     public string $id;
-    public ComponentIndex $showIndex;
+    public ComponentIndex $tabIndex;
     public bool $vertical;
     public ComponentAttributeBag  $tabAttributes;
 
@@ -30,7 +30,7 @@ class Tabs extends Component
             $this->id = uniqid();
 
         $this->vertical = $vertical;
-        $this->showIndex = new ComponentIndex();
+        $this->tabIndex = new ComponentIndex();
         if ($vertical)
             $this->tabAttributes = new ComponentAttributeBag([]);
         else
