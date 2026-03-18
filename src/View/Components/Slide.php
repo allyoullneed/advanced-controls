@@ -16,9 +16,9 @@ class Slide extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @aware(['showIndex', 'showCondition', 'slideAttributes'])
+        @aware(['slideIndex', 'showCondition', 'slideAttributes'])
         @php
-            $index = $showIndex?->increment();
+            $index = $slideIndex?->increment();
         @endphp
         <div             
             {{ $attributes->except(['class'])->class([

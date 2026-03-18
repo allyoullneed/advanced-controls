@@ -10,7 +10,7 @@ use AllYoullNeed\AdvancedControls\ComponentIndex;
 
 class SlideShow extends Component
 {
-    public object|int|string|null $showIndex;
+    public object|int|string|null $slideIndex;
     public string $showCondition;
     public ComponentAttributeBag  $slideAttributes;
 
@@ -25,8 +25,8 @@ class SlideShow extends Component
     ) {
         if ($count === null)
             $this->count = count($slides ?? []);
-        $this->showIndex = new ComponentIndex();
-        $this->showCondition = "return 'currentSlideIndex === ' .   \$showIndex->value();";
+        $this->slideIndex = new ComponentIndex();
+        $this->showCondition = "return 'currentSlideIndex === ' .   \$slideIndex->value();";
         $this->slideAttributes = new ComponentAttributeBag(['x-cloak' => 1, 'noDefaultClass' => 1]);
     }
     public function render(): View|Closure|string

@@ -10,7 +10,7 @@ use AllYoullNeed\AdvancedControls\ComponentIndex;
 
 class Carousel extends Component
 {
-    public object|int|string|null $showIndex;
+    public object|int|string|null $slideIndex;
     public ComponentAttributeBag  $slideAttributes;
 
     public function __construct(
@@ -20,7 +20,7 @@ class Carousel extends Component
         public  float $rotationTime = 1,
         public  bool  $indicators   = false,
     ) {
-        $this->showIndex = new ComponentIndex();
+        $this->slideIndex = new ComponentIndex();
         $this->slideAttributes = new ComponentAttributeBag();
     }
 
@@ -29,7 +29,7 @@ class Carousel extends Component
         return <<<'HTML'
         @php
             if (!$count)
-                $count = $showIndex->value();
+                $count = $slideIndex->value();
         @endphp
         <div {{ $attributes->class(['overflow-hidden'])->merge() }}>
             @once
