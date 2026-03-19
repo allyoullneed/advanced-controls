@@ -19,20 +19,14 @@ class Toast extends Component
         <div x-data="{
                 notifications: [],
                 displayDuration: {{ $duration }},
-
                 addNotification({ type = 'info', variant = null, sender = null, title = null, message = null, html = null}) {
                     const id = Date.now()
                     const notification = html ? { id, html } : { id, type, variant, sender, title, message };
-
-                    // Keep only the most recent 20 notifications
                     if (this.notifications.length >= 20) {
                         this.notifications.splice(0, this.notifications.length - 19)
                     }
-
-                    // Add the new notification to the notifications stack
                     this.notifications.push(notification)
                 },
-
                 removeNotification(id) {
                     setTimeout(() => {
                         this.notifications = this.notifications.filter(
@@ -103,6 +97,12 @@ class Toast extends Component
                                 x-transition:leave-start="translate-x-0 opacity-100"
                             >
                                 <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
+                                <x-slot:icon>
+                                    <x-icon class="shrink-0 size-6" name="heroicon-o-information-circle" x-show="notification.type === 'info'"/>
+                                    <x-icon class="shrink-0 size-6" name="heroicon-o-check-circle" x-show="notification.type === 'success'"/>
+                                    <x-icon class="shrink-0 size-6" name="heroicon-o-exclamation-triangle" x-show="notification.type === 'warning'"/>
+                                    <x-icon class="shrink-0 size-6" name="heroicon-o-x-circle" x-show="notification.type === 'error'"/>
+                                </x-slot:icon>
                                 <x-slot:description
                                     class="pe-12"
                                     x-show="notification.message"
