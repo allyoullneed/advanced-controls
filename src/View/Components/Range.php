@@ -117,6 +117,8 @@ class Range extends Component
                         'range-lg'        => $size === 'lg',
                         'range-xl'        => $size === 'xl',
                     ])
+                    aria-valuemin="{{ $min }}"
+                    aria-valuemax="{{ $max }}"
                 />
                 <div 
                     class="relative flex justify-between *:flex *:flex-col *:items-center *: *:h-[calc(.5rem+1lh)]"

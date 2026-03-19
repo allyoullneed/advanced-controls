@@ -15,7 +15,7 @@ class RadialProgress extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-            <div {{ $attributes->class(['radial-progress'])->style(['--value:' . $value])->merge() }} aria-valuenow="{{ $value }}">{{ $value }}%</div>
+            <div {{ $attributes->class(['radial-progress'])->style(['--value:' . $value])->merge() }} role="meter" aria-valuenow="{{ $value }}">{{ $value }}%</div>
         HTML;
     }
 }
