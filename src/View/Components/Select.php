@@ -91,7 +91,7 @@ class Select extends Component
             <x-dropdown class="w-full">
                 <x-slot:trigger
                     @class([
-                        'select cursor-pointer custom-multiselect select-header w-full',
+                        'pointer-coarse:hidden select cursor-pointer custom-multiselect select-header w-full',
                         'select-neutral'   => $color === 'neutral',
                         'select-primary'   => $color === 'primary',
                         'select-secondary' => $color === 'secondary',
@@ -163,7 +163,7 @@ class Select extends Component
                 <select multiple
                     x-model="selectedOptions"
                     @class([
-                        'pointer-coarse:block w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
+                        'w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
                         'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
@@ -198,6 +198,30 @@ class Select extends Component
                 </div>
                 @endif
             </x-dropdown>
+            <select multiple
+                x-model="selectedOptions"
+                @class([
+                    'pointer-fine:hidden w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
+                    'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
+                    'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
+                    'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
+                    'select-accent [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-accent),var(--color-accent))] [&_option:checked]:text-accent-content'             => $color === 'accent',
+                    'select-info [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-info),var(--color-info))] [&_option:checked]:text-info-content'                     => $color === 'info',
+                    'select-success [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-success),var(--color-success))] [&_option:checked]:text-success-content'         => $color === 'success',
+                    'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
+                    'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
+                ])
+                @if ($rows || count($options) > 0)
+                    size="{{ $rows ?? min(12, count($options)) }}"
+                @endif
+                {{ $attributes->only(['name', 'id', 'required']) }}
+                {{ $attributes->whereStartsWith('wire:model') }}
+            >
+                @foreach ($options as $value => $label)
+                    <option value="{{ $value }}">{{ $label ?? $value }}</option>
+                @endforeach
+                {{ $slot }}
+            </select>
 
             @if (gettype($helper) === 'object')
                 <span {{
