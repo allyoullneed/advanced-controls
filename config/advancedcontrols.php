@@ -2,36 +2,21 @@
 
 return [
     /**
-     * Default component prefix.
+     * Component prefix.
      *
-     * Make sure to clear view cache after renaming with `php artisan view:clear`
+     * Run `php artisan view:clear` after changing this setting
      *
-     *    prefix => ''
-     *              <x-button />
-     *              <x-card />
-     *
-     *    prefix => 'mary-'
-     *               <x-mary-button />
-     *               <x-mary-card />
-     *
+     *    prefix => 'advctrl-'
+     *               <x-advctrl-button />
+     *               <x-advctrl-card />
      */
     'prefix' => '',
 
     /**
-     * Default route prefix.
+     * Class applied to cards by default.
+     * It is common to apply a background and/or background as cards are transparent by default.
      *
-     * Some maryUI components make network request to its internal routes.
-     *
-     *      route_prefix => ''
-     *          - Spotlight: '/mary/spotlight'
-     *          - Editor: '/mary/upload'
-     *          - ...
-     *
-     *      route_prefix => 'my-components'
-     *          - Spotlight: '/my-components/mary/spotlight'
-     *          - Editor: '/my-components/mary/upload'
-     *          - ...
+     * Run `php artisan view:clear` after changing this setting
      */
-    'route_prefix' => '',
-
+    'card-class' => ''
 ];

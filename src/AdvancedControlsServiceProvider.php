@@ -12,9 +12,11 @@ use AllYoullNeed\AdvancedControls\View\Components\Blank;
 use AllYoullNeed\AdvancedControls\View\Components\Button;
 use AllYoullNeed\AdvancedControls\View\Components\Card;
 use AllYoullNeed\AdvancedControls\View\Components\Carousel;
+use AllYoullNeed\AdvancedControls\View\Components\Chart;
 use AllYoullNeed\AdvancedControls\View\Components\Checkbox;
 use AllYoullNeed\AdvancedControls\View\Components\Checkboxes;
 use AllYoullNeed\AdvancedControls\View\Components\Collapse;
+use AllYoullNeed\AdvancedControls\View\Components\Div;
 use AllYoullNeed\AdvancedControls\View\Components\Dropdown;
 use AllYoullNeed\AdvancedControls\View\Components\Indicator;
 use AllYoullNeed\AdvancedControls\View\Components\Input;
@@ -54,11 +56,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-        //     $this->commands(
-        //         commands: [
-        //             DataTransferObjectMakeCommand::class,
-        //         ],
-        //     );
+            $this->console();
         }
         else {
             $this->registerComponents();
@@ -70,6 +68,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
             });
         }   
     }
+
     public function registerComponents()
     {
         $prefix = config('prefix');
@@ -80,9 +79,11 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'button'         , Button::class);
         Blade::component($prefix . 'card'           , Card::class);
         Blade::component($prefix . 'carousel'       , Carousel::class);
+        Blade::component($prefix . 'chart'          , Chart::class);
         Blade::component($prefix . 'checkbox'       , Checkbox::class);
         Blade::component($prefix . 'checkboxes'     , Checkboxes::class);
         Blade::component($prefix . 'collapse'       , Collapse::class);
+        Blade::component($prefix . 'div'            , Div::class);
         Blade::component($prefix . 'dropdown'       , Dropdown::class);
         Blade::component($prefix . 'indicator'      , Indicator::class);
         Blade::component($prefix . 'input'          , Input::class);
@@ -118,5 +119,13 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'timeline-event' , TimelineEvent::class);
         Blade::component($prefix . 'toast'          , Toast::class);
         Blade::component($prefix . 'toggle'         , Toggle::class);
+    }
+
+    protected function console(): void
+    {
+        // Publishing the configuration file.
+        $this->publishes([
+            __DIR__ . '/../config/advancedcontrols.php' => config_path('advancedcontrols.php'),
+        ], 'advancedcontrols.config');
     }
 }
