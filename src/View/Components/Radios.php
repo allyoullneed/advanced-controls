@@ -25,6 +25,7 @@ class Radios extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['color', 'size'])
         <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col flex-wrap',
             'flex-col' => !$horizontal,

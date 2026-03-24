@@ -27,7 +27,13 @@ class Radio extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['parentColor', 'parentSize'])
         @php
+            if (!$color)
+                $color = $parentColor;
+            if (!$size)
+                $size = $parentSize;
+
             $must_prepend = $labelBefore !== null;
             if ($label && $must_prepend)
                 throw new Exception('Cannot declare a label both before and after the toggle');

@@ -23,6 +23,7 @@ class Button extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['color', 'size'])
         @if ($href)
             <a
                 href="{{ $href }}"

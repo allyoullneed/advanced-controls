@@ -7,6 +7,8 @@ use Illuminate\View\Component;
 
 class Toggle extends Component
 {
+    public ?string $color          = null;
+    public ?string $size           = null;
     public function __construct(
         public ?string $id             = null,
         public mixed   $title          = null,
@@ -15,8 +17,8 @@ class Toggle extends Component
         public mixed   $labelChecked   = null,
         public mixed   $helper         = null,
         public ?string $error          = null,
-        public ?string $color          = null,
-        public ?string $size           = null,
+               ?string $color          = null,
+               ?string $size           = null,
         public string  $value          = "1",
         public ?string $valueUnchecked = null,
         public bool    $checked        = false,
@@ -25,6 +27,8 @@ class Toggle extends Component
             $this->id = $id;
         else
             $this->id = 'toggle-' . uniqid();
+        $this->color = $color;
+        $this->size  = $size;
     }
     
     public function errorFieldName(): ?string
@@ -36,7 +40,13 @@ class Toggle extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['parentColor', 'parentSize'])
         @php
+            if (!$color)
+                $color = $parentColor;
+            if (!$size)
+                $size = $parentSize;
+
             $must_prepend = $labelBefore !== null;
             if ($label && $must_prepend)
                 throw new Exception('Cannot declare a label both before and after the toggle');

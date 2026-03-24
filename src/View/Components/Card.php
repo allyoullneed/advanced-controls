@@ -7,6 +7,8 @@ use Illuminate\View\Component;
 
 class Card extends Component
 {
+    public ?string $parentColor = null;
+    public ?string $parentSize  = null;
     public function __construct(
         public mixed   $figure      = null,
         public mixed   $title       = null,
@@ -14,8 +16,10 @@ class Card extends Component
         public bool    $horizontal  = false,
         public bool    $separators  = false,
         public ?string $color       = null,
-        public ?string $size        = null,
+        public ?string $size        = null
     ) {
+        $this->parentColor   = $color;
+        $this->parentSize  = $size;
     }
 
     public function render(): View|Closure|string
@@ -59,7 +63,7 @@ class Card extends Component
                         <hr class="mt-3 border-t-[length:var(--border)] border-base-content/10">
                     @endif
                 @endif
-                
+
                 <div {{ $slot->attributes->class(['grow-1'])->merge() }}>
                     {{ $slot }}
                 </div>
