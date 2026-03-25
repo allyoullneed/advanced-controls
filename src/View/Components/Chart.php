@@ -7,10 +7,23 @@ use Illuminate\View\Component;
 
 class Chart extends Component
 {
+    public string $id;
     public function __construct(
-        public ?string $title       = null,
-        public string  $type        = 'line',
+               ?string     $id          = null,
+        public ?string     $title       = null,
+        public string      $type        = 'line',
+        public bool        $showLegend  = false,
+        public array       $labels      = [],
+        public array       $datasets    = [],
+        public array       $options     = [],
+        public array       $plugins     = [],
+        public array       $include     = [],
+        public bool|string $darkClass   = false
     ) {
+        if ($id)
+            $this->id = $id;
+        else
+            $this->id = 'chart_' . uniqid();
     }
 
     public function render(): View|Closure|string
@@ -19,63 +32,57 @@ class Chart extends Component
         @once
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         @endonce
-        
-        <div>
-        <canvas id="myChart"></canvas>
+        @foreach ($include as $additionalScript)
+        <script src="{{ $additionalScript }}"></script>
+        @endforeach
+        <div class="relative">
+        <canvas @class([
+            'dark:invert dark:hue-rotate-180' => gettype($darkClass) === 'boolean' && $darkClass,
+            $darkClass => gettype($darkClass) === 'string'
+        ]) id="{{ $id }}"></canvas>
         </div>
 
         <script>
-        const ctx = document.getElementById('myChart');
+        const {{ $id }} = document.getElementById('{{ $id }}');
 
-        new Chart(ctx, {
+
+
+        new Chart({{ $id }}, {
+            plugins: [{{ implode(',', $plugins) }}],
             type: '{{ $type }}',
             data: {
-                labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple'],
-                datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                    ], borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                        'rgb(201, 203, 207)'
-                    ],
-                    borderWidth: 1
-                }]
-            },  options: {
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    title: {
-                        display: true,
-                        text: '<span class="text-2xl">{{ $title }}</span>',
-                        padding: {
-                            top: 10,
-                            bottom: 30
+                labels: {!! json_encode($labels) !!},
+                datasets: {!! json_encode($datasets) !!}
+            }, 
+            @if ($options)
+                options: {!! json_encode($options) !!}
+            @else
+                options: {
+                    plugins: {
+                        legend: {
+                            display: {{ $showLegend ? 'true' : 'false' }},
+                        },
+                        @if ($title)
+                        title: {
+                            display: true,
+                            text: '{{ $title }}',
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
                         }
+                        @endif
+                    },
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                    },
+                    tooltip: {
+                        enabled: false
                     }
-                },
-                scales: {
-                    y: {
-                    beginAtZero: true
-                    }
-                },
-                tooltip: {
-                    enabled: false
                 }
-            }
+            @endif
         });
         </script>
         HTML;
