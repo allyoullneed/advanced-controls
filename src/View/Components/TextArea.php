@@ -35,6 +35,11 @@ class TextArea extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         <div {{ $attributes->except(['type', 'value', 'required', 'rows', 'accept', 'wire:model'])->class([
             'relative flex flex-col w-full'
             ])->merge()

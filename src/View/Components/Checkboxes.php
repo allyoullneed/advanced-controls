@@ -26,6 +26,11 @@ class Checkboxes extends Component
     {
         return <<<'HTML'
         @aware(['color', 'size'])
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col flex-wrap',
             'flex-col' => !$horizontal,

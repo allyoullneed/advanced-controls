@@ -29,6 +29,11 @@ class Select extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         @php
             $model = $attributes->whereStartsWith('wire:model');
             if ($model) {
