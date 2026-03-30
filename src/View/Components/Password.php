@@ -27,6 +27,11 @@ class Password extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         <x-input type="password" 
             :title="$title"
             :label="$label"

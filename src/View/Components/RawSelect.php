@@ -25,6 +25,11 @@ class RawSelect extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         <div 
             {{ $attributes->class(['flex flex-col'])->merge() }}
             x-data="{

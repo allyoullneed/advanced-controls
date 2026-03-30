@@ -28,6 +28,11 @@ class Checkbox extends Component
     {
         return <<<'HTML'
         @aware(['parentColor', 'parentSize'])
+        @error($attributes->whereStartsWith('wire:model')->first())
+            @php
+            $color = 'error'
+            @endphp
+        @enderror
         @php
             if (!$color)
                 $color = $parentColor;
