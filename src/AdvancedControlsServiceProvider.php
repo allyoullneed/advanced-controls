@@ -71,7 +71,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
 
     public function registerComponents()
     {
-        $prefix = config('prefix');
+        $prefix = config('advanced-controls.prefix');
 
         Blade::component($prefix . 'alert'          , Alert::class);
         Blade::component($prefix . 'avatar'         , Avatar::class);
@@ -125,7 +125,12 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
     {
         // Publishing the configuration file.
         $this->publishes([
-            __DIR__ . '/../config/advancedcontrols.php' => config_path('advancedcontrols.php'),
-        ], 'advancedcontrols.config');
+            __DIR__ . '/../config/advanced-controls.php' => config_path('advanced-controls.php'),
+        ], 'advanced-controls-config');
+    }
+
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/advanced-controls.php', 'advanced-controls');
     }
 }

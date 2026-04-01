@@ -64,14 +64,10 @@ class Alert extends Component
                             {{ $icon }}
                             </div>
                         @endif
-                    @elseif ($type === 'success')
-                        <x-icon name="heroicon-o-check-circle" class="shrink-0 size-6"/>
-                    @elseif ($type === 'warning')
-                        <x-icon name="heroicon-o-exclamation-triangle" class="shrink-0 size-6"/>
-                    @elseif ($type === 'error')
-                        <x-icon name="heroicon-o-x-circle" class="shrink-0 size-6"/>
-                    @elseif (($type === "" || $type === "info") && $icon === null)
-                        <x-icon name="heroicon-o-information-circle" class="shrink-0 size-6"/>
+                    @elseif ($type === 'info' || $type === 'success' || $type === 'warning' || $type === 'error')
+                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')][$type]" class="shrink-0 size-6"/>    
+                    @elseif ($type === "" && $icon === null)
+                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['info']" class="shrink-0 size-6"/>
                     @endif
                     <div class="basis-fullblock self-center flex flex-col items-start">
                         @if ($title)

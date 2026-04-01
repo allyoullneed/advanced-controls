@@ -59,7 +59,7 @@ class Password extends Component
                             if (document.activeElement == this)
                                 eyeButton.focus({ focusVisible: true });
                         ">
-                        <x-icon name="heroicon-o-eye"/>
+                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['password-show']"/>
                     </x-button>
                     <x-button type="button" no-spinner variant="ghost" size="sm"
                         class="p-1 text-base-content btn-circle order-last hidden"
@@ -73,7 +73,7 @@ class Password extends Component
                             if (document.activeElement == this)
                                 eyeButton.focus({ focusVisible: true });
                         ">
-                        <x-icon name="heroicon-o-eye-slash"/>
+                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['password-hide']"/>
                     </x-button>
                 @else
                 @endif

@@ -209,7 +209,7 @@ class Rating extends Component
                                         'text-success'      => $color === 'success',
                                         'text-warning'      => $color === 'warning',
                                         'text-error'        => $color === 'error'
-                                    ]) name="heroicon-s-star"/>
+                                    ]) :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['rating']"/>
                                 @endif
                             @elseif (gettype($svg) === 'string')
                                 <x-icon
@@ -244,7 +244,7 @@ class Rating extends Component
                                     'text-success'      => $color === 'success',
                                     'text-warning'      => $color === 'warning',
                                     'text-error'        => $color === 'error'
-                                ]) name="heroicon-s-star"/>
+                                ]) :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['rating']"/>
                             @endif
                         </label>
                         @endfor
