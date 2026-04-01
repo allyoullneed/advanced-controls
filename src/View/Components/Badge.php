@@ -51,14 +51,10 @@ class Badge extends Component
                     {{ $icon }}
                     </div>
                 @endif
-            @elseif ($type === 'success')
-                <x-icon name="heroicon-o-check-circle" class="shrink-0 h-lh"/>
-            @elseif ($type === 'warning')
-                <x-icon name="heroicon-o-exclamation-triangle" class="shrink-0 h-lh"/>
-            @elseif ($type === 'error')
-                <x-icon name="heroicon-o-x-circle" class="shrink-0 h-lh"/>
-            @elseif (($type === "" || $type === "info") && $icon === null)
-                <x-icon name="heroicon-o-information-circle" class="shrink-0 h-lh"/>
+            @elseif ($type === 'info' || $type === 'success' || $type === 'warning' || $type === 'error')
+                <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')][$type]" class="shrink-0 h-lh"/>    
+            @elseif ($type === "" && $icon === null)
+                <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['info']" class="shrink-0 h-lh"/>
             @endif
             @if (gettype($label ?? $slot) === 'object')
                 {{ $label ?? $slot }}

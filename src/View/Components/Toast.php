@@ -98,10 +98,10 @@ class Toast extends Component
                             >
                                 <x-slot:title x-show="notification.title"  x-text="notification.title"></x-slot:title>
                                 <x-slot:icon>
-                                    <x-icon class="shrink-0 size-6" name="heroicon-o-information-circle" x-show="notification.type === 'info'"/>
-                                    <x-icon class="shrink-0 size-6" name="heroicon-o-check-circle" x-show="notification.type === 'success'"/>
-                                    <x-icon class="shrink-0 size-6" name="heroicon-o-exclamation-triangle" x-show="notification.type === 'warning'"/>
-                                    <x-icon class="shrink-0 size-6" name="heroicon-o-x-circle" x-show="notification.type === 'error'"/>
+                                    <x-icon class="shrink-0 size-6" :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['info']" x-show="notification.type === 'info'"/>
+                                    <x-icon class="shrink-0 size-6" :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['success']" x-show="notification.type === 'success'"/>
+                                    <x-icon class="shrink-0 size-6" :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['warning']" x-show="notification.type === 'warning'"/>
+                                    <x-icon class="shrink-0 size-6" :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['error']" x-show="notification.type === 'error'"/>
                                 </x-slot:icon>
                                 <x-slot:description
                                     class="pe-12"
