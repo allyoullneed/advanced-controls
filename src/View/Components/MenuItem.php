@@ -80,7 +80,7 @@ class MenuItem extends Component
                         {!! $icon->withAttributes($icon->attributes->getAttributes()) !!}
                         </div>
                     @endif
-                    {{ $title }}{{ $label }}
+                    {{ $label }}
                 </a>
             @else
                 <a {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
