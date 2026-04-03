@@ -8,7 +8,7 @@
     "require-dev": {
         "pestphp/pest": "^4"
     },
-    "license": "proprietary",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "AllYoullNeed\\AdvancedControls\\": "src/"
