@@ -29,12 +29,6 @@ class Chart extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @once
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        @endonce
-        @foreach ($include as $additionalScript)
-        <script src="{{ $additionalScript }}"></script>
-        @endforeach
         <div class="relative">
         <canvas @class([
             'dark:invert dark:hue-rotate-180' => gettype($darkClass) === 'boolean' && $darkClass,
@@ -43,47 +37,40 @@ class Chart extends Component
         </div>
 
         <script>
-        const {{ $id }} = document.getElementById('{{ $id }}');
-
-
-
-        new Chart({{ $id }}, {
-            plugins: [{{ implode(',', $plugins) }}],
-            type: '{{ $type }}',
-            data: {
-                labels: {!! json_encode($labels) !!},
-                datasets: {!! json_encode($datasets) !!}
-            }, 
-            @if ($options)
-                options: {!! json_encode($options) !!}
-            @else
-                options: {
-                    plugins: {
-                        legend: {
-                            display: {{ $showLegend ? 'true' : 'false' }},
-                        },
-                        @if ($title)
-                        title: {
-                            display: true,
-                            text: '{{ $title }}',
-                            padding: {
-                                top: 10,
-                                bottom: 30
-                            }
-                        }
+            fetch("https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js", { cache: 'force-cache' })
+            .then((response) => response.text())
+            .then((text) => eval(text))
+            .then(() => {
+                @if ($include)
+                    Promise.all([
+                        {!! implode(',', array_map(fn ($lib) => 'fetch("' . $lib . '", { cache: "force-cache" }).then((response) => response.text()).then((text) => eval(text))', $include)) !!}
+                    ]).then(() => {
+                        new Chart(document.getElementById('{{ $id }}'), {
+                            plugins: [{{ implode(',', $plugins) }}],
+                            type: '{{ $type }}',
+                            data: {
+                                labels: {!! json_encode($labels) !!},
+                                datasets: {!! json_encode($datasets) !!}
+                            }, 
+                            @if ($options)
+                                options: {!! json_encode($options) !!}
+                            @endif
+                        });
+                    });
+                @else
+                    new Chart(document.getElementById('{{ $id }}'), {
+                        plugins: [{{ implode(',', $plugins) }}],
+                        type: '{{ $type }}',
+                        data: {
+                            labels: {!! json_encode($labels) !!},
+                            datasets: {!! json_encode($datasets) !!}
+                        }, 
+                        @if ($options)
+                            options: {!! json_encode($options) !!}
                         @endif
-                    },
-                    scales: {
-                        y: {
-                        beginAtZero: true
-                        }
-                    },
-                    tooltip: {
-                        enabled: false
-                    }
-                }
-            @endif
-        });
+                    });
+                @endif
+            })
         </script>
         HTML;
     }
