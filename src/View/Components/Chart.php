@@ -9,16 +9,14 @@ class Chart extends Component
 {
     public string $id;
     public function __construct(
-               ?string     $id          = null,
-        public ?string     $title       = null,
-        public string      $type        = 'line',
-        public bool        $showLegend  = false,
-        public array       $labels      = [],
-        public array       $datasets    = [],
-        public array       $options     = [],
-        public array       $plugins     = [],
-        public array       $include     = [],
-        public bool|string $darkClass   = false
+               ?string     $id        = null,
+        public string      $type      = 'line',
+        public array       $labels    = [],
+        public array       $datasets  = [],
+        public array       $options   = [],
+        public array       $plugins   = [],
+        public array       $include   = [],
+        public bool|string $darkClass = false
     ) {
         if ($id)
             $this->id = $id;
