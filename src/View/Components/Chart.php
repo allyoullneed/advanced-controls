@@ -28,6 +28,7 @@ class Chart extends Component
     {
         return <<<'HTML'
         <div class="relative">
+            
         <canvas @class([
             'dark:invert dark:hue-rotate-180' => gettype($darkClass) === 'boolean' && $darkClass,
             $darkClass => gettype($darkClass) === 'string'
@@ -35,13 +36,14 @@ class Chart extends Component
         </div>
 
         <script>
-            fetch("https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js", { cache: 'force-cache' })
+            @if (config('advanced-controls.include-from'))
+            fetch("{{ config('advanced-controls.cdn')[config('advanced-controls.include-from')]['chartjs'] }}")
             .then((response) => response.text())
             .then((text) => eval(text))
             .then(() => {
                 @if ($include)
                     Promise.all([
-                        {!! implode(',', array_map(fn ($lib) => 'fetch("' . $lib . '", { cache: "force-cache" }).then((response) => response.text()).then((text) => eval(text))', $include)) !!}
+                        {!! implode(',', array_map(fn ($lib) => 'fetch("' . $lib . '").then((response) => response.text()).then((text) => eval(text))', $include)) !!}
                     ]).then(() => {
                         new Chart(document.getElementById('{{ $id }}'), {
                             plugins: [{{ implode(',', $plugins) }}],
@@ -69,6 +71,19 @@ class Chart extends Component
                     });
                 @endif
             })
+            @else
+                new Chart(document.getElementById('{{ $id }}'), {
+                    plugins: [{{ implode(',', $plugins) }}],
+                    type: '{{ $type }}',
+                    data: {
+                        labels: {!! json_encode($labels) !!},
+                        datasets: {!! json_encode($datasets) !!}
+                    }, 
+                    @if ($options)
+                        options: {!! json_encode($options) !!}
+                    @endif
+                });
+            @endif
         </script>
         HTML;
     }
