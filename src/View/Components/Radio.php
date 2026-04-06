@@ -88,16 +88,23 @@ class Radio extends Component
                 <label for="{{ $id }}"
                     {{ (gettype($label) === 'object' ? $label->attributes : $attributes)->except('wire:model')->class([
                         'label label-text relative cursor-pointer select-none whitespace-nowrap',
+                        'grid grid-cols-1' => $labelChecked,
                     ])->merge() }}
                 >
                     @if ($labelChecked)
-                        <div class="inline group-has-checked:hidden">{{ $label }}</div>
-                        <div class="hidden group-has-checked:inline">{{ $labelChecked }}</div>
+                        <span @class([
+                            'col-start-1 row-start-1 group-has-checked:opacity-0 transition-opacity duration-250',
+                            'justify-self-end' => $must_prepend,
+                        ])>{{ $label }}</span>
+                        <span @class([
+                            'col-start-1 row-start-1 group-not-has-checked:opacity-0 transition-opacity duration-250',
+                            'justify-self-end' => $must_prepend,
+                        ])>{{ $labelChecked }}</span>
                     @else
                         {{ $label }}
                     @endif
                 </label>
-                </div>
+            </div>
         @else
             <input id="{{ $id }}"
                 type="radio"
