@@ -65,7 +65,7 @@ class Alert extends Component
                             </div>
                         @endif
                     @elseif ($type === 'info' || $type === 'success' || $type === 'warning' || $type === 'error')
-                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')][$type]" class="shrink-0 size-6"/>    
+                        <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')][$type]" class="shrink-0 size-6"/>
                     @elseif ($type === "" && $icon === null)
                         <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['info']" class="shrink-0 size-6"/>
                     @endif
