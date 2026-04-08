@@ -27,7 +27,7 @@ class Chart extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div class="relative">
+        <div {{ $attributes }}>
             
         <canvas @class([
             'dark:invert dark:hue-rotate-180' => gettype($darkClass) === 'boolean' && $darkClass,
