@@ -44,11 +44,11 @@ class Tabs extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        <div 
+        <div
             {{ $attributes->class([
                 'tabs [&>.tab-content]:hidden *:[.tab:has(:checked)_+_.tab-content]:block',
-                'tabs-border'                              => $variant === 'border' && !$vertical,
                 '[&>.tab]:border-e-3 [&>.tab]:has-checked:border-e-current' => $variant === 'border' && $vertical,
+                'tabs-border'                                 => $variant === 'border' && !$vertical,
                 'tabs-bordered'                               => $variant === 'border',
                 'tabs-lift tabs-lifted [&>label]:!border-b-0' => $variant === 'lift',
                 'tabs-box'                                    => $variant === 'box',
