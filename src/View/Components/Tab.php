@@ -25,7 +25,11 @@ class Tab extends Component
                 'col-start-1' => $vertical,
             ]) }}
         >
-            <input class="appearance-none" type="radio" name="{{ $id }}" id="{{ $id }}-{{ $tabIndex?->increment() }}" onfocus="this.blur()" @if ($tabIndex?->value() === 1) checked @endif/>
+            <input
+                {{ $attributes->only(['value']) }}
+                {{ $attributes->whereStartsWith('wire:model') }}
+                class="appearance-none" type="radio" name="{{ $id }}" id="{{ $id }}-{{ $tabIndex?->increment() }}"
+                onfocus="this.blur()" @if ($tabIndex?->value() === 1) checked @endif/>
             @if ($icon)
                 <x-icon :name="$icon" class="size-4 me-2"/>
             @endif
