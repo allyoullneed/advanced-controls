@@ -46,7 +46,8 @@ class Select extends Component
         <div 
             {{ $attributes->except([
                 'name', 'id', 'value', 'required'
-            ])->whereDoesntStartWith('wire:model')->class(['flex flex-col'])->merge() }}
+            ])->class(['flex flex-col'])->merge() }}
+
             x-data="{
                 options: [],
                 selectedOptions: [],
@@ -86,6 +87,8 @@ class Select extends Component
                     this.selectedOptions.splice(this.selectedOptions.findIndex((opt) => opt === value), 1);
                 }
             }"
+            x-modelable="selectedOptions"
+            
         > 
             @if (gettype($title) === 'object')
             <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
@@ -182,7 +185,6 @@ class Select extends Component
                         size="{{ $rows ?? min(12, count($options)) }}"
                     @endif
                     {{ $attributes->only(['name', 'id', 'required']) }}
-                    {{ $attributes->whereStartsWith('wire:model') }}
                 >
                     @foreach ($options as $value => $label)
                         <option value="{{ $value }}">{{ $label ?? $value }}</option>
