@@ -45,7 +45,7 @@ class Select extends Component
         @endphp
         <div 
             {{ $attributes->except([
-                'name', 'id', 'value', 'required'
+                'name', 'id', 'value', 'required', 'aria-label'
             ])->class(['flex flex-col'])->merge() }}
 
             x-data="{
@@ -170,6 +170,7 @@ class Select extends Component
 
                 <select multiple
                     x-model="selectedOptions"
+                    {{ $attributes->only(['aria-label']) }}
                     @class([
                         'w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
