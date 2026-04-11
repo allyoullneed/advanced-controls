@@ -55,11 +55,11 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->registerComponents();
         if ($this->app->runningInConsole()) {
             $this->console();
         }
         else {
-            $this->registerComponents();
             \Blade::directive('renderif', function ($expression) {
                 return "<?php if (" . $expression . "): ?>";
             });
