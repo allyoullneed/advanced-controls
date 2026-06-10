@@ -41,7 +41,7 @@ class Input extends Component
             @endphp
         @enderror
         <div {{ $attributes->except([
-                    'type', 'value', 'required', 'autocomplete'
+                    'id', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
                 ])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col w-full'
             ])->merge()
@@ -53,7 +53,7 @@ class Input extends Component
         @endif
         <label
             {{ $attributes->except([
-                    'type', 'value', 'required', 'autocomplete'
+                    'id', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
                 ])->whereDoesntStartWith('wire:model')->class([
                     'flex gap-2 items-center w-full whitespace-nowrap',
                     'cursor-pointer'                                      => $type === 'color',
@@ -107,7 +107,7 @@ class Input extends Component
             @endif
 
             <input
-                {{ $attributes->only(['name', 'value', 'required', 'autocomplete'])->merge([
+                {{ $attributes->only(['id', 'name', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,

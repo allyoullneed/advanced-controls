@@ -9,6 +9,7 @@ class Select extends Component
 {
     public string $id = '';
     public function __construct(
+              ?string  $id          = null,
         public mixed   $title       = null,
         public mixed   $label       = null,
         public ?string $placeholder = null,
@@ -21,9 +22,15 @@ class Select extends Component
         public bool    $ghost       = false,
         public array   $options     = [],
         public bool    $multiple    = false,
+        public bool    $filter      = false,
         public ?int    $rows        = null,
-        public int     $maxRows     = 1
+        public int     $maxRows     = 1,
+        public bool    $disabled    = false,
     ) {
+        if ($id)
+            $this->id = $id;
+        else
+            $this->id = 'select-' .  uniqid();
     }
 
     public function render(): View|Closure|string
@@ -111,7 +118,8 @@ class Select extends Component
                     ])
                     @style([ 
                         'height: unset' => $maxRows > 1,
-                    ])>
+                    ])
+                    onblur="var filter = document.getElementById('filter-{{ $id }}'); if (filter) { filter.value = ''; filterSelect(filter, document.getElementById('{{ $id }}')); }">
                     <div @class([
                         'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
                     ])>
@@ -139,7 +147,7 @@ class Select extends Component
                         @endif
                         <div class="w-full h-full relative flex items-center">
                             @if ($placeholder)
-                                <span x-show="selectedOptions.length === 0"
+                                <span x-show="(selectedOptions ? selectedOptions.length : 0) === 0"
                                 class="absolute text-current/50 select-none">{{ $placeholder }}</span>
                             @endif
                             @if ($multiple)
@@ -162,15 +170,42 @@ class Select extends Component
                                     </template>
                                 </div>
                             @else
-                                <span x-text="options.find((opt) => opt.value === selectedOptions[0])?.text"></span>
+                                <span x-text="options.find((opt) => opt.value === (selectedOptions ? selectedOptions[0] : null))?.text"></span>
                             @endif
                         </div>
                     </div>
                 </x-slot:trigger>
 
+                @if ($filter)
+                    @once
+                    <script>
+                        function filterSelect(searchInput, select) {
+                            var keyword = searchInput.value;
+                            var regex = new RegExp(keyword, 'i');
+                            for (var i = 0; i < select.length; i++) {
+                                var txt = select.options[i].text;
+                                if (!regex.test(txt)) {
+                                    select.options[i].setAttribute('disabled', 'disabled');
+                                    select.options[i].classList.add('hidden');
+                                } else {
+                                    select.options[i].removeAttribute('disabled')
+                                    select.options[i].classList.remove('hidden');
+                                }
+
+                            }
+                        }
+                    </script>
+                    @endonce
+                    <div class="p-2">
+                        <x-input id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('{{ $id }}'))" class="w-full"/>
+                @endif
                 <select multiple
+                    id="{{ $id }}"
                     x-model="selectedOptions"
                     {{ $attributes->only(['aria-label']) }}
+                    @if (!$multiple)
+                    onclick="document.activeElement.blur()"
+                    @endif
                     @class([
                         'w-full h-[unset] mt-1 select options-container [&>option+option]:mt-1',
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
@@ -192,7 +227,10 @@ class Select extends Component
                     @endforeach
                     {{ $slot }}
                 </select>
-                
+                @if ($filter)
+                </div>
+                @endif
+
                 @if (gettype($label) === 'object')
                 <div {{ $label->attributes->class([
                     'label-text flex order-first',                
