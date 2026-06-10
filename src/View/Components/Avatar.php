@@ -33,7 +33,7 @@ class Avatar extends Component
                 @elseif ($placeholder)
                     <x-icon :name="$placeholder" aria-label="Guest"/>
                 @else
-                    <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['user']" class="rounded-full bg-base-300 size-[1lh]" aria-label="Guest"/>
+                    <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['user']" class="rounded-full bg-base-content w-full h-full" aria-label="Guest"/>
                 @endif
             </div>
             {{ $name ?? $slot }}
