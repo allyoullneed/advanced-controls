@@ -34,15 +34,16 @@ class Dropdown extends Component
                     'relative dropdown [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
                     'dropdown-hover'                    => $hover,
                     'hover:[&>.dropdown-content]:block' => $hover,
-                    'dropdown-start'                    => $align === 'start',
-                    'dropdown-center'                   => $align === 'center',
-                    'dropdown-end'                      => $align === 'end',
+                    'dropdown-start'                    => $align     === 'start',
+                    'dropdown-center'                   => $align     === 'center',
+                    'dropdown-end'                      => $align     === 'end',
                     'dropdown-top'                      => $direction === 'top',
                     'dropdown-bottom'                   => $direction === 'bottom',
                     'dropdown-left'                     => $direction === 'left',
                     'dropdown-right'                    => $direction === 'right',
                     'contents'                          => $anchor
                 ]) }}
+                onfocusin="var inputs = this.lastElementChild.getElementsByTagName('input'); if (inputs.length > 0) inputs[0].focus({ preventscroll: true })"
             >
             <div
                 {{ $trigger->attributes->class([
