@@ -8,10 +8,11 @@ use Illuminate\View\Component;
 class MenuItem extends Component
 {
     public function __construct(
-        public ?string $label = null,
-        public mixed   $icon  = null,
+        public ?string $label    = null,
+        public mixed   $icon     = null,
         public bool $collapsible = false,
-        public bool $title = false
+        public bool $title       = false,
+        public ?string $href     = null,
     ) {
     }
 
@@ -45,7 +46,7 @@ class MenuItem extends Component
                         {{ $slot }}
                         </details>
                 @else
-                    <a
+                    <div
                         {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
                             'min-w-max select-none',
                             'menu-title' => $title
@@ -65,14 +66,15 @@ class MenuItem extends Component
                         @else
                             {{ $label }}
                         @endif
-                    </a>
+                    </div>
                     {{ $slot }}
                 @endif
             @elseif ($label)
-                <a {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
+                <div {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
                     'min-w-max select-none',
                     'menu-title' => $title
-                ])->merge() }}>
+                ])->merge() }}
+                >
                     @if (gettype($icon) === 'string')
                         <x-icon class="h-lh" :name="$icon"/>    
                     @elseif ($icon)
@@ -81,9 +83,9 @@ class MenuItem extends Component
                         </div>
                     @endif
                     {{ $label }}
-                </a>
+                </div>
             @else
-                <a {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
+                <div {{ $attributes->only((['class', 'href', 'target', 'wire:navigate', 'wire:navigate.hover', 'wire:current', 'wire:current.ignore']))->class([
                     'min-w-max select-none',
                     'menu-title' => $title
                 ])->merge() }}>
@@ -95,9 +97,9 @@ class MenuItem extends Component
                         </div>
                     @endif
                     {{ $slot }}
-                </a>
+                </div>
             @endif
-            </li>
+        </li>
         @endif
         HTML;
     }
