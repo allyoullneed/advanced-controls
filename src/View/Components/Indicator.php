@@ -47,6 +47,7 @@ class Indicator extends Component
                     'indicator' => !$noIndicator,
                     ])->merge() }}
             >
+                {{ $slot }}
                 @if (!$noIndicator && $indicator)
                     <div {{ $indicator->attributes->except(['position', 'size'])->class([
                         'flex justify-center w-fit max-w-full items-center indicator-item',
@@ -85,7 +86,6 @@ class Indicator extends Component
                     >
                     </span>
                 @endif
-                {{ $slot }}
             </div>
         @endrenderif
         HTML;
