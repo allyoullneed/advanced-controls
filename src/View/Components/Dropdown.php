@@ -68,7 +68,15 @@ class Dropdown extends Component
                 {{ $attributes->class([
                     'z-1000',
                     'dropdown' => $anchor !== null,
-                    'dropdown-content absolute' => $anchor === null
+                    'dropdown-content absolute'          => $anchor === null,
+                    'inset-e-1/2 translate-x-1/2'        => (!$direction || $direction === 'top' || $direction === 'bottom') && $align     === 'center',
+                    'inset-e-0'                          => (!$direction || $direction === 'top' || $direction === 'bottom') && $align     === 'end',
+                    'top-auto origin-bottom bottom-full' => $direction === 'top',
+                    'inset-e-full'                       => $direction === 'left',
+                    'inset-s-full'                       => $direction === 'right',     
+                    'bottom-1/2 translate-y-1/2'         => ($direction === 'left' || $direction === 'right') && $align === 'center',
+                    'bottom-0'                           => ($direction === 'left' || $direction === 'right') && $align === 'end',
+                    'origin-[100%] top-0'                => ($direction === 'left' || $direction === 'right') && (!$align || $align === 'start'),
                 ])->merge([
                     'tabindex' => -1,
                     'id'       => $anchor ? 'popover-' . $anchor : null,
