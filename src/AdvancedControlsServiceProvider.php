@@ -49,6 +49,7 @@ use AllYoullNeed\AdvancedControls\View\Components\ThemeToggle;
 use AllYoullNeed\AdvancedControls\View\Components\Timeline;
 use AllYoullNeed\AdvancedControls\View\Components\TimelineEvent;
 use AllYoullNeed\AdvancedControls\View\Components\Toast;
+use AllYoullNeed\AdvancedControls\View\Components\Toc;
 use AllYoullNeed\AdvancedControls\View\Components\Toggle;
 
 final class AdvancedControlsServiceProvider extends ServiceProvider
@@ -118,6 +119,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'timeline'       , Timeline::class);
         Blade::component($prefix . 'timeline-event' , TimelineEvent::class);
         Blade::component($prefix . 'toast'          , Toast::class);
+        Blade::component($prefix . 'toc'            , Toc::class);
         Blade::component($prefix . 'toggle'         , Toggle::class);
     }
 
