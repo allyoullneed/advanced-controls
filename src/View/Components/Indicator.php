@@ -49,7 +49,7 @@ class Indicator extends Component
             >
                 @if (!$noIndicator && $indicator)
                     <div {{ $indicator->attributes->except(['position', 'size'])->class([
-                        'flex justify-center items-center indicator-item',
+                        'flex justify-center w-fit max-w-full items-center indicator-item',
                         'indicator-top'    => in_array('top'   , $arr_position),
                         'indicator-bottom' => in_array('bottom', $arr_position),
                         'indicator-left'   => in_array('left'  , $arr_position),
