@@ -24,9 +24,9 @@ class Menu extends Component
         return <<<'HTML'
             <ul
                 {{ $attributes->class([
-                    'menu'
+                    'menu' 
                 ])->merge() }}
-            >
+            >   
                 {{ $slot }}
             </ul>
         HTML;
