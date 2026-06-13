@@ -12,7 +12,6 @@ class MenuItem extends Component
         public mixed   $icon     = null,
         public bool $collapsible = false,
         public bool $title       = false,
-        public ?string $href     = null,
     ) {
     }
 
