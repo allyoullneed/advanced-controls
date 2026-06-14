@@ -11,6 +11,7 @@ class Toc extends Component
         public ?string $title    = null,
         public mixed   $headings = [],
         public string $color = "neutral",
+        public string $selector = "h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]",
     ) {
     }
 
@@ -22,7 +23,7 @@ class Toc extends Component
             style="--toc-border-highlight: var(--color-{{ $color ?? 'accent' }})" 
         >
             <x-menu @class([
-                "!gap-0 bg-base-100 pointer-events-auto ayn-child:border-base-content/10 sticky top-24",
+                "!gap-0 bg-base-100 pointer-events-auto ayn-child:border-base-content/10 sticky",
                 "[&>li]:border-s-3" => !$title,
                 "[&>li:not(:first-child)]:border-s-3" => $title,
             ])>
@@ -51,13 +52,13 @@ class Toc extends Component
         <script>
             window.addEventListener('livewire:navigated', function() {
 
-                const anchors = [...document.querySelectorAll('article>h1,article>article>h1>div,article>h2>div,article>h3>div,article>h4>div,article>h5>div,article>h6>div')].reverse();
+                const anchors = [...document.querySelectorAll('{{ $selector }}')].reverse();
                 const tocs = [...document.querySelectorAll('nav.toc')];
                 
                 if (typeof(anchors) != 'undefined' && anchors != null && typeof(tocs) != 'undefined' && tocs != null) {
                     const highlight = () => {
                         tocs.forEach((toc) => {
-                            const links = [...toc.querySelectorAll('ul > li[id]')];
+                            const links = [...toc.querySelectorAll('ul > *[id]')];
                             if (anchors && links && links.length > 0) {
                                 if (window.scrollY <= 0) {
                                     links[0].classList.add('border-[var(--toc-border-highlight)]');
