@@ -20,6 +20,7 @@ class Pin extends Component
         public bool    $noGap     = false,
         public bool    $hide      = false,
         public bool    $numeric   = false,
+        public ?string $error     = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -41,7 +42,11 @@ class Pin extends Component
             ])->merge() }}
             x-data="{
                 id: '{{ $id }}',
-                value: '',
+                @if ($attributes->has('value'))
+                value: '{{ $attributes->get("value") }}',
+                @else
+                value: $wire.entangle('{{ $attributes->whereStartsWith('wire:model')?->first() }}'),
+                @endif
                 inputs: [],
                 init() {
                     $nextTick(() => {
@@ -54,7 +59,10 @@ class Pin extends Component
 
                             e.preventDefault()
                             this.handlePin()
-                        })
+                        });
+                        for (let i = 0; i < this.value?.length; i++) {
+                            this.inputs.push(this.value.charAt(i));
+                        }
                     })
                 },
                 next(el) {
@@ -85,7 +93,7 @@ class Pin extends Component
                         ? this.$dispatch('completed', this.value)
                         : this.$dispatch('incomplete', this.value)
                 }
-        }"
+            }"
         >
             @if (gettype($title) === 'object')
             <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
@@ -173,6 +181,13 @@ class Pin extends Component
                 }}>{{ $helper }}</span>
             @elseif ($helper)
                 <span class="helper-text text-left text-sm text-gray-500">{{ $helper }}</span>
+            @endif
+
+            @error($attributes->whereStartsWith('wire:model')->first())
+                <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm">{{ $message }}</span></x-badge>
+            @enderror
+            @if ($error)
+                <x-badge class="mt-1 order-last h-[unset]" type="error" size="sm"><span class="block truncate">{{ $error }}</span></x-badge>
             @endif
 
         </div>
