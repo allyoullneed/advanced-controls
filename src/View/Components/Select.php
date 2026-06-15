@@ -202,7 +202,7 @@ class Select extends Component
                 <select multiple
                     id="{{ $id }}"
                     x-model="selectedOptions"
-                    {{ $attributes->only(['aria-label']) }}
+                    {{ $attributes->whereStartsWith(['aria']) }}
                     @if (!$multiple)
                     onclick="document.activeElement.blur()"
                     @endif
@@ -261,7 +261,7 @@ class Select extends Component
                     size="{{ $rows ?? min(12, count($options)) }}"
                 @endif
                 {{ $attributes->only(['name', 'id', 'required']) }}
-                {{ $attributes->whereStartsWith('wire:model') }}
+                {{ $attributes->whereStartsWith(['aria', 'wire:model']) }}
             >
                 @foreach ($options as $value => $label)
                     <option value="{{ $value }}">{{ $label ?? $value }}</option>
