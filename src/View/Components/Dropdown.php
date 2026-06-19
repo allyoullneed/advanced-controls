@@ -66,9 +66,9 @@ class Dropdown extends Component
             @endif
             <div
                 {{ $attributes->class([
-                    'z-1000',
+                    'z-1000 pointer-coarse:fixed pointer-coarse:left-10 pointer-coarse:top-10 pointer-coarse:w-[calc(100vw_-_5rem)]  pointer-coarse:h-[calc(100vh_-_5rem)]',
                     'dropdown' => $anchor !== null,
-                    'dropdown-content absolute'          => $anchor === null,
+                    'dropdown-content pointer-fine:absolute' => $anchor === null,
                     'inset-e-1/2 translate-x-1/2'        => (!$direction || $direction === 'top' || $direction === 'bottom') && $align     === 'center',
                     'inset-e-0'                          => (!$direction || $direction === 'top' || $direction === 'bottom') && $align     === 'end',
                     'top-auto origin-bottom bottom-full' => $direction === 'top',

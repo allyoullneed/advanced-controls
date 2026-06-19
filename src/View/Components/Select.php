@@ -106,7 +106,7 @@ class Select extends Component
             <x-dropdown class="w-full">
                 <x-slot:trigger
                     @class([
-                        'pointer-coarse:hidden select cursor-pointer custom-multiselect select-header w-full',
+                        'select cursor-pointer custom-multiselect select-header w-full',
                         'select-neutral'   => $color === 'neutral',
                         'select-primary'   => $color === 'primary',
                         'select-secondary' => $color === 'secondary',
@@ -199,7 +199,7 @@ class Select extends Component
                         }
                     </script>
                     @endonce
-                    <div class="p-2">
+                    <div class="p-2 h-full flex flex-col">
                         <x-input :color="$color" autofocus id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('{{ $id }}'))" class="w-full"/>
                 @endif
                 <select multiple
@@ -210,8 +210,9 @@ class Select extends Component
                     onclick="document.activeElement.blur()"
                     @endif
                     @class([
-                        'w-full flex-col items-stretch max-h-fit mt-1 select options-container space-y-1 space-y-reverse **:space-y-1 **:space-y-reverse [&_option]:h-8',
-                        "h-[calc(1.5rem_+_min(var(--options-filtered),_var(--options-shown,12))_*_2.25rem_+_1px)]",
+                        'w-full flex-col items-stretch max-h-fit mt-1 grow select options-container space-y-1 space-y-reverse **:space-y-1 **:space-y-reverse [&_option]:content-center',
+                        "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
+                        "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered),_var(--options-shown,12))_*_2.25rem_+_1px)]",
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
                         'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
