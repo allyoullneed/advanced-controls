@@ -194,12 +194,19 @@ class Select extends Component
                                     select.options[i].removeAttribute('disabled')
                                     select.options[i].classList.remove('hidden');
                                 }
-                                select.style.setProperty('--options-filtered', found);
+                                select.parentElement.style.setProperty('--options-filtered', found);
                             }
                         }
                     </script>
                     @endonce
-                    <div class="p-2 h-full flex flex-col">
+                    <div @class([
+                        "p-2 h-full flex flex-col",
+                        "pointer-coarse:max-h-[calc(5rem_+_var(--options-filtered,100)_*_3.25rem_+_1px)]"
+                        ])
+                        @if($rows)
+                            style="--options-shown: {{ $rows }}"
+                        @endif
+                    >
                         <x-input :color="$color" autofocus id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('{{ $id }}'))" class="w-full"/>
                 @endif
                 <select multiple
@@ -213,6 +220,7 @@ class Select extends Component
                         'w-full flex-col items-stretch max-h-fit mt-1 grow select options-container space-y-1 space-y-reverse **:space-y-1 **:space-y-reverse [&_option]:content-center',
                         "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
                         "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered),_var(--options-shown,12))_*_2.25rem_+_1px)]",
+                        "pointer-coarse:h-full",
                         'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                         'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
                         'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
@@ -222,9 +230,6 @@ class Select extends Component
                         'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
                         'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
                     ])
-                    @if($rows)
-                        style="--options-shown: {{ $rows }}"
-                    @endif
                     {{ $attributes->only(['name', 'id', 'required']) }}
                 >
                     @foreach ($options as $value => $label)
