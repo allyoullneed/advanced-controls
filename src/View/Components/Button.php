@@ -8,15 +8,15 @@ use Illuminate\View\Component;
 class Button extends Component
 {
     public function __construct(
-        public ?string            $label         = null,
-        public ?string            $href          = null,
-        public ?string            $variant       = null,
-        public ?string            $size          = null,
-        public ?string            $color         = null,
-        public ?string            $icon          = null,
-        public ?string            $trailIcon     = null,
+        public ?string       $label         = null,
+        public ?string       $href          = null,
+        public ?string       $variant       = null,
+        public ?string       $size          = null,
+        public ?string       $color         = null,
+        public ?string       $icon          = null,
+        public ?string       $trailIcon     = null,
         public string|object $loadIndicator = 'spinner',
-        public bool               $indicatorEnd  = false,
+        public bool          $indicatorEnd  = false,
     ) {
     }
 

@@ -44,7 +44,7 @@ class Table extends Component
                 'grid-template-columns:' . $columns                               => $columns && !is_numeric($columns),
                 'grid-template-columns: repeat(' . $columns . ', minmax(0, 1fr))' => is_numeric($columns),
             ])
-            >
+        >
             
             @if ($columnSeparator)
                 <div @class([
