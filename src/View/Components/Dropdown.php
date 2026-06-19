@@ -43,7 +43,7 @@ class Dropdown extends Component
                     'dropdown-right'                    => $direction === 'right',
                     'contents'                          => $anchor
                 ]) }}
-                onfocusin="var inputs = this.lastElementChild.getElementsByTagName('input'); if (inputs.length > 0) inputs[0].focus({ preventscroll: true })"
+                onfocusin="var autofocusElement = this.querySelector('[autofocus]'); if (autofocusElement) autofocusElement.focus({ preventscroll: true })"
             >
             <div
                 {{ $trigger->attributes->class([
