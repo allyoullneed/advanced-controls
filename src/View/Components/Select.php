@@ -59,27 +59,26 @@ class Select extends Component
                 options: [],
                 selectedOptions: [],
                 init() {
-                    $el.querySelectorAll('option').forEach((option) => {
+                    $el.querySelectorAll('option, span[data-role=\'option\']').forEach((option) => {
                         @if ($multiple || $array)
-                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions?.includes(\'' + (option.value ?? option.innerText) + '\') }')
+                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions?.includes(\'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\') }')
                         @else
-                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions == \'' + (option.value ?? option.innerText) + '\' }')
+                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions == \'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\' }')
                         @endif
                         option.addEventListener('mousedown', function (e) { e.preventDefault() });
                         option.addEventListener('click', 
                             function (e) {
-                                console.log('option clicked ' + option.innerText);
                                 if (!e.shiftKey) {
                                     e.preventDefault();
                                     option.parentElement.focus();
-                                    $data.toggleOption(this.value);
+                                    $data.toggleOption(this.value ?? this.getAttribute('data-value'));
                                 }
                                 return false;
                         }, false);
 
-                        this.options.push({ text: option.innerText, value: (option.value ?? option.innerText) });
+                        this.options.push({ text: option.innerText, value: (option.value ?? option.getAttribute('data-value') ?? option.innerText) });
                         if (option.selected || option.checked)
-                            this.selectedOptions.push(option.value ?? option.innerText);
+                            this.selectedOptions.push(option.value ?? option.getAttribute('data-value') ?? option.innerText);
                     });
                     @if ($model)
                     $nextTick(function() { $wire.entangle('{{ $model }}'); });
@@ -194,8 +193,8 @@ class Select extends Component
                             var regex = new RegExp(keyword, 'i');
                             var found = 0;
 
-                            select.querySelectorAll('option').forEach(function (option) {
-                                var txt = option.text;
+                            select.querySelectorAll('option, span[data-role=\'option\']').forEach(function (option) {
+                                var txt = option.text ?? option.innerText;
                                 if (!regex.test(txt)) {
                                     option.setAttribute('disabled', 'disabled');
                                     option.classList.add('hidden');
@@ -227,6 +226,7 @@ class Select extends Component
                         @class([
                             'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center',
                             "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
+                            '[&_span]:cursor-pointer [&_span]:content-center pointer-fine:[&_span]:h-8 pointer-coarse:[&_span]:h-12 [&_span]:px-2',
                             "pointer-coarse:h-full",
                             'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
                             'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
@@ -243,7 +243,7 @@ class Select extends Component
                         @endif
                     >
                         @foreach ($options as $value => $label)
-                            <option value="{{ $value }}">{{ $label ?? $value }}</option>
+                            <span class="block" data-role="option" value="{{ $value }}">{{ $label ?? $value }}</span>
                         @endforeach
                         {{ $slot }}
                     </div>
