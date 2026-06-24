@@ -214,11 +214,11 @@ class Select extends Component
                         "pointer-coarse:max-h-[calc(5rem_+_var(--options-filtered,100)_*_3.25rem_+_1px)]"
                         ])
                     >
-                        <x-input :color="$color" autofocus id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('list-{{ $id }}'))" class="w-full"/>
+                        <x-input :color="$color" autofocus autocomplete="off" id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('list-{{ $id }}'))" class="w-full"/>
                 @endif
                 <div @class([
                     "select w-full overflow-auto items-start",
-                    "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered,var(--options-shown,12)),_var(--options-shown,12))_*_2.25rem_+_1px)]",
+                    "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered,var(--options-shown,12)),_var(--options-shown,12))_*_2rem_+_1px)]",
                     ])
                     multiple
                 >
