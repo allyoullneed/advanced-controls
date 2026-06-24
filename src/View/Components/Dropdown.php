@@ -27,6 +27,7 @@ class Dropdown extends Component
         return <<<'HTML'
             @if (!$anchor)
             <div
+                id="{{ $id }}"
                 {{ $attributes->merge([
                     'popovertarget' => $anchor ? 'popover-' . $anchor : null
                 ])->except('class') }}
