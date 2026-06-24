@@ -22,6 +22,7 @@ class Select extends Component
         public bool    $ghost       = false,
         public array   $options     = [],
         public bool    $multiple    = false,
+        public bool    $array       = false,
         public bool    $filter      = false,
         public ?int    $rows        = null,
         public int     $maxRows     = 1,
@@ -58,18 +59,23 @@ class Select extends Component
                 options: [],
                 selectedOptions: [],
                 init() {
-                    const selectElement = $el.querySelector('select');
-                    selectElement.querySelectorAll('option').forEach((option) => {
+                    $el.querySelectorAll('option').forEach((option) => {
+                        @if ($multiple || $array)
+                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions?.includes(\'' + (option.value ?? option.innerText) + '\') }')
+                        @else
+                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions == \'' + (option.value ?? option.innerText) + '\' }')
+                        @endif
                         option.addEventListener('mousedown', function (e) { e.preventDefault() });
                         option.addEventListener('click', 
                             function (e) {
+                                console.log('option clicked ' + option.innerText);
                                 if (!e.shiftKey) {
                                     e.preventDefault();
                                     option.parentElement.focus();
                                     $data.toggleOption(this.value);
                                 }
                                 return false;
-                        }, false );
+                        }, false);
 
                         this.options.push({ text: option.innerText, value: (option.value ?? option.innerText) });
                         if (option.selected || option.checked)
@@ -87,7 +93,7 @@ class Select extends Component
                         else
                             this.selectedOptions.push(value);
                     @else
-                        this.selectedOptions = [value];
+                        this.selectedOptions = value;
                     @endif
                 },
                 removeOption(value) {
@@ -103,7 +109,11 @@ class Select extends Component
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
             
-            <x-dropdown class="w-full">
+            <x-dropdown 
+                id="{{ $id }}"
+                class="w-full"
+                style="--options-shown: {{ $rows ?? 12 }}"
+            >
                 <x-slot:trigger
                     @class([
                         'select cursor-pointer custom-multiselect select-header w-full',
@@ -119,7 +129,7 @@ class Select extends Component
                     @style([ 
                         'height: unset' => $maxRows > 1,
                     ])
-                    onblur="var filter = document.getElementById('filter-{{ $id }}'); if (filter) { filter.value = ''; filterSelect(filter, document.getElementById('{{ $id }}')); }">
+                    onblur="var filter = document.getElementById('filter-{{ $id }}'); if (filter) { filter.value = ''; filterSelect(filter, document.getElementById('list-{{ $id }}')); }">
                     <div @class([
                         'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
                     ])>
@@ -170,7 +180,7 @@ class Select extends Component
                                     </template>
                                 </div>
                             @else
-                                <span x-text="options.find((opt) => opt.value === (selectedOptions ? selectedOptions[0] : null))?.text"></span>
+                                <span x-text="options.find((opt) => opt.value === (Array.isArray(selectedOptions) ? selectedOptions[0] : selectedOptions))?.text"></span>
                             @endif
                         </div>
                     </div>
@@ -184,18 +194,18 @@ class Select extends Component
                             var regex = new RegExp(keyword, 'i');
                             var found = 0;
 
-                            for (var i = 0; i < select.length; i++) {
-                                var txt = select.options[i].text;
+                            select.querySelectorAll('option').forEach(function (option) {
+                                var txt = option.text;
                                 if (!regex.test(txt)) {
-                                    select.options[i].setAttribute('disabled', 'disabled');
-                                    select.options[i].classList.add('hidden');
+                                    option.setAttribute('disabled', 'disabled');
+                                    option.classList.add('hidden');
                                 } else {
                                     found += 1;
-                                    select.options[i].removeAttribute('disabled')
-                                    select.options[i].classList.remove('hidden');
+                                    option.removeAttribute('disabled')
+                                    option.classList.remove('hidden');
                                 }
                                 select.parentElement.style.setProperty('--options-filtered', found);
-                            }
+                            });
                         }
                     </script>
                     @endonce
@@ -203,40 +213,41 @@ class Select extends Component
                         "p-2 h-full flex flex-col",
                         "pointer-coarse:max-h-[calc(5rem_+_var(--options-filtered,100)_*_3.25rem_+_1px)]"
                         ])
-                        @if($rows)
-                            style="--options-shown: {{ $rows }}"
+                    >
+                        <x-input :color="$color" autofocus id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('list-{{ $id }}'))" class="w-full"/>
+                @endif
+                <div @class([
+                    "select w-full overflow-auto items-start",
+                    "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered,var(--options-shown,12)),_var(--options-shown,12))_*_2.25rem_+_1px)]",
+                    ])
+                    multiple
+                >
+                    <div
+                        id='list-{{ $id }}'
+                        @class([
+                            'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center',
+                            "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
+                            "pointer-coarse:h-full",
+                            'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
+                            'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
+                            'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
+                            'select-accent [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-accent),var(--color-accent))] [&_option:checked]:text-accent-content'             => $color === 'accent',
+                            'select-info [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-info),var(--color-info))] [&_option:checked]:text-info-content'                     => $color === 'info',
+                            'select-success [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-success),var(--color-success))] [&_option:checked]:text-success-content'         => $color === 'success',
+                            'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
+                            'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
+                        ])
+                        x-model="selectedOptions"
+                        @if (!$multiple)
+                            onclick="setTimeout(() => document.activeElement.blur(), 100)"
                         @endif
                     >
-                        <x-input :color="$color" autofocus id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('{{ $id }}'))" class="w-full"/>
-                @endif
-                <select multiple
-                    id="{{ $id }}"
-                    x-model="selectedOptions"
-                    {{ $attributes->whereStartsWith(['aria']) }}
-                    @if (!$multiple)
-                    onclick="document.activeElement.blur()"
-                    @endif
-                    @class([
-                        'w-full flex-col items-stretch max-h-fit mt-1 grow select options-container space-y-1 space-y-reverse **:space-y-1 **:space-y-reverse [&_option]:content-center',
-                        "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
-                        "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered),_var(--options-shown,12))_*_2.25rem_+_1px)]",
-                        "pointer-coarse:h-full",
-                        'select-neutral [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-neutral),var(--color-neutral))] [&_option:checked]:text-neutral-content'         => $color === 'neutral',
-                        'select-primary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-primary),var(--color-primary))] [&_option:checked]:text-primary-content'         => $color === 'primary',
-                        'select-secondary [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-secondary),var(--color-secondary))] [&_option:checked]:text-secondary-content' => $color === 'secondary',
-                        'select-accent [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-accent),var(--color-accent))] [&_option:checked]:text-accent-content'             => $color === 'accent',
-                        'select-info [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-info),var(--color-info))] [&_option:checked]:text-info-content'                     => $color === 'info',
-                        'select-success [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-success),var(--color-success))] [&_option:checked]:text-success-content'         => $color === 'success',
-                        'select-warning [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-warning),var(--color-warning))] [&_option:checked]:text-warning-content'         => $color === 'warning',
-                        'select-error [&_option:checked]:bg-[linear-gradient(to_bottom,var(--color-error),var(--color-error))] [&_option:checked]:text-error-content'                 => $color === 'error',
-                    ])
-                    {{ $attributes->only(['name', 'id', 'required']) }}
-                >
-                    @foreach ($options as $value => $label)
-                        <option value="{{ $value }}">{{ $label ?? $value }}</option>
-                    @endforeach
-                    {{ $slot }}
-                </select>
+                        @foreach ($options as $value => $label)
+                            <option value="{{ $value }}">{{ $label ?? $value }}</option>
+                        @endforeach
+                        {{ $slot }}
+                    </div>
+                </div>
                 @if ($filter)
                 </div>
                 @endif
