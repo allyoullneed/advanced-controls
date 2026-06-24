@@ -224,7 +224,7 @@ class Select extends Component
                     <div
                         id='list-{{ $id }}'
                         @class([
-                            'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center',
+                            'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center **:rounded-sm **:hover:bg-[color-mix(in_oklab,var(--color-base-content)_10%,transparent)]',
                             "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
                             '[&_span]:cursor-pointer [&_span]:content-center pointer-fine:[&_span]:h-8 pointer-coarse:[&_span]:h-12 [&_span]:px-2',
                             "pointer-coarse:h-full",
