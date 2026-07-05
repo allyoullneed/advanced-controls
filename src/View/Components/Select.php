@@ -50,38 +50,18 @@ class Select extends Component
             else
                 $model = $name
         @endphp
-        <div 
+        <div
             {{ $attributes->except([
                 'name', 'id', 'value', 'required', 'aria-label'
             ])->class(['flex flex-col'])->merge() }}
-
             x-data="{
                 options: [],
-                selectedOptions: [],
+                selectedOptions: {{ $multiple || $array ? '[]' : '\'\'' }},
                 init() {
-                    $el.querySelectorAll('option, span[data-role=\'option\']').forEach((option) => {
-                        @if ($multiple || $array)
-                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions?.includes(\'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\') }')
-                        @else
-                            option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions == \'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\' }')
-                        @endif
-                        option.addEventListener('mousedown', function (e) { e.preventDefault() });
-                        option.addEventListener('click', 
-                            function (e) {
-                                if (!e.shiftKey) {
-                                    e.preventDefault();
-                                    option.parentElement.focus();
-                                    $data.toggleOption(this.value ?? this.getAttribute('data-value'));
-                                }
-                                return false;
-                        }, false);
-
-                        this.options.push({ text: option.innerText, value: (option.value ?? option.getAttribute('data-value') ?? option.innerText) });
-                        if (option.selected || option.checked)
-                            this.selectedOptions.push(option.value ?? option.getAttribute('data-value') ?? option.innerText);
-                    });
                     @if ($model)
-                    $nextTick(function() { $wire.entangle('{{ $model }}'); });
+                    this.$watch('selectedOptions', (value) => {
+                        $wire.set('{{ $model }}', value);
+                    });
                     @endif
                 },
                 toggleOption(value) {
@@ -93,22 +73,48 @@ class Select extends Component
                             this.selectedOptions.push(value);
                     @else
                         this.selectedOptions = value;
+                        console.log('Selected option now', this.selectedOptions);
                     @endif
                 },
                 removeOption(value) {
                     this.selectedOptions.splice(this.selectedOptions.findIndex((opt) => opt === value), 1);
                 }
             }"
+            x-init="
+                console.log('Select is being initialized');
+                const optionOnClick = function (e) {
+                    if (!e.shiftKey) {
+                        e.preventDefault();
+                        e.target.parentElement.focus();
+                        $data.toggleOption(this.value ?? this.getAttribute('data-value'));
+                    }
+                    return false;
+                };
+                $el.querySelectorAll('option, span[data-role=\'option\']').forEach((option) => {
+                    option.removeEventListener('click', optionOnClick);
+                    @if ($multiple || $array)
+                        option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions?.includes(\'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\') }')
+                    @else
+                        option.setAttribute(':class', '{ \'bg-{{ $color ?? 'neutral' }} text-{{ $color ?? 'neutral' }}-content\': $data.selectedOptions == \'' + (option.value ?? option.getAttribute('data-value') ?? option.innerText.replace('\'', '\\\'')) + '\' }')
+                    @endif
+                    option.addEventListener('mousedown', function (e) { e.preventDefault() });
+                    option.addEventListener('click', optionOnClick);
+
+                    options.push({ text: option.innerText, value: (option.value ?? option.getAttribute('data-value') ?? option.innerText) });
+                    if (option.selected || option.checked)
+                        selectedOptions.push(option.value ?? option.getAttribute('data-value') ?? option.innerText);
+                });
+            "
             x-modelable="selectedOptions"
             
-        > 
+        >
             @if (gettype($title) === 'object')
             <header {{ $title->attributes->class(['font-base text-lg'])->merge() }}>{{ $title }}</header>
             @elseif ($title)
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
             
-            <x-dropdown 
+            <x-dropdown
                 id="{{ $id }}"
                 class="w-full"
                 style="--options-shown: {{ $rows ?? 12 }}"
@@ -128,7 +134,7 @@ class Select extends Component
                     @style([ 
                         'height: unset' => $maxRows > 1,
                     ])
-                    onblur="var filter = document.getElementById('filter-{{ $id }}'); if (filter) { filter.value = ''; filterSelect(filter, document.getElementById('list-{{ $id }}')); }">
+                    onblur="var filter = document.getElementById('filter-{{ $id }}'); if (filter && filter.value != '') { filter.value = ''; filterSelect(filter, document.getElementById('list-{{ $id }}')); }">
                     <div @class([
                         'relative h-full w-full py-1 flex gap-2 items-center-safe overflow-y-auto'
                     ])>
@@ -154,9 +160,9 @@ class Select extends Component
                                 {{ $label }}
                             </div>
                         @endif
-                        <div class="w-full h-full relative flex items-center">
+                        <div id="{{ $id }}-placeholder" class="w-full h-full relative flex items-center">
                             @if ($placeholder)
-                                <span x-show="(selectedOptions ? selectedOptions.length : 0) === 0"
+                                <span x-show="!selectedOptions || (Array.isArray(selectedOptions) && selectedOptions.length === 0)"
                                 class="absolute text-current/50 select-none">{{ $placeholder }}</span>
                             @endif
                             @if ($multiple)
@@ -189,12 +195,12 @@ class Select extends Component
                     @once
                     <script>
                         function filterSelect(searchInput, select) {
-                            var keyword = searchInput.value;
+                            var keyword = searchInput.value.normalize('NFD').replace(/\p{Diacritic}/gu, '');
                             var regex = new RegExp(keyword, 'i');
                             var found = 0;
 
                             select.querySelectorAll('option, span[data-role=\'option\']').forEach(function (option) {
-                                var txt = option.text ?? option.innerText;
+                                var txt = (option.text ?? option.innerText).normalize('NFD').replace(/\p{Diacritic}/gu, '');
                                 if (!regex.test(txt)) {
                                     option.setAttribute('disabled', 'disabled');
                                     option.classList.add('hidden');
@@ -213,7 +219,24 @@ class Select extends Component
                         "pointer-coarse:max-h-[calc(5rem_+_var(--options-filtered,100)_*_3.25rem_+_1px)]"
                         ])
                     >
-                        <x-input :color="$color" autofocus autocomplete="off" id="filter-{{ $id }}" class="w-full" placeholder="Filter options..." onkeyup="filterSelect(this, document.getElementById('list-{{ $id }}'))" class="w-full"/>
+                        <input
+                            id="filter-{{ $id }}"
+                            @class([
+                            "input w-full",
+                            "input-neutral"   => $color === 'neutral',
+                            "input-primary"   => $color === 'primary',
+                            "input-secondary" => $color === 'secondary',
+                            "input-accent"    => $color === 'accent',
+                            "input-info"      => $color === 'info',
+                            "input-success"   => $color === 'success',
+                            "input-warning"   => $color === 'warning',
+                            "input-error"     => $color === 'error',
+                            ])
+                            autofocus
+                            autocomplete="off"
+                            placeholder="Filter options..."
+                            onkeyup="filterSelect(this, document.getElementById('list-{{ $id }}'))"
+                        />
                 @endif
                 <div @class([
                     "select w-full overflow-auto items-start",
@@ -224,7 +247,7 @@ class Select extends Component
                     <div
                         id='list-{{ $id }}'
                         @class([
-                            'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center **:rounded-sm **:hover:bg-[color-mix(in_oklab,var(--color-base-content)_10%,transparent)]',
+                            'w-full flex-col gap-1 mt-1 items-stretch max-h-fit grow options-container **:space-y-1 [&_option]:content-center',
                             "pointer-fine:[&_option]:h-8 pointer-coarse:[&_option]:h-12",
                             '[&_span]:cursor-pointer [&_span]:content-center pointer-fine:[&_span]:h-8 pointer-coarse:[&_span]:h-12 [&_span]:px-2',
                             "pointer-coarse:h-full",
