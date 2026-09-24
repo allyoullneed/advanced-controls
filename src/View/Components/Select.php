@@ -73,7 +73,6 @@ class Select extends Component
                             this.selectedOptions.push(value);
                     @else
                         this.selectedOptions = value;
-                        console.log('Selected option now', this.selectedOptions);
                     @endif
                 },
                 removeOption(value) {
@@ -81,7 +80,6 @@ class Select extends Component
                 }
             }"
             x-init="
-                console.log('Select is being initialized');
                 const optionOnClick = function (e) {
                     if (!e.shiftKey) {
                         e.preventDefault();
