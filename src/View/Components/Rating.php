@@ -46,7 +46,7 @@ class Rating extends Component
         <div {{ $attributes->except([
                     'type', 'value', 'required', 'autocomplete'
                 ])->whereDoesntStartWith('wire:model')->class([
-            'flex flex-col w-full'
+            'flex flex-col'
             ])->merge()
         }}>
             @if (gettype($title) === 'object')
@@ -75,7 +75,7 @@ class Rating extends Component
                         @checked($value === $i)
                         {{ $attributes->whereStartsWith('wire:') }}
                         {{ $attributes->only([
-                            'class', 'name'
+                            'class', 'name', 'disabled'
                             ])->class([
                                 'mask star',
                                 'bg-orange-400'   => $color === null,
@@ -174,7 +174,9 @@ class Rating extends Component
                                 @checked($value === $i)
                                 name="{{ $attributes['name'] ?? $id }}"
                                 aria-label="{{ $i }} star{{ $i != 1 ? 's' : '' }}"
-                                {{ $attributes->whereStartsWith('wire:') }} />
+                                {{ $attributes->whereStartsWith('wire:') }}
+                                {{ $attributes->only('disabled') }}
+                                 />
 
                             @if (gettype($svg) === 'object')
                                 {!! $svg !!}
