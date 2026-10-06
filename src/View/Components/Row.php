@@ -20,7 +20,9 @@ class Row extends Component
         @aware(['rowSeparator'])
         @renderif ($collapsible)
             <x-collapse @class([
-                'col-span-full grid grid-cols-subgrid items-center-safe [&>input]:col-span-full'
+                    'col-span-full grid grid-cols-subgrid items-center-safe [&>input]:col-span-full',
+                    '[&[tabindex]:focus-within>.collapse-content]:pb-0',
+                    '[&>:where(input:is([type=\'checkbox\'],[type=\'radio\']):checked_~_.collapse-content)]:pb-0',
                 ])
                 :keep-open="$attributes->has('keep-open')"
                 :arrow="$attributes->has('arrow')"
