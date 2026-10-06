@@ -27,6 +27,7 @@ class Select extends Component
         public ?int    $rows        = null,
         public int     $maxRows     = 1,
         public bool    $disabled    = false,
+        public mixed   $value       = null,
     ) {
         if ($id)
             $this->id = $id;
@@ -52,11 +53,19 @@ class Select extends Component
         @endphp
         <div
             {{ $attributes->except([
-                'name', 'id', 'value', 'required', 'aria-label'
+                'name', 'id', 'required', 'aria-label'
             ])->class(['flex flex-col'])->merge() }}
             x-data="{
-                options: [],
-                selectedOptions: {{ $multiple || $array ? '[]' : '\'\'' }},
+                options: [
+                    @foreach ($options ?? [] as $optionkey => $optionlabel)
+                        { text: '{{ $optionlabel ?? $optionkey }}', value: '{{ $optionkey }}' },
+                    @endforeach
+                ],
+                @if ($multiple || $array || is_array($value))
+                    selectedOptions: [{{ $value ? "'" . implode("','", $value) . "'" : '' }}],
+                @else
+                    selectedOptions: ['{{ $value }}'],
+                @endif
                 init() {
                     @if ($model)
                     this.$watch('selectedOptions', (value) => {
@@ -88,6 +97,7 @@ class Select extends Component
                     }
                     return false;
                 };
+                @if (!$options)
                 $el.querySelectorAll('option, span[data-role=\'option\']').forEach((option) => {
                     option.removeEventListener('click', optionOnClick);
                     @if ($multiple || $array)
@@ -102,6 +112,7 @@ class Select extends Component
                     if (option.selected || option.checked)
                         selectedOptions.push(option.value ?? option.getAttribute('data-value') ?? option.innerText);
                 });
+                @endif
             "
             x-modelable="selectedOptions"
             
@@ -220,7 +231,7 @@ class Select extends Component
                         <input
                             id="filter-{{ $id }}"
                             @class([
-                            "input w-full",
+                            "input w-full min-h-[var(--size)]",
                             "input-neutral"   => $color === 'neutral',
                             "input-primary"   => $color === 'primary',
                             "input-secondary" => $color === 'secondary',
@@ -237,8 +248,9 @@ class Select extends Component
                         />
                 @endif
                 <div @class([
-                    "select w-full overflow-auto items-start",
-                    "pointer-fine:h-[calc(1.5rem_+_min(var(--options-filtered,var(--options-shown,12)),_var(--options-shown,12))_*_2rem_+_1px)]",
+                    "select px-0 w-full overflow-auto items-start box-content",
+                    "pointer-fine:h-[calc(min(var(--options-filtered,var(--options-filtered,12)),_var(--options-shown,12))_*_var(--spacing)_*_8_+_1px)]",
+                    "pointer-coarse:w-auto pointer-coarse:h-[min(100vh,calc(min(var(--options-filtered,100))_*_var(--spacing)_*_12_+_1px))] pointer-coarse:max-h-[calc(100vh_-_20_*_var(--spacing)_-_var(--size))]",
                     ])
                     multiple
                 >
@@ -263,8 +275,8 @@ class Select extends Component
                             onclick="setTimeout(() => document.activeElement.blur(), 100)"
                         @endif
                     >
-                        @foreach ($options as $value => $label)
-                            <span class="block" data-role="option" value="{{ $value }}">{{ $label ?? $value }}</span>
+                        @foreach ($options as $optionkey => $optionlabel)
+                            <span class="block" data-role="option" value="{{ $optionkey }}">{{ $optionlabel ?? $optionkey }}</span>
                         @endforeach
                         {{ $slot }}
                     </div>
