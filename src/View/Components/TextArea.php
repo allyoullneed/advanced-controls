@@ -61,10 +61,14 @@ class TextArea extends Component
 
             @if (gettype($icon) === 'string')
                     <x-icon class="h-lh" :name="$icon"/>
+            @elseif (gettype($icon) === 'object')
+                <div {{ $icon->attributes }}>
+                    {{ $icon }}
+                </div>
             @endif
 
             @if (gettype($label) === 'string')
-                <div 
+                <div    
                     @class([
                         'label-text basis-[max-content] whitespace-nowrap overflow-x-hidden text-ellipsis',                     
                         'text-xs' => $size === 'xs',
@@ -79,7 +83,7 @@ class TextArea extends Component
 
             <textarea
                 {{ $attributes->only(['name', 'value', 'required', 'rows', 'wire:model'])->class([
-                    'w-full textarea',
+                    'w-full relative textarea',
                     'resize-none'                                                                          => $resize === 'none',
                     'resize-y'                                                                             => $resize === 'vertical' || $resize === 'y',
                     'resize-x'                                                                             => $resize === 'horizontal' || $resize === 'x',
@@ -109,14 +113,10 @@ class TextArea extends Component
                     x-init="$nextTick(() => length = $el.value?.length ?? 0)"
                     x-on:input="length = event.target.value.length"
                 @endif
+                @style([
+                    'anchor-name: --' .  $attributes->get('id')
+                ])
             >{{ $slot }}</textarea>
-
-
-            @if (gettype($icon) === 'object')  
-                <div {{ $icon->attributes->class(['flex order-first']) }}>
-                    {{ $icon }}
-                </div>
-            @endif
 
             @if (gettype($label) === 'object')
                 <div {{ $label->attributes->class([
@@ -149,7 +149,7 @@ class TextArea extends Component
                     <div class="flex h-lh order-last">
                         <x-icon :name="$trailIcon"/>
                     </div>
-                @elseif (gettype($trailIcon) === 'object')  
+                @elseif (gettype($trailIcon) ==='object')  
                     <div {{ $trailIcon->attributes->class(['flex order-last']) }}>
                         {{ $trailIcon }}
                     </div>
@@ -158,10 +158,13 @@ class TextArea extends Component
 
             @if (($minlength > 0 || $maxlength > 0) && $lengthIndicator)
                 <div @class([
-                    'absolute flex size-6 items-center justify-center v-popper--has-tooltip',
-                    'bottom-2 right-2' => $resize !== 'none',
-                    'bottom-1 right-1' => $resize === 'none'
-                ])>
+                        'length-indicator absolute flex size-6 items-center justify-center v-popper--has-tooltip',
+                        '-translate-1' => $resize !== 'none'
+                    ])
+                    @style([
+                        'position-anchor: --' .  $attributes->get('id'),
+                    ])
+                >
                     <svg class="absolute right-0 h-full w-full text-gray-200 dark:text-gray-700" viewBox="0 0 100 100" role="presentation">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"></circle>
                     </svg>
