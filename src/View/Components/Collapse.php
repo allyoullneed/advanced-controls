@@ -9,7 +9,7 @@ class Collapse extends Component
 {
     public function __construct(
         public mixed $label    = null,
-        public bool  $left = false,
+        public bool  $left     = false,
         public bool  $arrow    = false,
         public bool  $plus     = false,
         public bool  $keepOpen = false,
@@ -27,7 +27,7 @@ class Collapse extends Component
         @endif
         {{
             $attributes->class([
-                'collapse rounded-box ayn-child:[:where(.collapse-title)]:font-semibold',
+                'collapse',
                 'relative w-full grid grid-cols-[minmax(0px,1fr)] grid-rows-[max-content_0fr] overflow-hidden',
                 '[visibility:revert-layer] [isolation:isolate]',
                 '[transition:grid-template-rows_0.2s]',

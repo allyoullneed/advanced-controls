@@ -1,0 +1,239 @@
+@import "tailwindcss";
+@import "common.css";
+@plugin "flyonui";
+
+@custom-variant ayn-desc (:where(& *));
+@custom-variant ayn-child (:where(& > *));
+
+
+.card.image-full {
+    & .card-title {
+        @apply text-neutral-content;
+    }
+}
+
+@layer utilities {
+    @layer allyoullneed.advanced-controls {
+        /******************/
+        /**    Alert     **/
+        /******************/
+        .alert {
+            @apply grid grid-cols-1 justify-start gap-y-3;
+        }
+
+        /******************/
+        /**    Avatar    **/
+        /******************/
+        .avatar {
+            & * {
+                @apply max-h-[lh];
+            }
+        }
+
+        /******************/
+        /**    Badge     **/
+        /******************/
+        .badge {
+            @apply select-none cursor-default max-w-full;
+        }
+
+        /******************/
+        /**    Button    **/
+        /******************/
+        .button {}
+
+        /******************/
+        /**     Card     **/
+        /******************/
+        .card {}
+
+        /******************/
+        /**   Carousel   **/
+        /******************/
+        .carousel {
+            @apply rounded-none;
+        }
+
+        /******************/
+        /**    Chart     **/
+        /******************/
+        .chart {}
+
+        /******************/
+        /**   Checkbox   **/
+        /******************/
+        .checkbox {}
+
+        /******************/
+        /**   Collapse   **/
+        /******************/
+        .collapse {
+            @apply rounded-box ayn-child:[:where(.collapse-title)]:font-semibold;
+        }
+
+        /******************/
+        /**   Dropdown   **/
+        /******************/
+        .dropdown {
+            @apply relative;
+
+            &:not(details, .dropdown-open, .dropdown-hover:hover, :focus-within)>.dropdown-content {
+                @apply hidden;
+            }
+        }
+
+        /******************/
+        /**  Indicator   **/
+        /******************/
+        .indicator {}
+
+        .indicator-item {
+            @apply flex justify-center w-fit max-w-full items-center;
+        }
+
+        /******************/
+        /**    Input     **/
+        /******************/
+        .button {}
+
+        /******************/
+        /**   Loading    **/
+        /******************/
+        .loading {}
+
+        /******************/
+        /**     Menu     **/
+        /******************/
+        .button {}
+
+        /******************/
+        /**    Modal     **/
+        /******************/
+        dialog.modal {
+            @apply fixed left-0 top-0 max-w-none w-[100vw] max-h-none h-[100vh] place-items-center hidden open:grid bg-transparent open:bg-[#0006] backdrop-blur-xl;
+        }
+
+        /******************/
+        /**   Password   **/
+        /******************/
+        .password {}
+
+        /******************/
+        /**     Pin      **/
+        /******************/
+        .pin {
+            @apply flex items-center justify-stretch gap-2;
+        }
+
+        /******************/
+        /**    Radio     **/
+        /******************/
+        .radio {}
+
+        /******************/
+        /**    Range     **/
+        /******************/
+        .range {}
+
+        /******************/
+        /**    Rating    **/
+        /******************/
+        .rating {}
+
+        /******************/
+        /**    Rating    **/
+        /******************/
+        .button {}
+
+        /******************/
+        /**    Select    **/
+        /******************/
+        .button {}
+
+        /******************/
+        /**   Skeleton   **/
+        /******************/
+        .skeleton {}
+
+        /******************/
+        /**SkewedGallery **/
+        /******************/
+        .skewed-gallery {}
+
+        /******************/
+        /**    Slide     **/
+        /******************/
+        .slide {}
+
+        /******************/
+        /**  Slideshow   **/
+        /******************/
+        .slideshow {}
+
+        /******************/
+        /**    Stack     **/
+        /******************/
+        .stack {}
+
+        /******************/
+        /**    Table     **/
+        /******************/
+        div[role="table"] {
+            @apply grid gap-x-4 gap-y-0 rounded-box;
+        }
+
+        div[role="table"] div[role="row"] {
+            @apply py-3;
+        }
+
+        /******************/
+        /**     Tabs     **/
+        /******************/
+        .tabs {
+            &>label.tab {
+                @apply whitespace-nowrap flex items-center rounded-b-none;
+            }
+            &>label.tab:has(:checked) {
+                @apply tab-active;
+            }
+            &>.tab:has(:checked)+.tab-content {
+                @apply block;
+            }
+
+            &>.tab-content {
+                @apply hidden;
+            }
+        }
+
+        /******************/
+        /**   TextArea   **/
+        /******************/
+        .textarea {}
+
+        /******************/
+        /** ThemeToggle  **/
+        /******************/
+        .theme-toggle {}
+
+        /******************/
+        /**   Timeline   **/
+        /******************/
+        .timeline {}
+
+        /******************/
+        /**    Toast     **/
+        /******************/
+        .toast {}
+
+        /******************/
+        /**     Toc      **/
+        /******************/
+        .toc {}
+
+        /******************/
+        /**    Toggle    **/
+        /******************/
+        .toggle {}
+
+    } 
+}

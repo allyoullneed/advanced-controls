@@ -19,17 +19,18 @@ class Row extends Component
         return <<<'HTML'
         @aware(['rowSeparator'])
         @renderif ($collapsible)
-            <x-collapse @class([
-                    'col-span-full grid grid-cols-subgrid items-center-safe [&>input]:col-span-full',
-                    '[&[tabindex]:focus-within>.collapse-content]:pb-0',
-                    '[&>:where(input:is([type=\'checkbox\'],[type=\'radio\']):checked_~_.collapse-content)]:pb-0',
+            <x-collapse role="row"
+                @class([
+                    'row col-span-full grid grid-cols-subgrid items-center-safe [&>input]:col-span-full',
                 ])
                 :keep-open="$attributes->has('keep-open')"
                 :arrow="$attributes->has('arrow')"
                 :plus="$attributes->has('plus')"
                 :label="gettype($label) === 'object' ? $label->withAttributes($label->attributes->merge(['class' => 'col-span-full grid grid-cols-subgrid items-center-safe p-0'])->getAttributes()) : $label"
             >
-                <x-slot @class(['col-span-full grid grid-cols-subgrid items-center-safe -mx-4'])>
+                <x-slot @class([
+                    'col-span-full grid grid-cols-subgrid items-center-safe -mx-4'
+                ])>
                     {{ $slot }}
                 </x-slot>
                 

@@ -46,7 +46,7 @@ class Tabs extends Component
         return <<<'HTML'
         <div
             {{ $attributes->class([
-                'tabs [&>.tab-content]:hidden *:[.tab:has(:checked)_+_.tab-content]:block',
+                'tabs',
                 '[&>.tab]:border-e-3 [&>.tab]:has-checked:border-e-current' => $variant === 'border' && $vertical,
                 'tabs-border'                                 => $variant === 'border' && !$vertical,
                 'tabs-bordered'                               => $variant === 'border',
