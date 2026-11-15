@@ -9,14 +9,12 @@ class Menu extends Component
 {
 
     public function __construct(
-        ?string $id = null,
-        ?bool $hover = null
+        ?string $id = null
     ) {
         if ($id)
             $this->id = $id;
         else
             $this->id = uniqid();
-        $this->hover = $hover !== null;
     }
 
     public function render(): View|Closure|string

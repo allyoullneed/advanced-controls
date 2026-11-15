@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 class Toast extends Component
 {
     public function __construct(
-        public string $position = 'toast-top toast-end',
         public string $listenTo = 'notify',
         public int $duration = 8000,
     ) {

@@ -34,6 +34,7 @@ use AllYoullNeed\AdvancedControls\View\Components\Rating;
 use AllYoullNeed\AdvancedControls\View\Components\RawSelect;
 use AllYoullNeed\AdvancedControls\View\Components\Row;
 use AllYoullNeed\AdvancedControls\View\Components\Select;
+use AllYoullNeed\AdvancedControls\View\Components\SelectOption;
 use AllYoullNeed\AdvancedControls\View\Components\Skeleton;
 use AllYoullNeed\AdvancedControls\View\Components\SkewedGallery;
 use AllYoullNeed\AdvancedControls\View\Components\Slide;
@@ -103,6 +104,7 @@ final class AdvancedControlsServiceProvider extends ServiceProvider
         Blade::component($prefix . 'raw-select'     , RawSelect::class);
         Blade::component($prefix . 'row'            , Row::class);
         Blade::component($prefix . 'select'         , Select::class);
+        Blade::component($prefix . 'select-option'  , SelectOption::class);
         Blade::component($prefix . 'skeleton'       , Skeleton::class);
         Blade::component($prefix . 'skewed-gallery' , SkewedGallery::class);
         Blade::component($prefix . 'slide'          , Slide::class);

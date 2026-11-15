@@ -15,7 +15,13 @@ class Checkboxes extends Component
         public ?string $color      = null,
         public ?bool   $horizontal = false,
         public array   $options    = [],
+        public string $name = ''
     ) {
+        if (!$options)
+            throw new \Exception('The options property is required for the Checkboxes component.');
+        if ($name === '')
+            throw new \Exception('The name property is required for the Checkboxes component.');
+
         if ($id)
             $this->id = $id;
         else
@@ -31,7 +37,7 @@ class Checkboxes extends Component
             $color = 'error'
             @endphp
         @enderror
-        <div {{ $attributes->except(['name'])->whereDoesntStartWith('wire:model')->class([
+        <div {{ $attributes->whereDoesntStartWith('wire:model')->class([
             'flex flex-col flex-wrap',
             'flex-col' => !$horizontal,
         ])->merge() }}>
@@ -40,22 +46,34 @@ class Checkboxes extends Component
             @elseif ($title)
             <header class="font-base text-lg">{{ $title }}</header>
             @endif
-            <input type="hidden" name="{{ $attributes->get('name') }}"/>
+            <input type="hidden" :name="$name . '[]'"/>
             
             <div @class([
                 'flex flex-wrap gap-1',
                 'flex-row' => $horizontal,
                 'flex-col' => !$horizontal,
                 ])>
-                @foreach ($options as $value => $label)
-                    <x-checkbox
-                        :name="$attributes->get('name')"
-                        :label="$label ?? $value"
-                        :value="$value"
-                        :color="$color"
-                        {{ $attributes->whereStartsWith('wire:model') }}
-                    />
-                @endforeach
+                @if (array_is_list($options))
+                    @foreach ($options as $value)
+                        <x-checkbox
+                            :name="$name . '[]'"
+                            :label="$value"
+                            :value="$value"
+                            :color="$color"
+                            {{ $attributes->whereStartsWith('wire:model') }}
+                        />
+                    @endforeach
+                @else
+                    @foreach ($options as $value => $label)
+                        <x-checkbox
+                            :name="$name . '[]'"
+                            :label="$label ?? $value"
+                            :value="$value"
+                            :color="$color"
+                            {{ $attributes->whereStartsWith('wire:model') }}
+                        />
+                    @endforeach
+                @endif
                 {{ $slot }}
             </div>
             @if (gettype($helper) === 'object')

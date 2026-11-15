@@ -33,6 +33,11 @@ class Pin extends Component
     public function render(): View|Closure|string
     {
 return <<<'HTML'
+@if ($attributes->has('placeholder') || isset($placeholder))
+@php
+throw new Exception('PINs do not support placeholders.');
+@endphp
+@endif
 @error($attributes->whereStartsWith('wire:model')->first())
     @php
     $color = 'error'
@@ -298,7 +303,7 @@ return <<<'HTML'
     @endif
     
 
-    <div class="flex items-center justify-stretch gap-2">
+    <div class="pin">
         @if (gettype($icon) === 'string')
             <div class="flex h-lh">
                 <x-icon :name="$icon"/>

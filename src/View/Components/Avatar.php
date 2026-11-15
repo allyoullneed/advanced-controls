@@ -18,25 +18,36 @@ class Avatar extends Component
     {
         return <<<'HTML'
         <span
-            {{ $attributes->except(['class'])->class([
-                'avatar flex justify-start items-center ayn-desc:max-h-[5lh]',
-                'gap-2' => $name
+            {{ $attributes->class([
+                'flex items-center gap-2' => $name
             ])->merge() }}
         >
-            <div {{ $attributes->only(['class'])->class(["rounded-full aspect-square"]) }}>
-                @if (gettype($picture) === 'string')
-                    <img class="object-contain aspect-square rounded-full" src="{{ $picture }}" alt="{{ $name ?? 'Unknown user' }}"/>
-                @elseif ($picture)
-                    {{ $picture }}
-                @elseif (gettype($placeholder) === 'object')
-                    {{ $placeholder }}
-                @elseif ($placeholder)
-                    <x-icon :name="$placeholder" aria-label="Guest"/>
+            @if (gettype($picture) === 'string')
+                <img class="avatar h-full object-contain aspect-square rounded-full" src="{{ $picture }}" alt="{{ $name ?? 'Unknown user' }}"/>
+            @elseif ($picture)
+                @if ($picture->attributes->has('path'))
+                    <img {{ $picture->attributes->only(['class'])->class(["avatar h-full rounded-full aspect-square rounded-full"]) }} src="{{ $picture->attributes->get('path') }}" alt="{{ $name ?? 'Unknown user' }}"/>
                 @else
-                    <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['user']" class="rounded-full bg-base-content w-full h-full" aria-label="Guest"/>
+                    {{ $picture }}
                 @endif
+            @elseif (gettype($placeholder) === 'object')
+                {{ $placeholder }}
+            @elseif ($placeholder)
+                <div class="avatar rounded-full aspect-square h-full">
+                    <x-icon :name="$placeholder" aria-label="Guest"/>
+                </div>
+            @else
+                <div class="avatar rounded-full aspect-square h-full">
+                    <x-icon :name="config('advanced-controls.icon-packages')[config('advanced-controls.icons')]['user']" aria-label="Guest"/>
+                </div>
+            @endif
+            @if (is_object($name))
+            <div {{ $name->attributes->class(['overflow-hidden whitespace-nowrap aspect-auto!'])->merge() }}>
+                {{ $name }}
             </div>
+            @else
             {{ $name ?? $slot }}
+            @endif
         </span>
         HTML;
     }

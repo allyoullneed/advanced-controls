@@ -115,11 +115,11 @@ class Rating extends Component
                     ])>
                         @if ($icon)
                             @if (gettype($icon) === 'string')
-                                <div class="flex h-lh order-last">
+                                <div class="flex h-lh">
                                     <x-icon :name="$icon"/>
                                 </div>
                             @elseif (gettype($icon) === 'object')
-                                <div {{ $icon->attributes->class(['flex order-last']) }}>
+                                <div {{ $icon->attributes }}>
                                     {{ $icon }}
                                 </div>
                             @endif

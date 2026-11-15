@@ -37,7 +37,8 @@ class Table extends Component
             $rowCount = count(explode(' ', $rows)) ?? $rowIndex->value();
             $colCount = count(explode(' ', $columns));
         @endphp
-        <div {{ $attributes->class([
+        <div role="table" 
+            {{ $attributes->class([
             'grid gap-x-4 gap-y-0 rounded-box',
             ])-> merge() }}
             @style([
@@ -58,10 +59,12 @@ class Table extends Component
             @endif
 
             @if ($header)
-                <div {{ $header->attributes->class([
-                    "grid col-span-full row-start-1 grid-cols-subgrid items-center gap-x-[inherit] gap-y-0 ayn-child:py-3",
-                    'ayn-child:border-b-1 *:border-s-0 *:border-e-0 *:border-t-0' => $rowSeparator
-                ])->merge() }}>
+                <div role="header"
+                    {{ $header->attributes->class([
+                        "grid col-span-full row-start-1 grid-cols-subgrid items-center gap-x-[inherit] gap-y-0 ayn-child:py-3",
+                        'ayn-child:border-b-1 *:border-s-0 *:border-e-0 *:border-t-0' => $rowSeparator
+                    ])->merge() }}
+                >
                     {{ $header }}
                 </div>
             @endif
