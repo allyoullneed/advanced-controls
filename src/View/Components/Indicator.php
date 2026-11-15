@@ -8,6 +8,7 @@ use Illuminate\View\Component;
 class Indicator extends Component
 {
     public ?string $indicator = null;
+    public ?string $parentColor = null;
 
     public function __construct(
         public ?string $label       = null,
@@ -16,6 +17,7 @@ class Indicator extends Component
         public bool    $noIndicator = false,
         public bool    $transparent = false,
     ) {
+        $this->parentColor = $color;
     }
 
     public function parse_position(?    string $position): array
@@ -36,6 +38,7 @@ class Indicator extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @props(['parentColor' => null])
         @renderif ($transparent)
             {{ $slot }}
         @else
@@ -50,7 +53,7 @@ class Indicator extends Component
                 {{ $slot }}
                 @if (!$noIndicator && $indicator)
                     <div {{ $indicator->attributes->except(['position', 'size'])->class([
-                        'flex justify-center w-fit max-w-full items-center indicator-item',
+                        'indicator-item',
                         'indicator-top'    => in_array('top'   , $arr_position),
                         'indicator-bottom' => in_array('bottom', $arr_position),
                         'indicator-left'   => in_array('left'  , $arr_position),

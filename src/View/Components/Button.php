@@ -23,20 +23,20 @@ class Button extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
-        @aware(['color', 'size'])
+        @aware(['parentColor', 'size'])
         @if ($href)
             <a
                 href="{{ $href }}"
                     {{ $attributes->class([
                     'btn',
-                    'btn-neutral'        => $color === 'neutral',
-                    'btn-primary'        => $color === 'primary',
-                    'btn-secondary'      => $color === 'secondary',
-                    'btn-accent'         => $color === 'accent',
-                    'btn-info'           => $color === 'info',
-                    'btn-success'        => $color === 'success',
-                    'btn-warning'        => $color === 'warning',
-                    'btn-error'          => $color === 'error',
+                    'btn-neutral'        => ($color ?? $parentColor) === 'neutral',
+                    'btn-primary'        => ($color ?? $parentColor) === 'primary',
+                    'btn-secondary'      => ($color ?? $parentColor) === 'secondary',
+                    'btn-accent'         => ($color ?? $parentColor) === 'accent',
+                    'btn-info'           => ($color ?? $parentColor) === 'info',
+                    'btn-success'        => ($color ?? $parentColor) === 'success',
+                    'btn-warning'        => ($color ?? $parentColor) === 'warning',
+                    'btn-error'          => ($color ?? $parentColor) === 'error',
                     'btn-soft'           => $variant === 'soft',
                     'btn-outline'        => $variant === 'outline',
                     'btn-gradient'       => $variant === 'gradient',
@@ -53,14 +53,14 @@ class Button extends Component
             <button
                 {{ $attributes->class([
                     'btn',
-                    'btn-neutral'        => $color === 'neutral',
-                    'btn-primary'        => $color === 'primary',
-                    'btn-secondary'      => $color === 'secondary',
-                    'btn-accent'         => $color === 'accent',
-                    'btn-info'           => $color === 'info',
-                    'btn-success'        => $color === 'success',
-                    'btn-warning'        => $color === 'warning',
-                    'btn-error'          => $color === 'error',
+                    'btn-neutral'        => ($color ?? $parentColor) === 'neutral',
+                    'btn-primary'        => ($color ?? $parentColor) === 'primary',
+                    'btn-secondary'      => ($color ?? $parentColor) === 'secondary',
+                    'btn-accent'         => ($color ?? $parentColor) === 'accent',
+                    'btn-info'           => ($color ?? $parentColor) === 'info',
+                    'btn-success'        => ($color ?? $parentColor) === 'success',
+                    'btn-warning'        => ($color ?? $parentColor) === 'warning',
+                    'btn-error'          => ($color ?? $parentColor) === 'error',
                     'btn-soft'           => $variant === 'soft',
                     'btn-outline'        => $variant === 'outline',
                     'btn-gradient'       => $variant === 'gradient',
@@ -88,38 +88,28 @@ class Button extends Component
                         ]) />
                 @endif
         @endif
-            
-            @if(gettype($icon) === 'string')
-                <span @class([
-                    'w-6 flex justify-center items-center',
-                    'in-data-loading:hidden' => $loadIndicator && !$indicatorEnd
-                ])
-                >
-                    <x-icon :name="$icon" aria-hidden="true"/>
-                </span>
-            @elseif ($icon)
-                {{ $icon }}
-            @endif
-
-            {{ $label ?? $slot }}
-
-            @if(gettype($trailIcon) === 'string')
-                <span @class([
-                    'w-6',
-                    'in-data-loading:hidden' => $loadIndicator && $indicatorEnd
-                ])
-                >
-                    <x-icon :name="$trailIcon" />
-                </span>
-            @elseif ($trailIcon)
-                {{ $trailIcon }}
-            @endif
-
-        @if ($href)
-            </a>
-        @else
-            </button>
+        @if(gettype($icon) === 'string')
+            <span @class([
+                'w-6 flex justify-center items-center',
+                'in-data-loading:hidden' => $loadIndicator && !$indicatorEnd
+            ])
+            >
+                <x-icon :name="$icon" aria-hidden="true"/>
+            </span>
+        @elseif ($icon)
+            {{ $icon }}
+        @endif{{ $label ?? $slot }}@if(gettype($trailIcon) === 'string')
+            <span @class([
+                'w-6',
+                'in-data-loading:hidden' => $loadIndicator && $indicatorEnd
+            ])
+            >
+                <x-icon :name="$trailIcon" />
+            </span>
+        @elseif ($trailIcon)
+            {{ $trailIcon }}
         @endif
+        @if ($href)</a>@else</button>@endif
         HTML;
     }
 }
