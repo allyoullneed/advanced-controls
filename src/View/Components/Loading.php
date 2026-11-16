@@ -39,7 +39,7 @@ class Loading extends Component
                 'loading-md'       => $size === 'md',
                 'loading-sm'       => $size === 'sm',
                 'loading-xs'       => $size === 'xs',
-            ])->merge() }}>{{ $variant }}</span>
+            ])->merge() }}></span>
         HTML;
     }
 }

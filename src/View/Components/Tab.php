@@ -20,7 +20,7 @@ class Tab extends Component
         @aware(['id', 'tabIndex', 'tabAttributes', 'vertical'])
         <label
             {{ (gettype($label) === 'object' ? $label->attributes : $attributes->only(['style']))->class([
-                'tab whitespace-nowrap has-checked:tab-active flex items-center',
+                'tab',
                 'rounded-b-none' => $slot->isNotEmpty(),
                 'col-start-1' => $vertical,
             ]) }}

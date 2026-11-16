@@ -26,7 +26,7 @@ class Alert extends Component
         return <<<'HTML'
         <div
             {{ $attributes->class([
-                'alert grid grid-cols-1 justify-start gap-y-3',
+                'alert',
                 'alert-primary'          => ($type ?? $color) === 'primary',
                 'alert-info'             => ($type ?? $color) === 'info',
                 'alert-success'          => ($type ?? $color) === 'success',

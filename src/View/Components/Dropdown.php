@@ -32,7 +32,7 @@ class Dropdown extends Component
                     'popovertarget' => $anchor ? 'popover-' . $anchor : null
                 ])->except('class') }}
                 {{ $attributes->except('class')->class([
-                    'relative dropdown [&:not(details,.dropdown-open,.dropdown-hover:hover,:focus-within)>.dropdown-content]:hidden',
+                    'dropdown',
                     'dropdown-hover'                    => $hover,
                     'hover:[&>.dropdown-content]:block' => $hover,
                     'dropdown-start'                    => $align     === 'start',
