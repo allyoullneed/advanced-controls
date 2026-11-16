@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 class Card extends Component
 {
     public ?string $parentColor = null;
-    public ?string $parentSize  = null;
+
     public function __construct(
         public mixed   $figure      = null,
         public mixed   $title       = null,
@@ -18,13 +18,13 @@ class Card extends Component
         public ?string $color       = null,
         public ?string $size        = null
     ) {
-        $this->parentColor   = $color;
-        $this->parentSize  = $size;
+        $this->parentColor = $color;
     }
 
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @props(['parentColor' => null])
         <div {{
             $attributes->class([
                 'card',
@@ -74,14 +74,6 @@ class Card extends Component
                     @endif
                     <div {{ $actions->attributes->class([
                         'card-actions',
-                        'ayn-desc:[:where(button.btn)]:btn-neutral ayn-desc:[:where(button.btn)]:text-neutral-content'     => $color === 'neutral',
-                        'ayn-desc:[:where(button.btn)]:btn-primary ayn-desc:[:where(button.btn)]:text-primary-content'     => $color === 'primary',
-                        'ayn-desc:[:where(button.btn)]:btn-secondary ayn-desc:[:where(button.btn)]:text-secondary-content' => $color === 'secondary',
-                        'ayn-desc:[:where(button.btn)]:btn-accent ayn-desc:[:where(button.btn)]:text-accent-content'       => $color === 'accent',
-                        'ayn-desc:[:where(button.btn)]:btn-info ayn-desc:[:where(button.btn)]:text-info-content'           => $color === 'info',
-                        'ayn-desc:[:where(button.btn)]:btn-success ayn-desc:[:where(button.btn)]:text-success-content'     => $color === 'success',
-                        'ayn-desc:[:where(button.btn)]:btn-warning ayn-desc:[:where(button.btn)]:text-warning-content'     => $color === 'warning',
-                        'ayn-desc:[:where(button.btn)]:btn-error ayn-desc:[:where(button.btn)]:text-error-content'         => $color === 'error',
                     ])->merge() }}>
                         {{ $actions }}
                     </div>

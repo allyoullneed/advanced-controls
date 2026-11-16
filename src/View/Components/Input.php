@@ -35,13 +35,14 @@ class Input extends Component
     public function render(): View|Closure|string
     {
         return <<<'HTML'
+        @aware(['parentColor'])
         @error($attributes->whereStartsWith('wire:model')->first())
             @php
             $color = 'error'
             @endphp
         @enderror
         <div {{ $attributes->except([
-                    'id', 'autofocus', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
+                    'id', 'accept', 'autofocus', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
                 ])->whereDoesntStartWith('wire:model')->class([
             'flex flex-col w-full'
             ])->merge()
@@ -53,7 +54,7 @@ class Input extends Component
         @endif
         <label
             {{ $attributes->except([
-                    'id', 'autofocus', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
+                    'id', 'accept', 'autofocus', 'type', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'
                 ])->whereDoesntStartWith('wire:model')->class([
                     'flex gap-2 items-center w-full whitespace-nowrap',
                     'cursor-pointer'                                      => $type === 'color',
@@ -61,14 +62,14 @@ class Input extends Component
                     'pe-0'                                                => $type  === 'color' && !$append && !$trailIcon,
                     'input'                                               => $type  !== 'file',
                     '!input-error'                                        => $type  !== 'file' && $errors->has($errorFieldName()),
-                    'input-neutral border-neutral outline-neutral!'       => $type  !== 'file' && $color === 'neutral',
-                    'input-primary border-primary outline-primary!'       => $type  !== 'file' && $color === 'primary',
-                    'input-secondary border-secondary outline-secondary!' => $type  !== 'file' && $color === 'secondary',
-                    'input-accent border-accent outline-accent!'          => $type  !== 'file' && $color === 'accent',
-                    'input-info border-info outline-info!'                => $type  !== 'file' && $color === 'info',
-                    'input-success border-success outline-success!'       => $type  !== 'file' && $color === 'success',
-                    'input-warning border-warning outline-warning!'       => $type  !== 'file' && $color === 'warning',
-                    'input-error border-error outline-error!'             => $type  !== 'file' && $color === 'error',
+                    'input-neutral border-neutral outline-neutral!'       => $type  !== 'file' && ($color ?? $parentColor) === 'neutral',
+                    'input-primary border-primary outline-primary!'       => $type  !== 'file' && ($color ?? $parentColor) === 'primary',
+                    'input-secondary border-secondary outline-secondary!' => $type  !== 'file' && ($color ?? $parentColor) === 'secondary',
+                    'input-accent border-accent outline-accent!'          => $type  !== 'file' && ($color ?? $parentColor) === 'accent',
+                    'input-info border-info outline-info!'                => $type  !== 'file' && ($color ?? $parentColor) === 'info',
+                    'input-success border-success outline-success!'       => $type  !== 'file' && ($color ?? $parentColor) === 'success',
+                    'input-warning border-warning outline-warning!'       => $type  !== 'file' && ($color ?? $parentColor) === 'warning',
+                    'input-error border-error outline-error!'             => $type  !== 'file' && ($color ?? $parentColor) === 'error',
                     'input-xs'                                            => $type  !== 'file' && $size === 'xs',
                     'input-sm'                                            => $type  !== 'file' && $size === 'sm',
                     'input-md'                                            => $type  !== 'file' && $size === 'md',
@@ -107,7 +108,7 @@ class Input extends Component
             @endif
 
             <input
-                {{ $attributes->only(['id', 'autofocus', 'name', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'])->merge([
+                {{ $attributes->only(['id', 'accept', 'autofocus', 'name', 'value', 'required', 'autocomplete', 'onkeydown', 'onkeyup', 'onkeypress'])->merge([
                         'type' => $type,
                         'placeholder' => $placeholder,
                         'minlength' => $minlength > 0 ? $minlength : null,
