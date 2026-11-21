@@ -137,6 +137,11 @@ class Select extends Component
                         'select-success'   => $color === 'success',
                         'select-warning'   => $color === 'warning',
                         'select-error'     => $color === 'error',
+                        'select-xl'        => $size  === 'xl',
+                        'select-lg'        => $size  === 'lg',
+                        'select-md'        => $size  === 'md',
+                        'select-sm'        => $size  === 'sm',
+                        'select-xs'        => $size  === 'xs',
                     ])
                     @style([ 
                         'height: unset' => $maxRows > 1,
@@ -183,7 +188,7 @@ class Select extends Component
                                         'min-height: calc(6 * var(--size-selector) + 2 * var(--spacing)); max-height: calc(' . (6 * $maxRows) . ' * var(--size-selector) + ' . (2 * ($maxRows - 1)) . ' * var(--spacing))' => $maxRows > 1
                                     ])>
                                     <template x-for="option in selectedOptions">
-                                        <x-badge :color="$color" @mousedown.prevent="" class="pe-0">
+                                        <x-badge :color="$color" :size="$size" @mousedown.prevent="" class="pe-0">
                                             <x-slot class="flex items-center">
                                                 <span x-text="options.find((opt) => opt.value === option)?.text"></span>
                                                 <x-button noSpinner :color="$color" size="xs" @click.stop="$event.stopPropagation(); $event.preventDefault(); removeOption(option)" class="max-h-full aspect-square pill-remove btn-circle shadow-none outline-none" style="pointer-events:initial" value="${option}">✕</x-button>
